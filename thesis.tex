@@ -6,6 +6,7 @@
 	,advisor={Doc.\ RNDr.\ Petr Sojka,\ Ph.D.}
 	,keywords={ISO 690:2011, Bib\LaTeX}}
 \usepackage[slovak]{babel}
+
 \begin{document}
 \chapter{Úvod}
 
@@ -57,6 +58,70 @@ Dodržiavanie normy ISO 690 patrí medzi najčastejšie doporučenia pri tvorbe 
 	V prípade anonymných diel (resp. záznamov, kde žiadny tvorca nie je uvedený) stojí za zmienku aj formát bibliografického záznamu. Podľa normy by mal bibliografický záznam v prípade citovania formou meno-dátum obsahovať na prvej pozícii mená tvorcov, nasledované rokom (dátumom) a následne názvom diela a ďalšími údajmi. Štýl \textit{ISO-690 (author-date, Slovak)}, ktorý citáciu v texte riešil ako jediný správne, už pri bibliografickom zázname porušuje konzistentnosť. Pri uvádzaní skratky \uv{Anon} ju totiž vypíše malými písmenami a nie verzálkami ako tomu je v prípade, ak je tvorca známy. Španielska verzia \textit{ISO-690 (author-date, Spanish)} vypíše v zázname na prvom mieste názov diela namiesto akejkoľvek informácie o tvorcoch, po ktorom nasleduje rok vydania a za ním sa už názov diela neopakuje, ale pokračuje sa v ďalších údajoch. To samozrejme nezodpovedá výkladu normy, avšak na druhej strane to nezapríčiní chybné vypísanie interpunkcie či medzier medzi jednotlivými položkami záznamu. K takémuto chybnému výpisu už ale dochádza pri použití štýlov \textit{ISO-690 (author-date, English)} a \textit{ISO-690 (author-date, French)}. Správne ošetrenie prípadu s anonymným tvorcom riešia zvyšné dva štýly \textit{ISO-690 (author-date, Czech)} a \textit{ISO-690 (author-date, no abstract, French)}.
 	
 	U metód citovania číselným odkazom alebo priebežnými poznámkami norma umožňuje použitie názvu diela ako prvého elementu bibliografického záznamu. V csl repozitári nájdeme aj štýly implementujúce citačnú metódu číselných odkazov, pričom tieto v prípade anonymných diel buď používajú skratku \uv{Anon} alebo bibliografický záznam začína názvom diela. Vo všetkých prípadoch ide teda o korektnú implementáciu výkladu normy.
+	
+	\section{JabRef}
+	
+	JabRef je ďalším z citačných manažérov. Ide o grafickú aplikáciu plne implementovanú v jazyku Java, ktorá sa zameriava práve na BibTeX a BibLaTeX a prácu s bib formátom súborov pre ukladanie bibliografických databáz. Samozrejme je možné použiť aj iné formáty súborov, ktoré je možné do programu bez problémov importovať. JabRef je multiplatformovým a open source projektom, čo ho radí medzi najobľúbenejšie citačné manažéry súčasnosti /alternativeto.net/.
+	
+	/http://www.jabref.org/
+	
+	Pokiaľ sa v prípade Citation Style Language hovorí o citačných štýloch ako o štýloch, ktoré môžeme aplikovať na bibliografický záznam a vygenerovať tak citáciu a bibliografickú referenciu, v prípade programu JabRef sa používa označenie \textit{filtre na exportovanie}\footnote{angl. export filters}. V obdobnom význame však ide o šablónu/formát, podľa ktorého prebieha exportovanie do vybraného citačného štýlu. Konkrétne sú v tomto prípade na definovanie \textit{filtrov na exportovanie} použité tzv. \textit{layout} súbory. Tie obsahujú kolekciu vstavaných formátovacích rutín, ktoré špecifikujú daný citačný štýl a práve podľa nich prebieha samotný export.
+	
+	Základným a jediným požiadavkom na vytvorenie nového validného \textit{filtra} je existencia súboru s príponou \texttt{.layout}. Tieto súbory je možné vytvoriť v obyčajnom textovom editore a následne ich pomocou základnej funkcionality programu JabRef importovať a používať. Jeden \textit{filter na exportovanie} môže pozostávať z jedného alebo viacerých \texttt{.layout} súborov. V základe je k dispozícii jeden predvolený filter na exportovanie všeobecného typu záznamu. Typicky je však nutné použiť viaceré \texttt{.layout} súbory, pričom každý samostatne pokrýva konkrétny typ záznamu. V mennej konvencii programu JabRef sú súbory pomenované \texttt{entrytype.layout}, kde \texttt{entrytype} je meno konkrétneho typu záznamu.
+	Okrem toho je v niektorých prípadoch žiadúce mať k dispozícii aj pomocné \texttt{.layout} súbory, a to konkrétne dvojicu \texttt{begin.layout} a \texttt{end.layout} súborov. To je vhodné v prípade použitia exportovania do formátu \textit{html} alebo \textit{xml} a jeho odvodenín. V týchto prípadoch je v súbore \texttt{begin.layout} uložená hlavička a v \\texttt{end.layout} pätička súboru, ktoré sú potom následne automaticky pripojené k exportovanej položke.
+
+	\paragraph{Formát \texttt{.layout} súboru}\hfill\\
+	
+	Ako už bolo spomenuté, \texttt{.layout} súbory môžu byť vytvorené jednoducho v textovom editore a to pomocou niekoľkých základných značkovacích príkazov. Syntax značkovania je veľmi podobná \TeX -ovému značkovaniu, nakoľko jednotlivé príkazy sú uvodené práve spätným lomítkom (ako tomu je aj u príkazov v \TeX u).
+	
+	Keďže program JabRef je zameraný na podporu bib formátu súborov, po prvé je potrebné zahrnúť jednotlivé polia, ktoré takýto bib súbor obsahuje. V syntaxi \texttt{.layout} súborov sú príslušné príkazy \verb|\author|, \verb|\editor|, \verb|\title| a ďalšie. Tieto príkazy slúžia na priame odkazovanie sa na príslušné polia v bib súbore, pričom sú priamo spracované na výstup.
+	
+	Okrem toho je však potrebné tieto polia nejakým spôsobom sformátovať a práve na tento účel slúži príkaz \verb|\format| a triedy\footnote{Java triedy} na formátovanie jednotlivých polí\footnote{angl. field formatter}. Vyvolanie formátovania je potom možné zavolať príkazom \verb|\format| priamo nasledovaným zoznamom tried formátovania v hranatých zátvorkách, ktoré sa majú použiť. Za tým je uvedený príkaz, ktorý odkazuje na dané pole, alebo ľubovoľný textový reťazec na spracovanie, umiestnený v zložených zátvorkách. Príklad takéhoto formátovacieho príkazu môže vyzerať nasledovne:
+
+	\begin{verbatim}
+		\format[HTMLChars,ToUpperCase]{\author},
+	\end{verbatim}
+	
+	\noindent kde \verb|\format| je formátovací príkaz, \texttt{HTMLChars} a \texttt{ToUpperCase} sú formátovacie triedy a \verb|\author| je výraz, na ktorom sa má dané formátovanie použiť. Možnosti formátovania sú ešte o čosi bohatšie, avšak cieľom bolo predstavenie základnej funkcionality a použitia.
+	
+	%%%%
+	
+	Implementácia programu JabRef v jazyku Java sa z pohľadu funkcionality v mnohom podobá \TeX ovej implementácii BibLaTeXu. Množina funkcií je veľmi podobná, napríklad čo sa týka formátovania výstupu. V základe JabRef ponúka niekoľko desiatok formátovacích tried. Tie by bolo možné rozdeliť na dve skupiny, a to triedy zamerané na spracovanie vstupu a triedy zamerané priamo na formátovanie vstupného reťazca. Do prvej kategórie spadajú napríklad
+	
+	\begin{itemize}
+	\item \texttt{HTMLChars} -- nahradzuje špeciálne znaky \TeX u (napr. \verb|\"{a}|, \verb|\sigma|) ich príslušnou \textsc{html} reprezentáciou a prekladá \LaTeX ové príkazy (napr. \verb|\emph|, \verb|\texttt|, \verb|\underline|) do \textsc{html} ekvivalentov
+	\item \texttt{XMLChars} -- analogicky, nahradzuje špeciálne znaky \TeX u ich príslušnou \textsc{xml} reprezentáciou
+	\item \texttt{RemoveLatexCommands} -- odstraňuje \LaTeX ové príkazy zo vstupného reťazca
+	\end{itemize}
+	
+	\noindent a do tej druhej napríklad
+	
+	\begin{itemize}
+	\item \texttt{CurrentDate} -- dáva na výstup aktuálny čas, bez zadania argumentu vo formáte \textsc{yyyy.mm.dd hh:mm:ss z}, uvedením argumentu sa tento formát môže prispôsobiť podľa zadaného textového reťazca
+	\item \texttt{JournalAbbreviator} -- skracuje vstupný text podľa dostupného zoznamu skratiek časopisov
+	\item \texttt{Ordinal} -- nahradzuje základnú číslovku rádovou číslovkou
+	\item \texttt{ToUpperCase} -- zmení všetky znaky daného reťazca na veľké písmená
+	\end{itemize}
+	
+	\noindent Ďalšou podobnou črtou s BibLaTeXom je poskytovanie základných funkcií potrebných naprieč množstvom citačných štýlov. Takým je napríklad spracovávanie zoznamu autorov, ktoré je viac-menej univerzálne a nie je preto potrebné implementovať túto funkcionalitu pre každý citačný štýl zvlášť. Ide predovšetkým o možnosti na formátovanie poradia mena a priezviska autorov, skracovanie mien autorov, definovanie počtu autorov, ktorí sa majú vypísať na výstup, definovanie oddeľovača mien autorov a mnohé ďalšie. Všetky tieto voľby je možné špecifikovať v jednom formátovacom príkaze. Formátovací príkaz \texttt{Authors()} bez argumentov je ekvivalentný príkazu s prednastavenými hodnotami
+	
+	\begin{verbatim}
+	Authors(FirstFirst,Initials,FullPunc,Comma,And,inf,EtAl= et al.).
+	\end{verbatim}
+	
+	\noindent Všetky voľby definované pre tento formátovací príkaz sú bežne použiteľné pre drvivú väčšinu používaných citačných štýlov. V prípade potreby ďalších možností je možné implementovať príslušné rozhranie a tým si vytvoriť vlastné formátovacie príkazy.
+	
+	\noindent Ako ultimátnou možnosťou formátovania mien autorov je použitie priamo syntaxe BibTeXu. Táto možnosť je v programe JabRef dostupná od verzie 2.2. Vďaka vlastnostiam BibTeXu je možné dosiahnuť najvyššiu flexibilitu formátovania, avšak na druhej strane je implementácia v tejto syntaxi veľmi ťažkopádna.
+	
+	/http://help.jabref.org/en/CustomExports/
+	
+	V základnej implementácii ponúka JabRef podporu aj pre \textit{citačný štýl} ISO 690. Definuje zhruba dve desiatky typov dokumentov, ktoré je možné použiť. Ďalšie sa samozrejme dajú dodefinovať alebo upraviť existujúce podľa potreby. Množina preddefinovaných typov obsahuje základné typy ako sú kniha, článok, periodikum, patent a ďalšie, ako aj špecifickejšie v podobe nahrávok, grafického diela či emailovej správy. Podľa názvov súborov by sa dalo predpokladať, že niekoľko typov tvorí nadstavbu nad tými štandardnými v podobe ich elektronických ekvivalentov. Nahliadnutím do definície daných \texttt{.layout} súborov sa však o ekvivalentné typy veľmi nejedná. Ekvivalencia by sa totiž v takýchto prípadoch dala očakávať na úrovni rozšírenia výpisu o dostupnosti, dátume citovania či type média u elektronických variánt. Porovnaním daných súborov sa však rozdiely nachádzajú aj v poradí výpisu prvkov či formáte jednotlivých elementov, čo samozrejme naráža na rozpory aj so samotnou normou.
+	
+	Okrem nezrovnalostí na úrovni definovaných typov dokumentov sa vynárajú ďalšie aj pri náhľade do \texttt{.layout} súborov. Základnou problémovou doménou sa zdajú byť napevno nastavované interpunkčné symboly oddeľujúce jednotlivé elementy bibliografického záznamu. To v prípade absencie niektorého z elementov spôsobuje nekonzistentný výpis interpunkcie v rámci celého zoznamu bibliografických záznamov.
+	
+	JabRef stavia na povinných a voliteľných poliach jednotlivých typov diel. V prípade nevyplnenia tých povinných však nezapríčiní zlyhanie výpisu požadovaného bibliografického záznamu. To je samozrejme v súlade s interpretáciou normy [od citace.com] kedy sa má v prípade nedostupnosti daného údaju tento údaj vynechať a pokračovať ďalším. Spôsobuje to však vyššie popísanú nekonzistentnosť v interpunkcii.
+	
+	Ďalšou zásadnou chybou v implementácii je spracovávanie polí na vstupe a ich výskyt vo výstupnom bibliografickom zázname. V samotnom programe JabRef, ako aj pri importe z bib súboru, funguje mapovanie polí daného typu dokumentu do internej reprezentácie programu na vysokej úrovni. Problémom zostávajú práve spomínané filtre na exportovanie, ktoré definujú podobu samotného výstupu. V prípade exportovania podľa štandardu ISO 690, dané \texttt{.layout} súbory pokrivkávajú v dodržiavaní normy. Týka sa to napríklad totálnej absencie údaju DOI pri článkoch, ako aj akomkoľvek inom type dokumentu, podpory štandardných identifikátorov obmedzených na množinu ISBN a ISSN, použitia zastaraných polí, ktoré sa potom vôbec nedostanú na výstup, chybného poradia niektorých elementov (prevažne štandardných identifikátorov, ktoré sa u všetkých typov nachádzajú až za poznámkovou časťou) a v neposlednom rade napríklad aj napevno definovaných reťazcov, ktoré by mali byť reťazcami lokalizačnými.
 	
 \chapter{Balík Bib\LaTeX}
 Balík Bib\LaTeX\, aktuálne podporuje niekoľko citačných štýlov. Oficiálnu podporu pre normu ISO 690 však zatiaľ neposkytuje. V tejto kapitole sa preto autor zameria na existujúce riešenia normy ISO 690 pre balík Bib\LaTeX.
