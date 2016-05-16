@@ -1,194 +1,551 @@
-\documentclass{fithesis3}
+\documentclass[
+  color,
+  table,
+  nolof,
+]{fithesis3}
 \thesissetup{
-	faculty=fi
-	,title=Sadzba bibliografie podľa normy ISO 690
-	,author=Dávid Lupták
-	,advisor={Doc.\ RNDr.\ Petr Sojka,\ Ph.D.}
-	,keywords={ISO 690:2011, Bib\LaTeX}}
+	faculty  = fi,
+	title    = Sadzba bibliografie podľa normy ISO 690,
+	author   = Dávid Lupták,
+	advisor  = {Doc.\ RNDr.\ Petr Sojka,\ Ph.D.},
+	keywords = {ČSN ISO 690:2011, BibLaTeX},
+}
 \usepackage[slovak]{babel}
+\usepackage{minted}  %% Highlighted source code for LaTeX
+\usepackage{doc}  %% Macro \BibTeX
+\usepackage[toc,page]{appendix} %% Extra control of appendices
+\usepackage{tabularx}  %% Tabulars with adjustable-width columns
+\usepackage{booktabs}  %% Publication quality tables in LaTeX -- \toprule, etc.
+
+\newcommand{\cmd}[1]{\mintinline{latex}{#1}}
 
 \usepackage[style=iso-numeric]{biblatex}
 
 \addbibresource{resource.bib}
 
 \begin{document}
+
 \chapter{Úvod}
 
-\chapter{Implementácie normy ISO 690}
-Dodržiavanie normy ISO 690 patrí medzi najčastejšie doporučenia pri tvorbe citácií a bibliografických záznamov v~rámci kvalifikačných prác v~akademickom prostredí. Preto vzniklo už niekoľko implementácií pre rôzne programy a nástroje, ktoré využitie tejto normy podporujú. V~tejto kapitole autor popíše existujúce programy a nástroje implementujúce normu ISO 690. Hoci nepôjde o~implementácie v~rámci balíka Bib\LaTeX, aj napriek tomu nám tento popis poskytne lepší náhľad do problematiky týkajúcej sa normy ISO 690.
+TBA
 
-	\section{Citace.com}
-	Portál citace.com patrí medzi najpoužívanejšie generátory citácií v~Českej republike \cite{Krcal2014}. Ide o~voľne dostupnú online službu generujúcu citácie podľa normy ČSN ISO 690:2011. V~rámci veľkého množstva online generátorov citácií predčí ostatné práve svojou jednoduchosťou používania, čomu zodpovedá aj motto portálu \uv{...citovat je snadné}.
+\chapter{Norma ISO 690}
 
-	Samotný projekt citace.com vznikol v~roku 2003, pôvodne ako študentský projekt pod názvom Bibliografické citácie. V~súčasnosti je však skôr známy už len ako citace.com. Autorom je Martin Krčál, ktorého bezpochyby možno označiť za duchovného otca projektu. Vedúcim projektu je dodnes a jeho aktuálnou pracovnou náplňou je metodické vedenie a riadenie projektu. Veľmi rýchlo po vzniku projektu sa služba citace.com dostala do povedomia študentov na Masarykovej univerzite, ale aj na iných vysokých školách v~Českej republike a na Slovensku. Postupne si v~univerzitnom prostredí získala relatívne vysoké renomé nielen medzi študentami, ale dokonca aj vyučujúcimi. Dnes patrí medzi najpoužívanejšie generátory citácií v~Českej republike.
+Tvorba bibliografických odkazov a citácií sa v~minulosti riadila pravidlami noriem ČSN ISO 690:1996~\cite{csn:iso690:1996} a ČSN ISO 690-2:2000~\cite{csn:iso690:2:2000}. V~roku 2011 boli tieto dve normy zjednotené a nahradené novou normou ČSN ISO 690:2011~\cite{csn:iso690:2011}. Množstvo programov, nástrojov a služieb poskytujúcich podporu normy ISO 690 sa vo svojej implementácii pridržiavalo prevažne starších vydaní noriem, hoci nová verzia už bola v~tom čase k~dispozícii. Tento nesúlad zbytočne viedol k~veľkému množstvu nepresností. Preto je potrebné zdôrazniť, že táto práca sa odkazuje výhradne na poslednú verziu medzinárodnej normy ISO 690:2010, resp. jej český ekvivalent ČSN ISO 690 z~roku 2011.
 
-	Spočiatku mal projekt za cieľ poskytnúť užívateľom jednoduchý nástroj na generovanie citácií. Neskôr sa však z~jednoduchého generátora citácií stal citačný softvér. Projekt citace.com totiž okrem bezplatnej verzie generátoru citácií poskytuje aj komerčne využívaný produkt s~názvom Citace PRO. Ten je určený a vyvíjaný najmä pre inštitúcie, nakoľko ide o~komplexný citačný manažér. Okrem základnej funkcionality generovania citácií poskytuje širšiu paletu citačných štýlov, úložisko pre dokumenty, možnosť spolupráce pri tvorbe citácií v~rámci danej inštitúcie i mimo nej, podporu inštitucionálnej autentizácie a ďalšie funkcie.
+\section{Národný preklad a interpretácie normy}
 
-	Služba od svojho vzniku prešla niekoľkými zmenami, čo je v~rámci životného cyklu softvéru prirodzená vlastnosť. Musela totiž reagovať nielen na technologický pokrok, ale rovnako aj na potreby užívateľov alebo aktualizáciu samotnej normy ISO 690. Spomedzi množstva funkcií aktuálnej verzie systému si určite zaslúži vyzdvihnúť dohľadávanie citácií, ktoré výrazne zjednodušuje tvorbu citácií. Na vygenerovanie požadovanej citácie užívateľovi stačí zadať len názov diela alebo niektorý z~jednoznačných identifikátorov, tj. ISBN alebo DOI. Z~knihovných katalógov sa záznam dohľadá a automaticky sa vyplnia príslušné polia vo formulári, ktoré si potom užívateľ môže dodatočne upraviť.
+Preklady noriem sú zabezpečované úradmi pre technickú normalizáciu, metrológiu a štátne skúšobníctvo na národnej úrovni. Česká technická norma ČSN ISO 690:2011 bola prijatá prekladom medzinárodnej normy ISO 690 z~roku 2010. Porovnaním originálnej (anglickej) a českej verzie normy sa dá konštatovať, že rámcovo ide o~ekvivalentné verzie~\cite{csn:iso690:2011,iso690:2010}.
 
-	Výrazným a hlavným podnetom k~jednej z~najrozsiahlejších zmien projektu bola už spomínaná aktualizácia normy ISO 690. Dôsledkom tejto aktualizácie bolo aj vytvorenie interpretácie normy poprednými odborníkmi na problematiku citácií v~Českej republike. Tento dokument slúžil ako podklad pre implementáciu normy na portáli citace.com, zároveň však nadobudol veľkú váhu aj v~rámci komunity užívateľov. V~základnej verzii teraz služba vychádza práve z~tejto normy, tj. normy ČSN ISO 690 z~roku 2011.
-	
-	V~bezplatnej online verzii ponúka služba citace.com práve citovanie a tvorbu bibliografických záznamov podľa spomínanej normy ČSN ISO 690:2011. V~rámci spoplatnenej varianty Citace PRO je však k~dispozícii množstvo ďalších štýlov, a to v~počte viac ako 8000. Na webstránke je však pri vyhľadávaní na výber 421*50 + 39 štýlov, čo činí viac ako 21000. Takýto vysoký počet štýlov oproti deklarovanému počtu uvádzanému na hlavných informačných stránkach portálu je spôsobený niekoľkými faktormi. Prvým z~nich je počet variánt citovania pri každom z~nich. Ak zoberieme do úvahy napríklad spomínanú normu ISO 690, tá uvádza hneď tri metódy citovania, pričom ešte aj pri jednotlivých metódach ponúka na výber niekoľko možností, ako je možné citáciu v~texte zapísať. Ďalším faktorom takéhoto vysokého počtu sú jazykové mutácie, a to hneď na minimálne dvoch úrovniach. Jedna z~nich je preklad pomocou lokalizačných súborov a tou druhou sú oficiálne preklady noriem zabezpečované úradmi pre technickú normalizáciu, metrológiu a štátne skúšobníctvo na národnej úrovni. Skutočný počet unikátnych štýlov sa tým pochopiteľne značne znižuje.
-	
-	Citačné štýly sú implementované pomocou programovacieho jazyka Citation Style Language (CSL). Podobne ako iné citačné manažéry, aj citace.com využíva oficiálny repozitár projektu The Citation Style Language, kde sú všetky štýly umiestnené pod licenciou Creative Commons Attribution-ShareAlike (BY-SA)\footnote{\url{https://github.com/citation-style-language/styles\#licensing}}. Pri výbere citačných štýlov je však viditeľné, že portál citace.com ponúka oproti oficiálnemu repozitáru CSL k~dispozícii aj niekoľko ďalších (prispôsobených) štýlov. Prevažne sú to špecificky upravené oficiálne dostupné štýly, ktoré vznikli napríklad pre rôzne akademické inštitúcie alebo s~ohľadom na národné interpretácie noriem.
-	
-	Pri tvorbe bibliografického záznamu má užívateľ na výber k~dispozícii celú plejádu typov dokumentov, ktoré možno citovať. Obsiahnuté sú nielen základné typy všeobecného charakteru, ale aj špecifické druhy, ktoré nie sú priamo obsiahnuté ani v~samotnej norme. Resp. norma presne neuvádza, ako takéto diela citovať, väčšinou sa to odvodzuje zo všeobecnejších typov dokumentov. Česká interpretácia normy ISO 690 však ponúka vzor aj na tvorbu takýchto bibliografických citácií, a to konkrétne pre kvalifikačné práce, archívne dokumenty a rukopisy, legislatívne dokumenty či informácie získané osobným kontaktom\footnote{\url{https://sites.google.com/site/novaiso690/co-norma-neresi}}.
-	
-	Nespornou výhodou tvorby bibliografických záznamov na portáli citace.com je automatické generovanie citácie už pri jej samotnom vytváraní. Oproti ostatným generátorom teda ponúka aktuálny náhľad na vytváranú citáciu, postupne podľa vypĺňania jednotlivých polí záznamu. To užívateľovi ponúka lepší náhľad na samotnú tvorbu citácie a pre nás ponúka aj detailnejší pohľad na samotnú implementáciu. Pri výbere konkrétneho typu dokumentu sú v~niektorých prípadoch určité prvky citácie už predvyplnené bez toho, aby sme vôbec nejaký údaj zadávali. Uveďme to na príklade tvorby citácie elektronických typov dokumentov (elektronická kniha, periodikum, článok, zborník a pod.), pri ktorých je automaticky doplnený dátum citovania (informácia [cit. YYYY-MM-DD]) a keďže ide o~elektronické dokumenty, aj typ nosiča (prednastavená hodnota je online -- a to aj v~prípade ak pole typ nosiča pri úprave citácie zostane nevyplnené). Ďalšími príkladmi by mohli byť napríklad diela, ktoré sú súčasťou inej publikácie, typicky článok v~zborníku a pod., kde je zase predvyplnený údaj \uv{In:} poukazujúci práve na fakt, že ide o~súčasť iného diela. S~týmto identifkátorom však nie je možné ďalej hýbať -- t.j. upravovať ho, nakoľko podľa normy ide o~pevne daný predpis, môže sa líšiť nanajvýš v~rôznych jazykových lokalizáciách. Typicky však prevláda identifikátor \uv{In:} aj naprieč jazykovými mutáciami.
-	
-	Norma ISO 690 uvádza presné poradie údajov pri jednotlivých typoch dokumentov, rovnako aj ktoré údaje sú povinné a ktoré iba voliteľné. Na portáli citace.com je toto v~generátore citácii pri jednotlivých dielach vizuálne odlíšené, pri kontrole údajov je v~prípade chýbajúcich povinných polí zobrazená chybová hláška. Chýbajúce povinné údaje síce generátor ohlási, avšak naďalej umožní užívateľovi vytvorenie citácie. Úplnosť, resp. neúplnosť povinných údajov môže v~prípade implementácie v~jazyku csl spôsobiť komplikácie, a to v~podobe nekonzistencie interpunkcie, počtu medzier medzi jednotlivými položkami bibliografického záznamu, prípadne celkovo chybnej podoby bibliografického záznamu (nesplňujúci požadovanú normu).
-	
-	Ďalšie odlišnosti vytvorenej citácie a bibliografického záznamu je možné vidieť aj naprieč rôznymi implementáciami štýlov danej normy. Citace.com označuje niektoré štýly, ktoré má v~ponuke na výber, ako štýly garantované. Sú to prevažne štýly mimo verejného repozitára csl štýlov, pričom práve porovnaním týchto štýlov s~tými voľne dostupnými narážame na nieľko rozdielov. Ide napríklad o~používanie skratky \uv{et al.} v~prípade uvádzania viacerých autorov. Samotná norma hovorí o~tom, že by mali byť uvedené všetky mená tvorcov diela, pokiaľ je to možné. V~prípade, že sú niektoré mená vynechané, uvedie sa meno prvého tvorcu a po ňom nasleduje fráza \uv{et al.}, \uv{aj.}, \uv{a kol.} alebo iný ekvivalantný výraz, samozrejme s~ohľadom na jazykovú lokalizáciu dokumentu. V~tomto bode teda dochádza k~miernym rozdielom medzi rôznymi implementáciami daných štýlov, a to konkrétne v~tom, že niektoré dodržiavajú vyššie spomenuté pravidlo a buď uvádzajú naozaj všetkých autorov (bez horného ohraničenia ich počtu) alebo uvádzajú len prvého a dopĺňajú skratku \uv{et al.}. Iné sa k~tomu stavajú spôsobom uvedenia až troch autorov, po ktorých nasleduje skratka \uv{et al.}. Pri takomto zápise sa môže na jednej strane uľahčiť jednoznačná identifikácia zdroja, na strane druhej to môže interferovať s~výkladom textu normy.
-	
-	Aj napriek niekoľkým nezrovnalostiam či odlišnostiam medzi rôznymi štýlmi tej istej normy je portál citace.com výborným manažérom citácií s~kvalitne spracovaným generátorom citácií. Nehovoriac o~tom, že pokrýva aj prípady citovania diel, ktoré nie sú v~norme samotnej priamo uvedené. To je samozrejme pre užívateľa obrovským benefitom, a z~jeho pohľadu napĺňa aj hlavnú myšlienku portálu \uv{citovat je snadné}.
-	
-	\section{Zotero}
-	Ďalším z~citačných manažérov plne podporujúcim normu ISO 690 je nástroj Zotero. Ten je dostupný vo forme doplnku pre internetové prehliadače rovnako však aj ako desktopová aplikácia aktuálne dostupná pre všetky platformy (t.j. Mac, Windows a Linux). Medzi jeho hlavné výhody patrí dostupnosť a cena, kompatibilita, pohodlnosť tvorby citácií a v~neposlednom rade aj štatút open-source projektu \cite[58--59]{Ansorge2013}.
-	
-	Počiatky projektu Zotero siahajú do roku 2006, kedy bola vydaná jeho prvá verzia, vtedy ešte len ako doplnok pre internetový prehliadač Firefox. Od roku 2011 však už funguje aj ako samostatná desktopová aplikácia a bola pridaná aj podpora integrácie do iných internetových prehliadačov, akými sú napr. Safari, Opera alebo Chrome. Projekt ďalej pokračuje vo vývoji, ktorý je pod záštitou Centra pre históriu a nové média na Univerzite George Mason v~štáte Virginia v~Spojených štátoch amerických \cite{Puckett2011}.
-	
-	Z~pohľadu funkcionality stavia Zotero, podobne ako citace.com, na jednoduchosti a špeciálne aj na minimalizácii zásahu autora do prípravy bibliografie. Zotero totiž ako jediný spomedzi citačných softvérov automaticky hľadá v~aktuálne prehľadávanom obsahu v~prehliadači bibliografické dáta, ktoré potom na jedno kliknutie umožní uložiť do knižnice bibliografických záznamov\footnote{\url{https://www.zotero.org/\#features-1}}. Takisto poskytuje možnosť dohľadania dokumentu podľa jednoznačného identifikátora, umožňuje vytvoriť bibliografický záznam aktuálne prehliadanej web stránky alebo podporuje import bibliografických záznamov z~iných citačných nástrojov či pdf dokumentu. Samozrejmosťou je manuálne vytvorenie a úprava existujúcich záznamov\footnote{\url{https://www.zotero.org/support/getting_stuff_into_your_library}}.
-	
-	Na roz(p)oznávanie informácií na webstránkach používa Zotero takzvané prekladače\footnote{angl. translators} \footnote{\url{https://www.zotero.org/support/quick_start_guide}} \footnote{\url{https://www.zotero.org/support/translators}}. Tie dokážu automaticky detekovať knihovnícke záznamy, správy, časopisecké články a prípadne aj iné záznamy hodné citovania. V~súčasnosti existuje vyše 300 rôznych prekladačov podporujúcich tisíce webov. Tie možno rozdeliť na niekoľko kategórií, a to knihovnícke katalógy (WorldCat, Voyager, Aleph a ďalšie), knihovnícke databázy (arXiv.org, EBSCO, JSTOR, Google Scholar a ďalšie), akademické vydavateľstvá svetového významu (Cambridge University Press, Oxford University Press, Elsevier a ďalšie), takisto aj rôzne populárne weby (Amazon, The New York Times, The Economist a ďalšie). Detekovanie bibliografických informácií samozrejme závisí priamo od navštívenej webstránky, kedy sa spolieha buď na samotné prekladače, niekedy špecifické pre danú webovú stránku, alebo na štandardnejší spôsob, a to použitie vstavaných metadát. Tie sú preferovane otvoreného formátu, ako napríklad COinS, Embedded RDF, Google/HighWire meta tagy a unAPI \cite{ZoteroTranslators}.
-	
-	Dohľadávanie záznamov podľa jednoznačných identifikátorov poskytuje ďalší spôsob jednoduchého vytvárania bibliografických záznamov. Zotero oproti portálu citace.com ponúka naviac, okrem jednoznačných identifikátorov ISBN a DOI, podporu aj pre identifikátor PubMed ID. Na získavanie metadát využíva bibliografické knihovny Library of Congress a WorldCat pre medzinárodné štandardné čísla kníh ISBN, CrossRef pre identifikátory digitálneho objektu DOI a Národné centrum pre biotechnologické informácie NCBI PubMed pre PubMed identifikátory.
-	
-	Doplnok Zotero pre prehliadače umožňuje zaznamenať aktuálne prehliadanú webstránku ako bibliografický záznam, a to jediným kliknutím. Okrem samotných metadát, ktoré je možné získať zo samotnej webstránky, ponúka doplnok Zotero aj možnosť zachytenia snímky webovej stránky v~aktuálnej podobe v~dátume citovania, resp. ukladania bibliografického záznamu. To môže byť veľmi užitočné pre užívateľa, a to najmä z~pohľadu práce offline alebo samotného zaznamenia podoby webovej stránky v~podobe v~akej bola v~dobe jej navštívenia.
-	
-	Zotero v~základe ponúka niekoľko základných bibliografických a citačných štýlov a viac ako 6750 ďalších štýlov je možné nájsť v~tzv. Zotero repozitári\footnote{\url{https://www.zotero.org/styles}}. Podobne ako v~prípade citace.com, aj všetky tieto štýly sú napísané v~jazyku CSL\footnote{\url{https://www.zotero.org/support/styles}}. Repozitár ponúka dovedna 8145 štýlov, avšak podobne ako to bolo v~prípade citace.com, kvôli rôznym variantám a jazykovým mutáciám toho istého štýlu je počet unikátnych štýlov na hodnote 1301.
-	
-	Rôzne implementácie dostupných štýlov v~repozitári nie sú rovnaké. Nejde pritom len o~lokalizačné reťazce, ktoré sa pochopiteľne v~rôznych jazykových mutáciách budú líšiť, ale je to napríklad aj konzistentnosť uvádzania údajov čo do použitia jednotného štýlu, formátu a interpunkcie. Takáto nekonzistentnosť je v~rozpore s~výkladom normy a základných princípov tvorby bibliografických citácií. Týka sa to napríklad anonymných diel, pri ktorých je autor neznámy. Norma uvádza, že v~prípade anonymných diel odkazovaných v~texte formou meno-dátum sa použije namiesto mena skratka \uv{Anon}. Ak zoberieme v~úvahu konkrétny štýl, a to \textit{ISO-690 (author-date, Czech)}\footnote{\url{https://www.zotero.org/styles/iso690-author-date-cs}} alebo \textit{ISO-690 (author-date, no abstract, French)} môžeme si všimnúť, že táto skratka je v~citácii v~texte písaná verzálkami, pričom ak je tvorca známy, jeho priezvisko (ktoré sa v~tomto prípade typicky uvádza bez mena) už verzálkami písané nie je. Oveľa väčšieho prehrešku sa však dopúšťa implementácia anglická -- \textit{ISO-690 (author-date, English)}, ktorá žiadnu skratku \uv{Anon} nepoužíva a v~prípade že je autor neznámy, do citácie v~texte vypíše názov diela. To je v~rozpore s~výkladom normy o~anonymnom diele, rovnako však aj s~konceptom formy citovania meno-dátum, pretože žiadne meno ani informácia že ide o~autora neznámeho uvedené nie sú. Rovnakého prehrešku sa dopúšťajú aj ostatné dostupné štýly \textit{ISO-690 (author-date, French)} a \textit{ISO-690 (author-date, Spanish)}, pričom španielska verzia sa to snaží riešiť aspoň vizuálnym odlíšením názvu diela uvedením v~takýchto zátvorkách «~». Použitie skratky \uv{Anon} správne rieši iba jediný štýl v~repozitári, a to \textit{ISO-690 (author-date, Slovak)}.
-	
-	V~prípade anonymných diel (resp. záznamov, kde žiadny tvorca nie je uvedený) stojí za zmienku aj formát bibliografického záznamu. Podľa normy by mal bibliografický záznam v~prípade citovania formou meno-dátum obsahovať na prvej pozícii mená tvorcov, nasledované rokom (dátumom) a následne názvom diela a ďalšími údajmi. Štýl \textit{ISO-690 (author-date, Slovak)}, ktorý citáciu v~texte riešil ako jediný správne, už pri bibliografickom zázname porušuje konzistentnosť. Pri uvádzaní skratky \uv{Anon} ju totiž vypíše malými písmenami a nie verzálkami ako tomu je v~prípade, ak je tvorca známy. Španielska verzia \textit{ISO-690 (author-date, Spanish)} vypíše v~zázname na prvom mieste názov diela namiesto akejkoľvek informácie o~tvorcoch, po ktorom nasleduje rok vydania a za ním sa už názov diela neopakuje, ale pokračuje sa v~ďalších údajoch. To samozrejme nezodpovedá výkladu normy, avšak na druhej strane to nezapríčiní chybné vypísanie interpunkcie či medzier medzi jednotlivými položkami záznamu. K~takémuto chybnému výpisu už ale dochádza pri použití štýlov \textit{ISO-690 (author-date, English)} a \textit{ISO-690 (author-date, French)}. Správne ošetrenie prípadu s~anonymným tvorcom riešia zvyšné dva štýly \textit{ISO-690 (author-date, Czech)} a \textit{ISO-690 (author-date, no abstract, French)}.
-	
-	U~metód citovania číselným odkazom alebo priebežnými poznámkami norma umožňuje použitie názvu diela ako prvého elementu bibliografického záznamu. V~csl repozitári nájdeme aj štýly implementujúce citačnú metódu číselných odkazov, pričom tieto v~prípade anonymných diel buď používajú skratku \uv{Anon} alebo bibliografický záznam začína názvom diela. Vo všetkých prípadoch ide teda o~korektnú implementáciu výkladu normy.
-	
-	\section{JabRef}
-	
-	JabRef je ďalším z~citačných manažérov. Ide o~grafickú aplikáciu plne implementovanú v~jazyku Java, ktorá sa zameriava práve na BibTeX a BibLaTeX a prácu s~bib formátom súborov pre ukladanie bibliografických databáz. Samozrejme je možné použiť aj iné formáty súborov, ktoré je možné do programu bez problémov importovať. JabRef je multiplatformovým a open source projektom, čo ho radí medzi najobľúbenejšie citačné manažéry súčasnosti \cite{AlternativeToJabRef}.
-	
-	%% http://www.jabref.org
-	
-	Pokiaľ sa v~prípade Citation Style Language hovorí o~citačných štýloch ako o~štýloch, ktoré môžeme aplikovať na bibliografický záznam a vygenerovať tak citáciu a bibliografickú referenciu, v~prípade programu JabRef sa používa označenie \textit{filtre na exportovanie}\footnote{angl. export filters}. V~obdobnom význame však ide o~šablónu/formát, podľa ktorého prebieha exportovanie do vybraného citačného štýlu. Konkrétne sú v~tomto prípade na definovanie \textit{filtrov na exportovanie} použité tzv. \textit{layout} súbory. Tie obsahujú kolekciu vstavaných formátovacích rutín, ktoré špecifikujú daný citačný štýl a práve podľa nich prebieha samotný export.
-	
-	Základným a jediným požiadavkom na vytvorenie nového validného \textit{filtra} je existencia súboru s~príponou \texttt{.layout}. Tieto súbory je možné vytvoriť v~obyčajnom textovom editore a následne ich pomocou základnej funkcionality programu JabRef importovať a používať. Jeden \textit{filter na exportovanie} môže pozostávať z~jedného alebo viacerých \texttt{.layout} súborov. V~základe je k~dispozícii jeden predvolený filter na exportovanie všeobecného typu záznamu. Typicky je však nutné použiť viaceré \texttt{.layout} súbory, pričom každý samostatne pokrýva konkrétny typ záznamu. V~mennej konvencii programu JabRef sú súbory pomenované \texttt{entrytype.layout}, kde \texttt{entrytype} je meno konkrétneho typu záznamu.
-	Okrem toho je v~niektorých prípadoch žiadúce mať k~dispozícii aj pomocné \texttt{.layout} súbory, a to konkrétne dvojicu \texttt{begin.layout} a \texttt{end.layout} súborov. To je vhodné v~prípade použitia exportovania do formátu \textit{html} alebo \textit{xml} a jeho odvodenín. V~týchto prípadoch je v~súbore \texttt{begin.layout} uložená hlavička a v~\\texttt{end.layout} pätička súboru, ktoré sú potom následne automaticky pripojené k~exportovanej položke.
+V~mnohých ohľadoch je však norma nejednoznačná. Na túto skutočnosť poukazujú mnohé české interpretácie~\cite{Biernatova2011,Bratkova2011,Kratochvil2011}, ktoré následne tieto nejasnosti istým spôsobom odstraňujú. V~takýchto prípadoch sú v~rámci implementácie tieto interpretácie preferované.
 
-	\paragraph{Formát \texttt{.layout} súboru}\hfill\\
-	
-	Ako už bolo spomenuté, \texttt{.layout} súbory môžu byť vytvorené jednoducho v~textovom editore a to pomocou niekoľkých základných značkovacích príkazov. Syntax značkovania je veľmi podobná \TeX -ovému značkovaniu, nakoľko jednotlivé príkazy sú uvodené práve spätným lomítkom (ako tomu je aj u~príkazov v~\TeX u).
-	
-	Keďže program JabRef je zameraný na podporu bib formátu súborov, po prvé je potrebné zahrnúť jednotlivé polia, ktoré takýto bib súbor obsahuje. V~syntaxi \texttt{.layout} súborov sú príslušné príkazy \verb|\author|, \verb|\editor|, \verb|\title| a ďalšie. Tieto príkazy slúžia na priame odkazovanie sa na príslušné polia v~bib súbore, pričom sú priamo spracované na výstup.
-	
-	Okrem toho je však potrebné tieto polia nejakým spôsobom sformátovať a práve na tento účel slúži príkaz \verb|\format| a triedy\footnote{Java triedy} na formátovanie jednotlivých polí\footnote{angl. field formatter}. Vyvolanie formátovania je potom možné zavolať príkazom \verb|\format| priamo nasledovaným zoznamom tried formátovania v~hranatých zátvorkách, ktoré sa majú použiť. Za tým je uvedený príkaz, ktorý odkazuje na dané pole, alebo ľubovoľný textový reťazec na spracovanie, umiestnený v~zložených zátvorkách. Príklad takéhoto formátovacieho príkazu môže vyzerať nasledovne:
+\section{Výklad normy}
 
-	\begin{verbatim}
-		\format[HTMLChars,ToUpperCase]{\author},
-	\end{verbatim}
-	
-	\noindent kde \verb|\format| je formátovací príkaz, \texttt{HTMLChars} a \texttt{ToUpperCase} sú formátovacie triedy a \verb|\author| je výraz, na ktorom sa má dané formátovanie použiť. Možnosti formátovania sú ešte o~čosi bohatšie, avšak cieľom bolo predstavenie základnej funkcionality a použitia.
-	
-	%%%%
-	
-	Implementácia programu JabRef v~jazyku Java sa z~pohľadu funkcionality v~mnohom podobá \TeX ovej implementácii BibLaTeXu. Množina funkcií je veľmi podobná, napríklad čo sa týka formátovania výstupu. V~základe JabRef ponúka niekoľko desiatok formátovacích tried. Tie by bolo možné rozdeliť na dve skupiny, a to triedy zamerané na spracovanie vstupu a triedy zamerané priamo na formátovanie vstupného reťazca. Do prvej kategórie spadajú napríklad
-	
-	\begin{itemize}
-	\item \texttt{HTMLChars} -- nahradzuje špeciálne znaky \TeX u (napr. \verb|\"{a}|, \verb|\sigma|) ich príslušnou \textsc{html} reprezentáciou a prekladá \LaTeX ové príkazy (napr. \verb|\emph|, \verb|\texttt|, \verb|\underline|) do \textsc{html} ekvivalentov
-	\item \texttt{XMLChars} -- analogicky, nahradzuje špeciálne znaky \TeX u ich príslušnou \textsc{xml} reprezentáciou
-	\item \texttt{RemoveLatexCommands} -- odstraňuje \LaTeX ové príkazy zo vstupného reťazca
-	\end{itemize}
-	
-	\noindent a do tej druhej napríklad
-	
-	\begin{itemize}
-	\item \texttt{CurrentDate} -- dáva na výstup aktuálny čas, bez zadania argumentu vo formáte \textsc{yyyy.mm.dd hh:mm:ss z}, uvedením argumentu sa tento formát môže prispôsobiť podľa zadaného textového reťazca
-	\item \texttt{JournalAbbreviator} -- skracuje vstupný text podľa dostupného zoznamu skratiek časopisov
-	\item \texttt{Ordinal} -- nahradzuje základnú číslovku rádovou číslovkou
-	\item \texttt{ToUpperCase} -- zmení všetky znaky daného reťazca na veľké písmená
-	\end{itemize}
-	
-	\noindent Ďalšou podobnou črtou s~BibLaTeXom je poskytovanie základných funkcií potrebných naprieč množstvom citačných štýlov. Takým je napríklad spracovávanie zoznamu autorov, ktoré je viac-menej univerzálne a nie je preto potrebné implementovať túto funkcionalitu pre každý citačný štýl zvlášť. Ide predovšetkým o~možnosti na formátovanie poradia mena a priezviska autorov, skracovanie mien autorov, definovanie počtu autorov, ktorí sa majú vypísať na výstup, definovanie oddeľovača mien autorov a mnohé ďalšie. Všetky tieto voľby je možné špecifikovať v~jednom formátovacom príkaze. Formátovací príkaz \texttt{Authors()} bez argumentov je ekvivalentný príkazu s~prednastavenými hodnotami
-	
-	\begin{verbatim}
-	Authors(FirstFirst,Initials,FullPunc,Comma,And,inf,EtAl= et al.).
-	\end{verbatim}
-	
-	\noindent Všetky voľby definované pre tento formátovací príkaz sú bežne použiteľné pre drvivú väčšinu používaných citačných štýlov. V~prípade potreby ďalších možností je možné implementovať príslušné rozhranie a tým si vytvoriť vlastné formátovacie príkazy.
-	
-	\noindent Ako ultimátnou možnosťou formátovania mien autorov je použitie priamo syntaxe BibTeXu. Táto možnosť je v~programe JabRef dostupná od verzie 2.2. Vďaka vlastnostiam BibTeXu je možné dosiahnuť najvyššiu flexibilitu formátovania, avšak na druhej strane je implementácia v~tejto syntaxi veľmi ťažkopádna \cite{JabRefCustomExportFilters}.
-	
-	V~základnej implementácii ponúka JabRef podporu aj pre \textit{citačný štýl} ISO 690. Definuje zhruba dve desiatky typov dokumentov, ktoré je možné použiť. Ďalšie sa samozrejme dajú dodefinovať alebo upraviť existujúce podľa potreby. Množina preddefinovaných typov obsahuje základné typy ako sú kniha, článok, periodikum, patent a ďalšie, ako aj špecifickejšie v~podobe nahrávok, grafického diela či emailovej správy. Podľa názvov súborov by sa dalo predpokladať, že niekoľko typov tvorí nadstavbu nad tými štandardnými v~podobe ich elektronických ekvivalentov. Nahliadnutím do definície daných \texttt{.layout} súborov sa však o~ekvivalentné typy veľmi nejedná. Ekvivalencia by sa totiž v~takýchto prípadoch dala očakávať na úrovni rozšírenia výpisu o~dostupnosti, dátume citovania či type média u~elektronických variánt. Porovnaním daných súborov sa však rozdiely nachádzajú aj v~poradí výpisu prvkov či formáte jednotlivých elementov, čo samozrejme naráža na rozpory aj so samotnou normou.
-	
-	Okrem nezrovnalostí na úrovni definovaných typov dokumentov sa vynárajú ďalšie aj pri náhľade do \texttt{.layout} súborov. Základnou problémovou doménou sa zdajú byť napevno nastavované interpunkčné symboly oddeľujúce jednotlivé elementy bibliografického záznamu. To v~prípade absencie niektorého z~elementov spôsobuje nekonzistentný výpis interpunkcie v~rámci celého zoznamu bibliografických záznamov.
-	
-	JabRef stavia na povinných a voliteľných poliach jednotlivých typov diel. V~prípade nevyplnenia tých povinných však nezapríčiní zlyhanie výpisu požadovaného bibliografického záznamu. To je samozrejme v~súlade s~interpretáciou normy \cite{Biernatova2011} kedy sa má v~prípade nedostupnosti daného údaju tento údaj vynechať a pokračovať ďalším. Spôsobuje to však vyššie popísanú nekonzistentnosť v~interpunkcii.
-	
-	Ďalšou zásadnou chybou v~implementácii je spracovávanie polí na vstupe a ich výskyt vo výstupnom bibliografickom zázname. V~samotnom programe JabRef, ako aj pri importe z~bib súboru, funguje mapovanie polí daného typu dokumentu do internej reprezentácie programu na vysokej úrovni. Problémom zostávajú práve spomínané filtre na exportovanie, ktoré definujú podobu samotného výstupu. V~prípade exportovania podľa štandardu ISO 690, dané \texttt{.layout} súbory pokrivkávajú v~dodržiavaní normy. Týka sa to napríklad totálnej absencie údaju DOI pri článkoch, ako aj akomkoľvek inom type dokumentu, podpory štandardných identifikátorov obmedzených na množinu ISBN a ISSN, použitia zastaraných polí, ktoré sa potom vôbec nedostanú na výstup, chybného poradia niektorých elementov (prevažne štandardných identifikátorov, ktoré sa u~všetkých typov nachádzajú až za poznámkovou časťou) a v~neposlednom rade napríklad aj napevno definovaných reťazcov, ktoré by mali byť reťazcami lokalizačnými.
-	
-	\section{Citavi}
-	
-	Citavi je citačný manažér populárny najmä v~nemecky hovoriacich krajinách \cite{Stohr2010}. Prvá verzia vyšla v~roku 1995, vtedy ešte pod názvom LiteRat a vývojovou taktovkou Univerzity Heinrich Heine v~Düsseldorfe. Od roku 2003 už nesie názov Citavi a hlavnou vývojárskou skupinou sa stala spoločnosť Swiss Academic Software GmbH. Oproti ostatným doposiaľ spomenutým citačným manažérom je Citavi proprietárnym softvérom v~podobe desktopovej aplikácie pre platformu Microsoft Windows.
+\subsection{Zásada konzistencie}
 
-	Samotný program je napísaný v~jazyku C\#, citačné štýly sú uložené v~súboroch Citavi Citation Style s~príponou .ccs, ktoré sú, podobne ako .csl, založené na značkovacom jazyku XML. Citavi umožňuje tvorbu a úpravu citačných štýlov vo vizuálne prívetivom užívateľskom prostredí Citavi Citation Style Editor. Tu sa dajú jednotlivé typy záznamov doslova vyskladať z~dostupných komponentov, ktoré je tiež možné upravovať podľa potreby. Samozrejmosťou je v~tomto prípade takisto dedičnosť medzi typmi záznamov, vďaka čomu sa tvorba zjednoduší a zamedzí sa duplicite kódu.
+Norma ISO 690 hneď v~úvode svojho výkladu priamo uvádza, že nemá za cieľ definovať konkrétny štýl bibliografického odkazu alebo citácie. Použitý štýl a interpunkcia v~ilustračných príkladoch nie sú súčasťou doporučenia. Tento fakt prináša dve zásadné poznatky:
 
-	V~základnej inštalácii programu síce citačný štýl vychádzajúci z~normy ISO 690 nefiguruje, dá sa však dohľadať v~online katalógu a importovať priamo v~nastaveniach programu. Tento katalóg aktuálne obsahuje celkovo štyri verzie štýlu pre ISO 690, jedna dvojica (forma autor-rok a forma číselných odkazov) vychádza z~originálu normy (ISO 690:2010) a tá druhá (rovnako autor-rok a číselné odkazy) z~nemeckého prekladu normy DIN ISO 690:2013. Porovnaním týchto dvoch verzií de facto tej istej normy je možné vidieť niekoľko odlišností. Pochopiteľne sú to rozdiely v~lokalizačných reťazcoch, ktoré však vlastne v~daných štýloch nie sú implementované ako lokalizačné reťazce, ale len napevno dané presné hodnoty. Podobne sú to jazykovo alebo národne špecifické skratky a reťazce používané v~bibliografických záznamoch (napr. anglické označenie strán “p.” oproti nemeckému označeniu “S.” alebo tzv. harvardská čiarka).
-	Čo je však v~nemeckej implementácii zaujímavé, je makro, ktoré rieši prípad prvého vydania dokumentu. Podľa výkladu normy by sa totiž vydanie malo uvádzať len v~prípade, ak ide o~iné než prvé vydanie. A~práve toto nemecká verzia rieši algoritmicky v~prípadoch číselnej vstupnej hodnoty. Pochopiteľne to nie je možné zaistiť v~prípadoch textového vstupu.
-	Oveľa markantnejším rozdielom, aj čo sa týka dodržiavania normy ISO 690, je uvádzanie termínu “ISBN” pred samotným číslom ISBN. V~prípade anglického originálu totiž tento reťazec chýba, čo môže zapríčiniť nejednoznačnosť bibliografického záznamu, nakoľko vo všeobecnosti nemusí byť zrejmé, ku čomu sa tento údaj viaže (hoci práve v~prípade ISBN, ktorý má presne definovaný formát, takáto nejednoznačnosť zrejme nehrozí). Pre úplnosť by však bolo žiadúce, aby sa pred číslom ISBN nachádzal aj termín označujúci že ide o~identifikátor ISBN.
-	Ďalším z~rozdielov medzi týmito dvoma verziami je požiadavok normy uvádzať len jedno miesto vydania za predpokladu, že viac miest vydania sa v~zdroji údajov nachádza na rovnako významnej pozícii. Túto skutočnosť rieši znova len nemecká verzia, pričom je zaujímavé, že už ďalej nerieši obdobný požiadavok na viacero vydavateľov.
-	Z~celkového pohľadu na implementáciu v~.ccs a dodržiavanie normy ISO 690 nachádzame ešte niekoľko zaujímavých faktov. Týkajú sa napríklad názvov dokumentov a typu nosiča. Typickým členením názvov dokumentov je názov, podnázov a dodatok. Implementácia používa trochu netradičnú interpunkciu na oddeľovanie názvu od podnázvu, a to bodku namiesto dvojbodky, ktorá je zaužívaná v~českom prostredí \cite{Biernatova2011, Bratkova2011}. To by však nemalo byť v~rozpore s~normou, nakoľko tá nepredpisuje konkrétny štýl odkazu alebo citácie ani čo sa použitia interpunkcie týka. Nekonzistentnosť naprieč rôznymi typmi záznamov sa javí byť u~spomenutého dodatku. Ten sa dá totiž s~výhodou použiť na uvedenie informácií o~ďalšom názve, opravu nesprávnych  alebo doplnenie nejasných názvov, ich preklad apod. Všetky spomenuté prvky však norma naviac odporúča písať uzavreté v~hranatých zátvorkách za názvami. V~tejto implementácii sa však dodatok pri niektorých typoch (hudobné, filmové alebo rozhlasové dielo) v~hranatých zátvorkách na výstupe píše, pri ostatných prirodzene nasleduje za názvami, oddelený bodkou a v~základnom reze písma. Týmito dvoma variantami sa narušuje jednotnosť zoznamu bibliografických záznamov, nehovoriac o~tom, že neexistuje žiaden spôsob, ako by sa spomenuté doplnky názvov dokázali korektne zakomponovať do citácie bez úprav existujúceho štýlu.
-	Typ nosiča je podľa normy doporučené uvádzať v~bibliografickom zázname za názvom citovaného dokumentu. V~informatívnej prílohe B je však pri jednotlivých typoch citovaných dokumentov ešte jemnejšie členenie. To uvádza umiestnenie typu nosiča za hlavný názov citovaného dokumentu, pričom vedľajšie názvy, medzi ktoré patrí napríklad aj podnázov, sa píšu až za týmto typom nosiča. Citavi implementácia to rieši presne takýmto spôsobom. V~českom prostredí je to však mierne nezvyklé, nakoľko názov a podnázov sú vždy uvádzané bezprostredne za sebou. V~konečnom dôsledku sa však zo strany Citavi nejedná o~nedodržanie normy ISO 690.
+\begin{enumerate}
+\item norma ctí princíp oddelenia formy od obsahu
+\item normu nemožno považovať za citačný štýl~\cite{Hala2013}
+\end{enumerate}
 
-	\section{OPmac-bib}
+Zároveň však norma doporučuje, aby bol pre všetky citácie v~dokumente použitý jednotný štýl, formát a interpunkcia. To vďaka princípu oddelenia formy od obsahu, ktorý ctí aj samotný BibLaTeX, možno jednoducho dodržať. Táto zásada konzistencie čerpá z~uvedených ilustračných príkladov v~norme samotnej, interpretácií alebo iných zaužívaných zvyklostí sadzby bibliografie.
 
-	OPmac je sada makier umožňujúca pohodlnejšiu prácu s~plain\TeX om, ktoré poskytujú základnú \LaTeX ovú funkcionalitu. Balíček OPmac-bib je nadstavbou týchto makier, zaoberajúci sa práve sadzbou bibliografie. Oproti ostatným nástrojom však nepoužíva žiaden externý program, ale celú funkcionalitu rieši na úrovni \TeX ových makier. Autorom balíka je Petr Olšák a k~dispozícii je v~rámci balíka \textit{csplain}.
+\subsection{Poradie prvkov citácie}
+
+Doporučené všeobecné poradie prvkov citácií je nasledovné:
+
+\begin{description}
+\item[mená tvorcov] ak sú k~dispozícii
+\item[rok] v~prípade citovania metódou \emph{autor-dátum}
+\item[názov] citovanej jednotky
+\item[typ nosiča] v~prípade potreby
+\item[vydanie] okrem prvého
+\item[miesto vydania]
+\item[vydavateľ]
+\item[rok] v~prípade citovania metódou \emph{autor-dátum} sa už na tomto mieste neopakuje, s~výnimkou uvedenia presnejšieho dátumu
+\item[edícia] názov a číslo
+\item[číslovanie] v~rámci popisovanej jednotky
+\item[štandardné identifikátory]
+\item[dostupnosť] prístup alebo umiestnenie
+\item[dodatočné informácie]
+\end{description}
+
+Špecifickejšie poradie prvkov jednotlivých typov citovaných diel rozoberá norma v~samostatnej prílohe. Hoci je táto príloha označená ako informatívna, pre účely implementácie slúži ako dobré vodítko.
+
+\section{Nejasné miesta a nepresnosti}
+
+TBA
+
+\chapter{Existujúce riešenia}\label{ch:facilities:iso690}
+
+TBA
+
+% Dodržiavanie normy ISO 690 patrí medzi najčastejšie doporučenia pri tvorbe citácií a bibliografických záznamov v~rámci kvalifikačných prác v~akademickom prostredí. Preto vzniklo už niekoľko implementácií pre rôzne programy a nástroje, ktoré využitie tejto normy podporujú. V~tejto kapitole autor popíše existujúce programy a nástroje implementujúce normu ISO 690. Hoci nepôjde o~implementácie v~rámci balíka Bib\LaTeX, aj napriek tomu nám tento popis poskytne lepší náhľad do problematiky týkajúcej sa normy ISO 690.
+
+% 	\section{Citace.com}
+% 	Portál citace.com patrí medzi najpoužívanejšie generátory citácií v~Českej republike~\cite{Krcal2014}. Ide o~voľne dostupnú online službu generujúcu citácie podľa normy ČSN ISO 690:2011. V~rámci veľkého množstva online generátorov citácií predčí ostatné práve svojou jednoduchosťou používania, čomu zodpovedá aj motto portálu \uv{...citovat je snadné}.
+
+% 	Samotný projekt citace.com vznikol v~roku 2003, pôvodne ako študentský projekt pod názvom Bibliografické citácie. V~súčasnosti je však skôr známy už len ako citace.com. Autorom je Martin Krčál, ktorého bezpochyby možno označiť za duchovného otca projektu. Vedúcim projektu je dodnes a jeho aktuálnou pracovnou náplňou je metodické vedenie a riadenie projektu. Veľmi rýchlo po vzniku projektu sa služba citace.com dostala do povedomia študentov na Masarykovej univerzite, ale aj na iných vysokých školách v~Českej republike a na Slovensku. Postupne si v~univerzitnom prostredí získala relatívne vysoké renomé nielen medzi študentami, ale dokonca aj vyučujúcimi. Dnes patrí medzi najpoužívanejšie generátory citácií v~Českej republike.
+
+% 	Spočiatku mal projekt za cieľ poskytnúť užívateľom jednoduchý nástroj na generovanie citácií. Neskôr sa však z~jednoduchého generátora citácií stal citačný softvér. Projekt citace.com totiž okrem bezplatnej verzie generátoru citácií poskytuje aj komerčne využívaný produkt s~názvom Citace PRO. Ten je určený a vyvíjaný najmä pre inštitúcie, nakoľko ide o~komplexný citačný manažér. Okrem základnej funkcionality generovania citácií poskytuje širšiu paletu citačných štýlov, úložisko pre dokumenty, možnosť spolupráce pri tvorbe citácií v~rámci danej inštitúcie i mimo nej, podporu inštitucionálnej autentizácie a ďalšie funkcie.
+
+% 	Služba od svojho vzniku prešla niekoľkými zmenami, čo je v~rámci životného cyklu softvéru prirodzená vlastnosť. Musela totiž reagovať nielen na technologický pokrok, ale rovnako aj na potreby užívateľov alebo aktualizáciu samotnej normy ISO 690. Spomedzi množstva funkcií aktuálnej verzie systému si určite zaslúži vyzdvihnúť dohľadávanie citácií, ktoré výrazne zjednodušuje tvorbu citácií. Na vygenerovanie požadovanej citácie užívateľovi stačí zadať len názov diela alebo niektorý z~jednoznačných identifikátorov, tj. ISBN alebo DOI. Z~knihovných katalógov sa záznam dohľadá a automaticky sa vyplnia príslušné polia vo formulári, ktoré si potom užívateľ môže dodatočne upraviť.
+
+% 	Výrazným a hlavným podnetom k~jednej z~najrozsiahlejších zmien projektu bola už spomínaná aktualizácia normy ISO 690. Dôsledkom tejto aktualizácie bolo aj vytvorenie interpretácie normy poprednými odborníkmi na problematiku citácií v~Českej republike. Tento dokument slúžil ako podklad pre implementáciu normy na portáli citace.com, zároveň však nadobudol veľkú váhu aj v~rámci komunity užívateľov. V~základnej verzii teraz služba vychádza práve z~tejto normy, tj. normy ČSN ISO 690 z~roku 2011.
 	
-	OPmac-bib pracuje priamo s~bib súbormi a je akousi nadstavbou a rozšírením nad starodávnym Bib\TeX om. Využíva teda všetky typy a polia, ktoré sú dostupné v~Bib\TeX u a naviac prináša nové polia, ktoré sú v~dnešnej dobe nutnosťou (vo všeobecnosti ako aj pre štýl ISO 690). Ide napríklad o~polia \texttt{url}, \texttt{doi} alebo \texttt{lang}, vďaka ktorým už nemusí autor bib súboru vkladať tieto informácie do poľa \texttt{note}, ale do príslušných, na tento účel vytvorených, polí. Tým sa zvyšuje flexibilita a v~konečnom dôsledku aj možnosť korektného výpisu poradia údajov podľa aktuálnej verzie normy.
+% 	V~bezplatnej online verzii ponúka služba citace.com práve citovanie a tvorbu bibliografických záznamov podľa spomínanej normy ČSN ISO 690:2011. V~rámci spoplatnenej varianty Citace PRO je však k~dispozícii množstvo ďalších štýlov, a to v~počte viac ako 8000. Na webstránke je však pri vyhľadávaní na výber 421*50 + 39 štýlov, čo činí viac ako 21000. Takýto vysoký počet štýlov oproti deklarovanému počtu uvádzanému na hlavných informačných stránkach portálu je spôsobený niekoľkými faktormi. Prvým z~nich je počet variánt citovania pri každom z~nich. Ak zoberieme do úvahy napríklad spomínanú normu ISO 690, tá uvádza hneď tri metódy citovania, pričom ešte aj pri jednotlivých metódach ponúka na výber niekoľko možností, ako je možné citáciu v~texte zapísať. Ďalším faktorom takéhoto vysokého počtu sú jazykové mutácie, a to hneď na minimálne dvoch úrovniach. Jedna z~nich je preklad pomocou lokalizačných súborov a tou druhou sú oficiálne preklady noriem zabezpečované úradmi pre technickú normalizáciu, metrológiu a štátne skúšobníctvo na národnej úrovni. Skutočný počet unikátnych štýlov sa tým pochopiteľne značne znižuje.
+	
+% 	Citačné štýly sú implementované pomocou programovacieho jazyka Citation Style Language (CSL). Podobne ako iné citačné manažéry, aj citace.com využíva oficiálny repozitár projektu The Citation Style Language, kde sú všetky štýly umiestnené pod licenciou Creative Commons Attribution-ShareAlike (BY-SA)\footnote{\url{https://github.com/citation-style-language/styles\#licensing}}. Pri výbere citačných štýlov je však viditeľné, že portál citace.com ponúka oproti oficiálnemu repozitáru CSL k~dispozícii aj niekoľko ďalších (prispôsobených) štýlov. Prevažne sú to špecificky upravené oficiálne dostupné štýly, ktoré vznikli napríklad pre rôzne akademické inštitúcie alebo s~ohľadom na národné interpretácie noriem.
+	
+% 	Pri tvorbe bibliografického záznamu má užívateľ na výber k~dispozícii celú plejádu typov dokumentov, ktoré možno citovať. Obsiahnuté sú nielen základné typy všeobecného charakteru, ale aj špecifické druhy, ktoré nie sú priamo obsiahnuté ani v~samotnej norme. Resp. norma presne neuvádza, ako takéto diela citovať, väčšinou sa to odvodzuje zo všeobecnejších typov dokumentov. Česká interpretácia normy ISO 690 však ponúka vzor aj na tvorbu takýchto bibliografických citácií, a to konkrétne pre kvalifikačné práce, archívne dokumenty a rukopisy, legislatívne dokumenty či informácie získané osobným kontaktom\footnote{\url{https://sites.google.com/site/novaiso690/co-norma-neresi}}.
+	
+% 	Nespornou výhodou tvorby bibliografických záznamov na portáli citace.com je automatické generovanie citácie už pri jej samotnom vytváraní. Oproti ostatným generátorom teda ponúka aktuálny náhľad na vytváranú citáciu, postupne podľa vypĺňania jednotlivých polí záznamu. To užívateľovi ponúka lepší náhľad na samotnú tvorbu citácie a pre nás ponúka aj detailnejší pohľad na samotnú implementáciu. Pri výbere konkrétneho typu dokumentu sú v~niektorých prípadoch určité prvky citácie už predvyplnené bez toho, aby sme vôbec nejaký údaj zadávali. Uveďme to na príklade tvorby citácie elektronických typov dokumentov (elektronická kniha, periodikum, článok, zborník a pod.), pri ktorých je automaticky doplnený dátum citovania (informácia [cit. YYYY-MM-DD]) a keďže ide o~elektronické dokumenty, aj typ nosiča (prednastavená hodnota je online -- a to aj v~prípade ak pole typ nosiča pri úprave citácie zostane nevyplnené). Ďalšími príkladmi by mohli byť napríklad diela, ktoré sú súčasťou inej publikácie, typicky článok v~zborníku a pod., kde je zase predvyplnený údaj \uv{In:} poukazujúci práve na fakt, že ide o~súčasť iného diela. S~týmto identifkátorom však nie je možné ďalej hýbať -- t.j. upravovať ho, nakoľko podľa normy ide o~pevne daný predpis, môže sa líšiť nanajvýš v~rôznych jazykových lokalizáciách. Typicky však prevláda identifikátor \uv{In:} aj naprieč jazykovými mutáciami.
+	
+% 	Norma ISO 690 uvádza presné poradie údajov pri jednotlivých typoch dokumentov, rovnako aj ktoré údaje sú povinné a ktoré iba voliteľné. Na portáli citace.com je toto v~generátore citácii pri jednotlivých dielach vizuálne odlíšené, pri kontrole údajov je v~prípade chýbajúcich povinných polí zobrazená chybová hláška. Chýbajúce povinné údaje síce generátor ohlási, avšak naďalej umožní užívateľovi vytvorenie citácie. Úplnosť, resp. neúplnosť povinných údajov môže v~prípade implementácie v~jazyku csl spôsobiť komplikácie, a to v~podobe nekonzistencie interpunkcie, počtu medzier medzi jednotlivými položkami bibliografického záznamu, prípadne celkovo chybnej podoby bibliografického záznamu (nesplňujúci požadovanú normu).
+	
+% 	Ďalšie odlišnosti vytvorenej citácie a bibliografického záznamu je možné vidieť aj naprieč rôznymi implementáciami štýlov danej normy. Citace.com označuje niektoré štýly, ktoré má v~ponuke na výber, ako štýly garantované. Sú to prevažne štýly mimo verejného repozitára csl štýlov, pričom práve porovnaním týchto štýlov s~tými voľne dostupnými narážame na nieľko rozdielov. Ide napríklad o~používanie skratky \uv{et al.} v~prípade uvádzania viacerých autorov. Samotná norma hovorí o~tom, že by mali byť uvedené všetky mená tvorcov diela, pokiaľ je to možné. V~prípade, že sú niektoré mená vynechané, uvedie sa meno prvého tvorcu a po ňom nasleduje fráza \uv{et al.}, \uv{aj.}, \uv{a kol.} alebo iný ekvivalantný výraz, samozrejme s~ohľadom na jazykovú lokalizáciu dokumentu. V~tomto bode teda dochádza k~miernym rozdielom medzi rôznymi implementáciami daných štýlov, a to konkrétne v~tom, že niektoré dodržiavajú vyššie spomenuté pravidlo a buď uvádzajú naozaj všetkých autorov (bez horného ohraničenia ich počtu) alebo uvádzajú len prvého a dopĺňajú skratku \uv{et al.}. Iné sa k~tomu stavajú spôsobom uvedenia až troch autorov, po ktorých nasleduje skratka \uv{et al.}. Pri takomto zápise sa môže na jednej strane uľahčiť jednoznačná identifikácia zdroja, na strane druhej to môže interferovať s~výkladom textu normy.
+	
+% 	Aj napriek niekoľkým nezrovnalostiam či odlišnostiam medzi rôznymi štýlmi tej istej normy je portál citace.com výborným manažérom citácií s~kvalitne spracovaným generátorom citácií. Nehovoriac o~tom, že pokrýva aj prípady citovania diel, ktoré nie sú v~norme samotnej priamo uvedené. To je samozrejme pre užívateľa obrovským benefitom, a z~jeho pohľadu napĺňa aj hlavnú myšlienku portálu \uv{citovat je snadné}.
+	
+% 	\section{Zotero}
+% 	Ďalším z~citačných manažérov plne podporujúcim normu ISO 690 je nástroj Zotero. Ten je dostupný vo forme doplnku pre internetové prehliadače rovnako však aj ako desktopová aplikácia aktuálne dostupná pre všetky platformy (t.j. Mac, Windows a Linux). Medzi jeho hlavné výhody patrí dostupnosť a cena, kompatibilita, pohodlnosť tvorby citácií a v~neposlednom rade aj štatút open-source projektu~\cite[58--59]{Ansorge2013}.
+	
+% 	Počiatky projektu Zotero siahajú do roku 2006, kedy bola vydaná jeho prvá verzia, vtedy ešte len ako doplnok pre internetový prehliadač Firefox. Od roku 2011 však už funguje aj ako samostatná desktopová aplikácia a bola pridaná aj podpora integrácie do iných internetových prehliadačov, akými sú napr. Safari, Opera alebo Chrome. Projekt ďalej pokračuje vo vývoji, ktorý je pod záštitou Centra pre históriu a nové média na Univerzite George Mason v~štáte Virginia v~Spojených štátoch amerických~\cite{Puckett2011}.
+	
+% 	Z~pohľadu funkcionality stavia Zotero, podobne ako citace.com, na jednoduchosti a špeciálne aj na minimalizácii zásahu autora do prípravy bibliografie. Zotero totiž ako jediný spomedzi citačných softvérov automaticky hľadá v~aktuálne prehľadávanom obsahu v~prehliadači bibliografické dáta, ktoré potom na jedno kliknutie umožní uložiť do knižnice bibliografických záznamov\footnote{\url{https://www.zotero.org/\#features-1}}. Takisto poskytuje možnosť dohľadania dokumentu podľa jednoznačného identifikátora, umožňuje vytvoriť bibliografický záznam aktuálne prehliadanej web stránky alebo podporuje import bibliografických záznamov z~iných citačných nástrojov či pdf dokumentu. Samozrejmosťou je manuálne vytvorenie a úprava existujúcich záznamov\footnote{\url{https://www.zotero.org/support/getting_stuff_into_your_library}}.
+	
+% 	Na roz(p)oznávanie informácií na webstránkach používa Zotero takzvané prekladače\footnote{angl. translators} \footnote{\url{https://www.zotero.org/support/quick_start_guide}} \footnote{\url{https://www.zotero.org/support/translators}}. Tie dokážu automaticky detekovať knihovnícke záznamy, správy, časopisecké články a prípadne aj iné záznamy hodné citovania. V~súčasnosti existuje vyše 300 rôznych prekladačov podporujúcich tisíce webov. Tie možno rozdeliť na niekoľko kategórií, a to knihovnícke katalógy (WorldCat, Voyager, Aleph a ďalšie), knihovnícke databázy (arXiv.org, EBSCO, JSTOR, Google Scholar a ďalšie), akademické vydavateľstvá svetového významu (Cambridge University Press, Oxford University Press, Elsevier a ďalšie), takisto aj rôzne populárne weby (Amazon, The New York Times, The Economist a ďalšie). Detekovanie bibliografických informácií samozrejme závisí priamo od navštívenej webstránky, kedy sa spolieha buď na samotné prekladače, niekedy špecifické pre danú webovú stránku, alebo na štandardnejší spôsob, a to použitie vstavaných metadát. Tie sú preferovane otvoreného formátu, ako napríklad COinS, Embedded RDF, Google/HighWire meta tagy a unAPI~\cite{ZoteroTranslators}.
+	
+% 	Dohľadávanie záznamov podľa jednoznačných identifikátorov poskytuje ďalší spôsob jednoduchého vytvárania bibliografických záznamov. Zotero oproti portálu citace.com ponúka naviac, okrem jednoznačných identifikátorov ISBN a DOI, podporu aj pre identifikátor PubMed ID. Na získavanie metadát využíva bibliografické knihovny Library of Congress a WorldCat pre medzinárodné štandardné čísla kníh ISBN, CrossRef pre identifikátory digitálneho objektu DOI a Národné centrum pre biotechnologické informácie NCBI PubMed pre PubMed identifikátory.
+	
+% 	Doplnok Zotero pre prehliadače umožňuje zaznamenať aktuálne prehliadanú webstránku ako bibliografický záznam, a to jediným kliknutím. Okrem samotných metadát, ktoré je možné získať zo samotnej webstránky, ponúka doplnok Zotero aj možnosť zachytenia snímky webovej stránky v~aktuálnej podobe v~dátume citovania, resp. ukladania bibliografického záznamu. To môže byť veľmi užitočné pre užívateľa, a to najmä z~pohľadu práce offline alebo samotného zaznamenia podoby webovej stránky v~podobe v~akej bola v~dobe jej navštívenia.
+	
+% 	Zotero v~základe ponúka niekoľko základných bibliografických a citačných štýlov a viac ako 6750 ďalších štýlov je možné nájsť v~tzv. Zotero repozitári\footnote{\url{https://www.zotero.org/styles}}. Podobne ako v~prípade citace.com, aj všetky tieto štýly sú napísané v~jazyku CSL\footnote{\url{https://www.zotero.org/support/styles}}. Repozitár ponúka dovedna 8145 štýlov, avšak podobne ako to bolo v~prípade citace.com, kvôli rôznym variantám a jazykovým mutáciám toho istého štýlu je počet unikátnych štýlov na hodnote 1301.
+	
+% 	Rôzne implementácie dostupných štýlov v~repozitári nie sú rovnaké. Nejde pritom len o~lokalizačné reťazce, ktoré sa pochopiteľne v~rôznych jazykových mutáciách budú líšiť, ale je to napríklad aj konzistentnosť uvádzania údajov čo do použitia jednotného štýlu, formátu a interpunkcie. Takáto nekonzistentnosť je v~rozpore s~výkladom normy a základných princípov tvorby bibliografických citácií. Týka sa to napríklad anonymných diel, pri ktorých je autor neznámy. Norma uvádza, že v~prípade anonymných diel odkazovaných v~texte formou meno-dátum sa použije namiesto mena skratka \uv{Anon}. Ak zoberieme v~úvahu konkrétny štýl, a to \textit{ISO-690 (author-date, Czech)}\footnote{\url{https://www.zotero.org/styles/iso690-author-date-cs}} alebo \textit{ISO-690 (author-date, no abstract, French)} môžeme si všimnúť, že táto skratka je v~citácii v~texte písaná verzálkami, pričom ak je tvorca známy, jeho priezvisko (ktoré sa v~tomto prípade typicky uvádza bez mena) už verzálkami písané nie je. Oveľa väčšieho prehrešku sa však dopúšťa implementácia anglická -- \textit{ISO-690 (author-date, English)}, ktorá žiadnu skratku \uv{Anon} nepoužíva a v~prípade že je autor neznámy, do citácie v~texte vypíše názov diela. To je v~rozpore s~výkladom normy o~anonymnom diele, rovnako však aj s~konceptom formy citovania meno-dátum, pretože žiadne meno ani informácia že ide o~autora neznámeho uvedené nie sú. Rovnakého prehrešku sa dopúšťajú aj ostatné dostupné štýly \textit{ISO-690 (author-date, French)} a \textit{ISO-690 (author-date, Spanish)}, pričom španielska verzia sa to snaží riešiť aspoň vizuálnym odlíšením názvu diela uvedením v~takýchto zátvorkách «~». Použitie skratky \uv{Anon} správne rieši iba jediný štýl v~repozitári, a to \textit{ISO-690 (author-date, Slovak)}.
+	
+% 	V~prípade anonymných diel (resp. záznamov, kde žiadny tvorca nie je uvedený) stojí za zmienku aj formát bibliografického záznamu. Podľa normy by mal bibliografický záznam v~prípade citovania formou meno-dátum obsahovať na prvej pozícii mená tvorcov, nasledované rokom (dátumom) a následne názvom diela a ďalšími údajmi. Štýl \textit{ISO-690 (author-date, Slovak)}, ktorý citáciu v~texte riešil ako jediný správne, už pri bibliografickom zázname porušuje konzistentnosť. Pri uvádzaní skratky \uv{Anon} ju totiž vypíše malými písmenami a nie verzálkami ako tomu je v~prípade, ak je tvorca známy. Španielska verzia \textit{ISO-690 (author-date, Spanish)} vypíše v~zázname na prvom mieste názov diela namiesto akejkoľvek informácie o~tvorcoch, po ktorom nasleduje rok vydania a za ním sa už názov diela neopakuje, ale pokračuje sa v~ďalších údajoch. To samozrejme nezodpovedá výkladu normy, avšak na druhej strane to nezapríčiní chybné vypísanie interpunkcie či medzier medzi jednotlivými položkami záznamu. K~takémuto chybnému výpisu už ale dochádza pri použití štýlov \textit{ISO-690 (author-date, English)} a \textit{ISO-690 (author-date, French)}. Správne ošetrenie prípadu s~anonymným tvorcom riešia zvyšné dva štýly \textit{ISO-690 (author-date, Czech)} a \textit{ISO-690 (author-date, no abstract, French)}.
+	
+% 	U~metód citovania číselným odkazom alebo priebežnými poznámkami norma umožňuje použitie názvu diela ako prvého elementu bibliografického záznamu. V~csl repozitári nájdeme aj štýly implementujúce citačnú metódu číselných odkazov, pričom tieto v~prípade anonymných diel buď používajú skratku \uv{Anon} alebo bibliografický záznam začína názvom diela. Vo všetkých prípadoch ide teda o~korektnú implementáciu výkladu normy.
+	
+% 	\section{JabRef}
+	
+% 	JabRef je ďalším z~citačných manažérov. Ide o~grafickú aplikáciu plne implementovanú v~jazyku Java, ktorá sa zameriava práve na BibTeX a BibLaTeX a prácu s~bib formátom súborov pre ukladanie bibliografických databáz. Samozrejme je možné použiť aj iné formáty súborov, ktoré je možné do programu bez problémov importovať. JabRef je multiplatformovým a open source projektom, čo ho radí medzi najobľúbenejšie citačné manažéry súčasnosti~\cite{AlternativeToJabRef}.
+	
+% 	%% http://www.jabref.org
+	
+% 	Pokiaľ sa v~prípade Citation Style Language hovorí o~citačných štýloch ako o~štýloch, ktoré môžeme aplikovať na bibliografický záznam a vygenerovať tak citáciu a bibliografickú referenciu, v~prípade programu JabRef sa používa označenie \textit{filtre na exportovanie}\footnote{angl. export filters}. V~obdobnom význame však ide o~šablónu/formát, podľa ktorého prebieha exportovanie do vybraného citačného štýlu. Konkrétne sú v~tomto prípade na definovanie \textit{filtrov na exportovanie} použité tzv. \textit{layout} súbory. Tie obsahujú kolekciu vstavaných formátovacích rutín, ktoré špecifikujú daný citačný štýl a práve podľa nich prebieha samotný export.
+	
+% 	Základným a jediným požiadavkom na vytvorenie nového validného \textit{filtra} je existencia súboru s~príponou \texttt{.layout}. Tieto súbory je možné vytvoriť v~obyčajnom textovom editore a následne ich pomocou základnej funkcionality programu JabRef importovať a používať. Jeden \textit{filter na exportovanie} môže pozostávať z~jedného alebo viacerých \texttt{.layout} súborov. V~základe je k~dispozícii jeden predvolený filter na exportovanie všeobecného typu záznamu. Typicky je však nutné použiť viaceré \texttt{.layout} súbory, pričom každý samostatne pokrýva konkrétny typ záznamu. V~mennej konvencii programu JabRef sú súbory pomenované \texttt{entrytype.layout}, kde \texttt{entrytype} je meno konkrétneho typu záznamu.
+% 	Okrem toho je v~niektorých prípadoch žiadúce mať k~dispozícii aj pomocné \texttt{.layout} súbory, a to konkrétne dvojicu \texttt{begin.layout} a \texttt{end.layout} súborov. To je vhodné v~prípade použitia exportovania do formátu \textit{html} alebo \textit{xml} a jeho odvodenín. V~týchto prípadoch je v~súbore \texttt{begin.layout} uložená hlavička a v~\\texttt{end.layout} pätička súboru, ktoré sú potom následne automaticky pripojené k~exportovanej položke.
 
-	Tým, že balíček OPmac-bib úplne obchádza použitie externého programu a číta bib databázu priamo pomocou makier \TeX u, zvyšuje čitateľnosť kódu a zároveň umožňuje jednoduchšie predefinovanie makier v~prípade nutnosti ich prispôsobenia špecifickým potrebám. Norma ISO 690 totiž vynucuje uvádzanie niektorých údajov, pre ktoré v~pôvodnom Bib\TeX u príslušné polia neexistujú. Vytváranie nových polí pre každý takýto špecifický údaj však nie je riešenie. OPmac to z~tohoto hľadiska rieši vskutku elegantne. Poskytuje univerzálne polia, do ktorých možno uvádzať nielen bibliografické údaje, ale zároveň aj makrá používané na výpis prvkov a tým docieliť požadovanú podobu výstupu. Ide napríklad o~polia \texttt{option} a \texttt{ednote}. Takýto prístup pochopiteľne prináša problémy s~interoperabilitou medzi rôznymi programami, ktoré spracovávajú bib súbory ako vstupnú databázu bibliografických záznamov. Drvivá väčšina programov takúto situáciu rieši prostým ignorovaním neznámych polí, OPmac-bib nie je výnimkou, čo je koniec-koncov pochopiteľné.
+% 	\paragraph{Formát \texttt{.layout} súboru}\hfill\\
+	
+% 	Ako už bolo spomenuté, \texttt{.layout} súbory môžu byť vytvorené jednoducho v~textovom editore a to pomocou niekoľkých základných značkovacích príkazov. Syntax značkovania je veľmi podobná \TeX -ovému značkovaniu, nakoľko jednotlivé príkazy sú uvodené práve spätným lomítkom (ako tomu je aj u~príkazov v~\TeX u).
+	
+% 	Keďže program JabRef je zameraný na podporu bib formátu súborov, po prvé je potrebné zahrnúť jednotlivé polia, ktoré takýto bib súbor obsahuje. V~syntaxi \texttt{.layout} súborov sú príslušné príkazy \verb|\author|, \verb|\editor|, \verb|\title| a ďalšie. Tieto príkazy slúžia na priame odkazovanie sa na príslušné polia v~bib súbore, pričom sú priamo spracované na výstup.
+	
+% 	Okrem toho je však potrebné tieto polia nejakým spôsobom sformátovať a práve na tento účel slúži príkaz \verb|\format| a triedy\footnote{Java triedy} na formátovanie jednotlivých polí\footnote{angl. field formatter}. Vyvolanie formátovania je potom možné zavolať príkazom \verb|\format| priamo nasledovaným zoznamom tried formátovania v~hranatých zátvorkách, ktoré sa majú použiť. Za tým je uvedený príkaz, ktorý odkazuje na dané pole, alebo ľubovoľný textový reťazec na spracovanie, umiestnený v~zložených zátvorkách. Príklad takéhoto formátovacieho príkazu môže vyzerať nasledovne:
 
-	Pole \texttt{option} dokáže spracovať nasledovné voľby:
+% 	\begin{verbatim}
+% 		\format[HTMLChars,ToUpperCase]{\author},
+% 	\end{verbatim}
+	
+% 	\noindent kde \verb|\format| je formátovací príkaz, \texttt{HTMLChars} a \texttt{ToUpperCase} sú formátovacie triedy a \verb|\author| je výraz, na ktorom sa má dané formátovanie použiť. Možnosti formátovania sú ešte o~čosi bohatšie, avšak cieľom bolo predstavenie základnej funkcionality a použitia.
+	
+% 	%%%%
+	
+% 	Implementácia programu JabRef v~jazyku Java sa z~pohľadu funkcionality v~mnohom podobá \TeX ovej implementácii BibLaTeXu. Množina funkcií je veľmi podobná, napríklad čo sa týka formátovania výstupu. V~základe JabRef ponúka niekoľko desiatok formátovacích tried. Tie by bolo možné rozdeliť na dve skupiny, a to triedy zamerané na spracovanie vstupu a triedy zamerané priamo na formátovanie vstupného reťazca. Do prvej kategórie spadajú napríklad
+	
+% 	\begin{itemize}
+% 	\item \texttt{HTMLChars} -- nahradzuje špeciálne znaky \TeX u (napr. \verb|\"{a}|, \verb|\sigma|) ich príslušnou \textsc{html} reprezentáciou a prekladá \LaTeX ové príkazy (napr. \verb|\emph|, \verb|\texttt|, \verb|\underline|) do \textsc{html} ekvivalentov
+% 	\item \texttt{XMLChars} -- analogicky, nahradzuje špeciálne znaky \TeX u ich príslušnou \textsc{xml} reprezentáciou
+% 	\item \texttt{RemoveLatexCommands} -- odstraňuje \LaTeX ové príkazy zo vstupného reťazca
+% 	\end{itemize}
+	
+% 	\noindent a do tej druhej napríklad
+	
+% 	\begin{itemize}
+% 	\item \texttt{CurrentDate} -- dáva na výstup aktuálny čas, bez zadania argumentu vo formáte \textsc{yyyy.mm.dd hh:mm:ss z}, uvedením argumentu sa tento formát môže prispôsobiť podľa zadaného textového reťazca
+% 	\item \texttt{JournalAbbreviator} -- skracuje vstupný text podľa dostupného zoznamu skratiek časopisov
+% 	\item \texttt{Ordinal} -- nahradzuje základnú číslovku rádovou číslovkou
+% 	\item \texttt{ToUpperCase} -- zmení všetky znaky daného reťazca na veľké písmená
+% 	\end{itemize}
+	
+% 	\noindent Ďalšou podobnou črtou s~BibLaTeXom je poskytovanie základných funkcií potrebných naprieč množstvom citačných štýlov. Takým je napríklad spracovávanie zoznamu autorov, ktoré je viac-menej univerzálne a nie je preto potrebné implementovať túto funkcionalitu pre každý citačný štýl zvlášť. Ide predovšetkým o~možnosti na formátovanie poradia mena a priezviska autorov, skracovanie mien autorov, definovanie počtu autorov, ktorí sa majú vypísať na výstup, definovanie oddeľovača mien autorov a mnohé ďalšie. Všetky tieto voľby je možné špecifikovať v~jednom formátovacom príkaze. Formátovací príkaz \texttt{Authors()} bez argumentov je ekvivalentný príkazu s~prednastavenými hodnotami
+	
+% 	\begin{verbatim}
+% 	Authors(FirstFirst,Initials,FullPunc,Comma,And,inf,EtAl= et al.).
+% 	\end{verbatim}
+	
+% 	\noindent Všetky voľby definované pre tento formátovací príkaz sú bežne použiteľné pre drvivú väčšinu používaných citačných štýlov. V~prípade potreby ďalších možností je možné implementovať príslušné rozhranie a tým si vytvoriť vlastné formátovacie príkazy.
+	
+% 	\noindent Ako ultimátnou možnosťou formátovania mien autorov je použitie priamo syntaxe BibTeXu. Táto možnosť je v~programe JabRef dostupná od verzie 2.2. Vďaka vlastnostiam BibTeXu je možné dosiahnuť najvyššiu flexibilitu formátovania, avšak na druhej strane je implementácia v~tejto syntaxi veľmi ťažkopádna~\cite{JabRefCustomExportFilters}.
+	
+% 	V~základnej implementácii ponúka JabRef podporu aj pre \textit{citačný štýl} ISO 690. Definuje zhruba dve desiatky typov dokumentov, ktoré je možné použiť. Ďalšie sa samozrejme dajú dodefinovať alebo upraviť existujúce podľa potreby. Množina preddefinovaných typov obsahuje základné typy ako sú kniha, článok, periodikum, patent a ďalšie, ako aj špecifickejšie v~podobe nahrávok, grafického diela či emailovej správy. Podľa názvov súborov by sa dalo predpokladať, že niekoľko typov tvorí nadstavbu nad tými štandardnými v~podobe ich elektronických ekvivalentov. Nahliadnutím do definície daných \texttt{.layout} súborov sa však o~ekvivalentné typy veľmi nejedná. Ekvivalencia by sa totiž v~takýchto prípadoch dala očakávať na úrovni rozšírenia výpisu o~dostupnosti, dátume citovania či type média u~elektronických variánt. Porovnaním daných súborov sa však rozdiely nachádzajú aj v~poradí výpisu prvkov či formáte jednotlivých elementov, čo samozrejme naráža na rozpory aj so samotnou normou.
+	
+% 	Okrem nezrovnalostí na úrovni definovaných typov dokumentov sa vynárajú ďalšie aj pri náhľade do \texttt{.layout} súborov. Základnou problémovou doménou sa zdajú byť napevno nastavované interpunkčné symboly oddeľujúce jednotlivé elementy bibliografického záznamu. To v~prípade absencie niektorého z~elementov spôsobuje nekonzistentný výpis interpunkcie v~rámci celého zoznamu bibliografických záznamov.
+	
+% 	JabRef stavia na povinných a voliteľných poliach jednotlivých typov diel. V~prípade nevyplnenia tých povinných však nezapríčiní zlyhanie výpisu požadovaného bibliografického záznamu. To je samozrejme v~súlade s~interpretáciou normy~\cite{Biernatova2011} kedy sa má v~prípade nedostupnosti daného údaju tento údaj vynechať a pokračovať ďalším. Spôsobuje to však vyššie popísanú nekonzistentnosť v~interpunkcii.
+	
+% 	Ďalšou zásadnou chybou v~implementácii je spracovávanie polí na vstupe a ich výskyt vo výstupnom bibliografickom zázname. V~samotnom programe JabRef, ako aj pri importe z~bib súboru, funguje mapovanie polí daného typu dokumentu do internej reprezentácie programu na vysokej úrovni. Problémom zostávajú práve spomínané filtre na exportovanie, ktoré definujú podobu samotného výstupu. V~prípade exportovania podľa štandardu ISO 690, dané \texttt{.layout} súbory pokrivkávajú v~dodržiavaní normy. Týka sa to napríklad totálnej absencie údaju DOI pri článkoch, ako aj akomkoľvek inom type dokumentu, podpory štandardných identifikátorov obmedzených na množinu ISBN a ISSN, použitia zastaraných polí, ktoré sa potom vôbec nedostanú na výstup, chybného poradia niektorých elementov (prevažne štandardných identifikátorov, ktoré sa u~všetkých typov nachádzajú až za poznámkovou časťou) a v~neposlednom rade napríklad aj napevno definovaných reťazcov, ktoré by mali byť reťazcami lokalizačnými.
+	
+% 	\section{Citavi}
+	
+% 	Citavi je citačný manažér populárny najmä v~nemecky hovoriacich krajinách~\cite{Stohr2010}. Prvá verzia vyšla v~roku 1995, vtedy ešte pod názvom LiteRat a vývojovou taktovkou Univerzity Heinrich Heine v~Düsseldorfe. Od roku 2003 už nesie názov Citavi a hlavnou vývojárskou skupinou sa stala spoločnosť Swiss Academic Software GmbH. Oproti ostatným doposiaľ spomenutým citačným manažérom je Citavi proprietárnym softvérom v~podobe desktopovej aplikácie pre platformu Microsoft Windows.
 
-    \begin{itemize}
-      \item \texttt{aumax:<number>} -- maximálny počet autorov na výstup
-      \item \texttt{aumin:<number>} -- počet autorov na výstup v~prípade prekročenia hodnoty maximálneho počtu autorov na výstup
-      \item \texttt{autrim:<number>} -- skrátenie krstných mien na iniciály ak je počet autorov väčší alebo rovný zadanej hodnote
-      \item \texttt{auprint:\{<value>\}} -- text na výstup namiesto zoznamu autorov (môže byť použité makro \verb|\AU| na výpis zoznamu autorov)
-      \item \texttt{edmax, edmin, edtrim} -- analogicky pre zoznam editorov
-      \item \texttt{edprint:\{<value>\}} -- text na výstup namiesto zoznamu editorov (môže byť použité makro \verb|\ED| na výpis zoznamu editorov)
-      \item \texttt{titlepost:\{<value>\}} -- text na výstup za názvom
-      \item \texttt{yearprint:\{<value>\}} -- text na výstup namiesto numerickej hodnoty roku (môže byť použité makro \verb|\YEAR| na výpis roku)
-      \item \texttt{ednprint:\{<value>\}} -- text na výstup namiesto numerickej hodnoty vydania (môže byť použité makro \verb|\ED| na výpis vydania)
-      \item \texttt{urlalso} -- použitie frázy \textit{dostupné tiež z} namiesto \textit{dostupné z}, resp. iného jazykového ekvivalentu
-      \item \texttt{unpublished} -- označenie nakladateľských údajov ako nepovinných
-      \item \texttt{nowarn} -- označenie všetkých údajov ako nepovinných
-    \end{itemize}
+% 	Samotný program je napísaný v~jazyku C\#, citačné štýly sú uložené v~súboroch Citavi Citation Style s~príponou .ccs, ktoré sú, podobne ako .csl, založené na značkovacom jazyku XML. Citavi umožňuje tvorbu a úpravu citačných štýlov vo vizuálne prívetivom užívateľskom prostredí Citavi Citation Style Editor. Tu sa dajú jednotlivé typy záznamov doslova vyskladať z~dostupných komponentov, ktoré je tiež možné upravovať podľa potreby. Samozrejmosťou je v~tomto prípade takisto dedičnosť medzi typmi záznamov, vďaka čomu sa tvorba zjednoduší a zamedzí sa duplicite kódu.
 
-    Vďaka týmto voľbám je možné dosiahnuť adekvátny výpis údajov splňujúci aktuálnu verziu normy ISO 690. Napríklad v~prípade potreby uvedenia dodatočného názvu diela, jeho prekladu a pod. je toto možné s~ľahkosťou dosiahnuť pomocou zápisu
+% 	V~základnej inštalácii programu síce citačný štýl vychádzajúci z~normy ISO 690 nefiguruje, dá sa však dohľadať v~online katalógu a importovať priamo v~nastaveniach programu. Tento katalóg aktuálne obsahuje celkovo štyri verzie štýlu pre ISO 690, jedna dvojica (forma autor-rok a forma číselných odkazov) vychádza z~originálu normy (ISO 690:2010) a tá druhá (rovnako autor-rok a číselné odkazy) z~nemeckého prekladu normy DIN ISO 690:2013. Porovnaním týchto dvoch verzií de facto tej istej normy je možné vidieť niekoľko odlišností. Pochopiteľne sú to rozdiely v~lokalizačných reťazcoch, ktoré však vlastne v~daných štýloch nie sú implementované ako lokalizačné reťazce, ale len napevno dané presné hodnoty. Podobne sú to jazykovo alebo národne špecifické skratky a reťazce používané v~bibliografických záznamoch (napr. anglické označenie strán “p.” oproti nemeckému označeniu “S.” alebo tzv. harvardská čiarka).
+% 	Čo je však v~nemeckej implementácii zaujímavé, je makro, ktoré rieši prípad prvého vydania dokumentu. Podľa výkladu normy by sa totiž vydanie malo uvádzať len v~prípade, ak ide o~iné než prvé vydanie. A~práve toto nemecká verzia rieši algoritmicky v~prípadoch číselnej vstupnej hodnoty. Pochopiteľne to nie je možné zaistiť v~prípadoch textového vstupu.
+% 	Oveľa markantnejším rozdielom, aj čo sa týka dodržiavania normy ISO 690, je uvádzanie termínu “ISBN” pred samotným číslom ISBN. V~prípade anglického originálu totiž tento reťazec chýba, čo môže zapríčiniť nejednoznačnosť bibliografického záznamu, nakoľko vo všeobecnosti nemusí byť zrejmé, ku čomu sa tento údaj viaže (hoci práve v~prípade ISBN, ktorý má presne definovaný formát, takáto nejednoznačnosť zrejme nehrozí). Pre úplnosť by však bolo žiadúce, aby sa pred číslom ISBN nachádzal aj termín označujúci že ide o~identifikátor ISBN.
+% 	Ďalším z~rozdielov medzi týmito dvoma verziami je požiadavok normy uvádzať len jedno miesto vydania za predpokladu, že viac miest vydania sa v~zdroji údajov nachádza na rovnako významnej pozícii. Túto skutočnosť rieši znova len nemecká verzia, pričom je zaujímavé, že už ďalej nerieši obdobný požiadavok na viacero vydavateľov.
+% 	Z~celkového pohľadu na implementáciu v~.ccs a dodržiavanie normy ISO 690 nachádzame ešte niekoľko zaujímavých faktov. Týkajú sa napríklad názvov dokumentov a typu nosiča. Typickým členením názvov dokumentov je názov, podnázov a dodatok. Implementácia používa trochu netradičnú interpunkciu na oddeľovanie názvu od podnázvu, a to bodku namiesto dvojbodky, ktorá je zaužívaná v~českom prostredí~\cite{Biernatova2011, Bratkova2011}. To by však nemalo byť v~rozpore s~normou, nakoľko tá nepredpisuje konkrétny štýl odkazu alebo citácie ani čo sa použitia interpunkcie týka. Nekonzistentnosť naprieč rôznymi typmi záznamov sa javí byť u~spomenutého dodatku. Ten sa dá totiž s~výhodou použiť na uvedenie informácií o~ďalšom názve, opravu nesprávnych  alebo doplnenie nejasných názvov, ich preklad apod. Všetky spomenuté prvky však norma naviac odporúča písať uzavreté v~hranatých zátvorkách za názvami. V~tejto implementácii sa však dodatok pri niektorých typoch (hudobné, filmové alebo rozhlasové dielo) v~hranatých zátvorkách na výstupe píše, pri ostatných prirodzene nasleduje za názvami, oddelený bodkou a v~základnom reze písma. Týmito dvoma variantami sa narušuje jednotnosť zoznamu bibliografických záznamov, nehovoriac o~tom, že neexistuje žiaden spôsob, ako by sa spomenuté doplnky názvov dokázali korektne zakomponovať do citácie bez úprav existujúceho štýlu.
+% 	Typ nosiča je podľa normy doporučené uvádzať v~bibliografickom zázname za názvom citovaného dokumentu. V~informatívnej prílohe B je však pri jednotlivých typoch citovaných dokumentov ešte jemnejšie členenie. To uvádza umiestnenie typu nosiča za hlavný názov citovaného dokumentu, pričom vedľajšie názvy, medzi ktoré patrí napríklad aj podnázov, sa píšu až za týmto typom nosiča. Citavi implementácia to rieši presne takýmto spôsobom. V~českom prostredí je to však mierne nezvyklé, nakoľko názov a podnázov sú vždy uvádzané bezprostredne za sebou. V~konečnom dôsledku sa však zo strany Citavi nejedná o~nedodržanie normy ISO 690.
 
-    \begin{verbatim}
-    title  = "Hlavný názov: podnázov",
-    option = "titlepost:{Dodatočný názov}",
-    \end{verbatim}
+% 	\section{OPmac-bib}
 
-    \noindent pričom na výstup dostaneme \uv{\textit{Hlavný názov: podnázov}. Dodatočný názov.}. Treba si tu však uvedomiť dve základné veci. Za prvé, uvedením dodatočného názvu do poľa \texttt{title} nie je možné dosiahnuť požadované, nakoľko tento dodatočný názov musí byť vypísaný iným rezom písma. Za druhé, takýto výpis sa približuje odporúčaniu výkladu normy, avšak tá naviac odporúča dodatočné, doplňujúce a iné informácie uvádzať v~hranatých zátvorkách. To bez ďalšieho zásahu do použitých makier nie je možné, konkrétne z~dôvodu nadbytočného vypisovania interpunkcie hneď za názvom a podnázvom.
+% 	OPmac je sada makier umožňujúca pohodlnejšiu prácu s~plain\TeX om, ktoré poskytujú základnú \LaTeX ovú funkcionalitu. Balíček OPmac-bib je nadstavbou týchto makier, zaoberajúci sa práve sadzbou bibliografie. Oproti ostatným nástrojom však nepoužíva žiaden externý program, ale celú funkcionalitu rieši na úrovni \TeX ových makier. Autorom balíka je Petr Olšák a k~dispozícii je v~rámci balíka \textit{csplain}.
+	
+% 	OPmac-bib pracuje priamo s~bib súbormi a je akousi nadstavbou a rozšírením nad starodávnym \BibTeX om. Využíva teda všetky typy a polia, ktoré sú dostupné v~\BibTeX u~a naviac prináša nové polia, ktoré sú v~dnešnej dobe nutnosťou (vo všeobecnosti ako aj pre štýl ISO 690). Ide napríklad o~polia \texttt{url}, \texttt{doi} alebo \texttt{lang}, vďaka ktorým už nemusí autor bib súboru vkladať tieto informácie do poľa \texttt{note}, ale do príslušných, na tento účel vytvorených, polí. Tým sa zvyšuje flexibilita a v~konečnom dôsledku aj možnosť korektného výpisu poradia údajov podľa aktuálnej verzie normy.
 
-    Pole \texttt{ednote} slúži na uvedenie vedľajších tvorcov alebo na rôzne doplňujúce informácie. Bežne sa tu môžu vyskytnúť údaje, ktoré nemožno jednoducho algoritmizovať, preto je potrebné do tohoto poľa zadať údaje v~takej podobe, v~akej sa majú objaviť na výstupe. Typickým príkladom môžu byť informácie o~prekladateľovi alebo pôvodcoch ďalších vydaní.
+% 	Tým, že balíček OPmac-bib úplne obchádza použitie externého programu a číta bib databázu priamo pomocou makier \TeX u, zvyšuje čitateľnosť kódu a zároveň umožňuje jednoduchšie predefinovanie makier v~prípade nutnosti ich prispôsobenia špecifickým potrebám. Norma ISO 690 totiž vynucuje uvádzanie niektorých údajov, pre ktoré v~pôvodnom \BibTeX u~príslušné polia neexistujú. Vytváranie nových polí pre každý takýto špecifický údaj však nie je riešenie. OPmac to z~tohoto hľadiska rieši vskutku elegantne. Poskytuje univerzálne polia, do ktorých možno uvádzať nielen bibliografické údaje, ale zároveň aj makrá používané na výpis prvkov a tým docieliť požadovanú podobu výstupu. Ide napríklad o~polia \texttt{option} a \texttt{ednote}. Takýto prístup pochopiteľne prináša problémy s~interoperabilitou medzi rôznymi programami, ktoré spracovávajú bib súbory ako vstupnú databázu bibliografických záznamov. Drvivá väčšina programov takúto situáciu rieši prostým ignorovaním neznámych polí, OPmac-bib nie je výnimkou, čo je koniec-koncov pochopiteľné.
 
-    Problém interoperability kvôli novovytvoreným poliam by sa dal čiastočne riešiť uniformným pomenovaním týchto polí. Nie je totiž neobvyklé, že pre rôzne programy sú dané polia pomenované inak, hoci poskytujú tie isté údaje. Konkrétnym príkladom je informácia o~dátume citovania online zdroja. Napríklad Bib\LaTeX\ alebo JabRef používajú na tento účel pole \texttt{urldate}, pričom OPmac-bib má zadefinované pole s~názvom \texttt{citedate}, plniace presne tú istú funkcionalitu. Takisto formát zadávania tohoto údaja nie je jednotný. Do poľa \texttt{urldate} je nutné zadať dátum vo formáte ISO 8601 (t.j. \textsc{yyyy-mm-dd}), \texttt{citedate} vyžaduje trochu netradičný formát \textsc{yyyy/mm/dd}. Štandardizácia a zjednotenie pomenovania by mohol byť pre balík OPmac-bib jednoznačne krok správnym smerom.
+% 	Pole \texttt{option} dokáže spracovať nasledovné voľby:
 
-\chapter{Balík Bib\LaTeX}
-Balík Bib\LaTeX\, aktuálne podporuje niekoľko citačných štýlov. Oficiálnu podporu pre normu ISO 690 však zatiaľ neposkytuje. V~tejto kapitole sa preto autor zameria na existujúce riešenia normy ISO 690 pre balík Bib\LaTeX.
+%     \begin{itemize}
+%       \item \texttt{aumax:<number>} -- maximálny počet autorov na výstup
+%       \item \texttt{aumin:<number>} -- počet autorov na výstup v~prípade prekročenia hodnoty maximálneho počtu autorov na výstup
+%       \item \texttt{autrim:<number>} -- skrátenie krstných mien na iniciály ak je počet autorov väčší alebo rovný zadanej hodnote
+%       \item \texttt{auprint:\{<value>\}} -- text na výstup namiesto zoznamu autorov (môže byť použité makro \verb|\AU| na výpis zoznamu autorov)
+%       \item \texttt{edmax, edmin, edtrim} -- analogicky pre zoznam editorov
+%       \item \texttt{edprint:\{<value>\}} -- text na výstup namiesto zoznamu editorov (môže byť použité makro \verb|\ED| na výpis zoznamu editorov)
+%       \item \texttt{titlepost:\{<value>\}} -- text na výstup za názvom
+%       \item \texttt{yearprint:\{<value>\}} -- text na výstup namiesto numerickej hodnoty roku (môže byť použité makro \verb|\YEAR| na výpis roku)
+%       \item \texttt{ednprint:\{<value>\}} -- text na výstup namiesto numerickej hodnoty vydania (môže byť použité makro \verb|\ED| na výpis vydania)
+%       \item \texttt{urlalso} -- použitie frázy \textit{dostupné tiež z} namiesto \textit{dostupné z}, resp. iného jazykového ekvivalentu
+%       \item \texttt{unpublished} -- označenie nakladateľských údajov ako nepovinných
+%       \item \texttt{nowarn} -- označenie všetkých údajov ako nepovinných
+%     \end{itemize}
 
-	\section{Porovnanie s~jazykom CSL}
-	\section{Neoficiálny štýl normy ISO 690}
+%     Vďaka týmto voľbám je možné dosiahnuť adekvátny výpis údajov splňujúci aktuálnu verziu normy ISO 690. Napríklad v~prípade potreby uvedenia dodatočného názvu diela, jeho prekladu a pod. je toto možné s~ľahkosťou dosiahnuť pomocou zápisu
 
-\chapter{Implementácia}
-	\section{Odchýlky od normy}
+%     \begin{verbatim}
+%     title  = "Hlavný názov: podnázov",
+%     option = "titlepost:{Dodatočný názov}",
+%     \end{verbatim}
 
-\chapter{Slovenská lokalizácia Bib\LaTeX u}
+%     \noindent pričom na výstup dostaneme \uv{\textit{Hlavný názov: podnázov}. Dodatočný názov.}. Treba si tu však uvedomiť dve základné veci. Za prvé, uvedením dodatočného názvu do poľa \texttt{title} nie je možné dosiahnuť požadované, nakoľko tento dodatočný názov musí byť vypísaný iným rezom písma. Za druhé, takýto výpis sa približuje odporúčaniu výkladu normy, avšak tá naviac odporúča dodatočné, doplňujúce a iné informácie uvádzať v~hranatých zátvorkách. To bez ďalšieho zásahu do použitých makier nie je možné, konkrétne z~dôvodu nadbytočného vypisovania interpunkcie hneď za názvom a podnázvom.
+
+%     Pole \texttt{ednote} slúži na uvedenie vedľajších tvorcov alebo na rôzne doplňujúce informácie. Bežne sa tu môžu vyskytnúť údaje, ktoré nemožno jednoducho algoritmizovať, preto je potrebné do tohoto poľa zadať údaje v~takej podobe, v~akej sa majú objaviť na výstupe. Typickým príkladom môžu byť informácie o~prekladateľovi alebo pôvodcoch ďalších vydaní.
+
+%     Problém interoperability kvôli novovytvoreným poliam by sa dal čiastočne riešiť uniformným pomenovaním týchto polí. Nie je totiž neobvyklé, že pre rôzne programy sú dané polia pomenované inak, hoci poskytujú tie isté údaje. Konkrétnym príkladom je informácia o~dátume citovania online zdroja. Napríklad Bib\LaTeX\ alebo JabRef používajú na tento účel pole \texttt{urldate}, pričom OPmac-bib má zadefinované pole s~názvom \texttt{citedate}, plniace presne tú istú funkcionalitu. Takisto formát zadávania tohoto údaja nie je jednotný. Do poľa \texttt{urldate} je nutné zadať dátum vo formáte ISO 8601 (t.j. \textsc{yyyy-mm-dd}), \texttt{citedate} vyžaduje trochu netradičný formát \textsc{yyyy/mm/dd}. Štandardizácia a zjednotenie pomenovania by mohol byť pre balík OPmac-bib jednoznačne krok správnym smerom.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Sadzba bibliografie v~systéme \LaTeX}\label{ch:latex:bibliography}
+
+V~systéme \LaTeX\ sú k~dispozícii prakticky tri základné prístupy na sadzbu bibliografie~\cite{talbot2013}. Prvým z~nich je použitie čistého \LaTeX u, zvyšné dva uznávajú princíp oddelenia formy od obsahu a na sadzbu bibliografie používajú externú bibliografickú databázu a takisto aj externý program na preklad.
+
+\section{Čistý \LaTeX}
+
+\subsection{Použitie}
+
+Systém \LaTeX\ poskytuje na sadzbu bibliografie vstavané prostredie \texttt{thebibliography} a makrá \cmd{\cite} umožňujúce sadzbu bibliografických odkazov. Tie následne odkazujú na samotné bibliografické citácie. Zoznam bibliografických citácií je uvedený v~prostredí \texttt{thebibliography}, jednotlivé položky sú uvedené príkazom \cmd{\bibitem}.
+
+\begin{minted}{latex}
+\documentclass{...}
+\begin{document}
+\cite{<identifikátor01>}
+...
+\begin{thebibliography}{<maximálna šírka identifikátora>}
+\bibitem{<identifikátor01>}
+  <Autor>. \emph{<Názov>: <podnázov>}. ...
+...
+\end{thebibliography}
+\end{document}
+\end{minted}
+
+\subsection{Nevýhody}
+
+Predchádzajúca ukážka kódu okrem základnej syntaxe poukazuje aj na fakt, že takýto prístup nie je vhodný na sadzbu bibliografie rozsiahlejších diel~\cite{talbot2012}. Prináša tieto hlavné nevýhody:
+
+\begin{enumerate}
+\item vysádzané sú všetky citácie uvedené v~zozname prostredia \texttt{thebibliography} (bez ohľadu na to, či boli vôbec citované)\label{item:1}
+\item každý záznam je nutné naformátovať jednotlivo (v~závislosti od požadovaného bibliografického štýlu)\label{item:2}
+\item bibliografické citácie sú radené presne v~takom poradí ako sú uvedené v~zozname prostredia \texttt{thebibliography}\label{item:3}
+\end{enumerate}
+
+\noindent Okolnosti ohľadom nevýhody číslo~\ref{item:1} norma ISO 690 priamo nešpecifikuje, takýto prístup však nenasleduje všeobecné odporúčania tvorby bibliografie~\cite{talbot2013}. Ďalej je v~prípade prostredia \texttt{thebibliography} ťažké zaručiť zásadu jednotnosti citácií (podľa~\ref{item:2}) a vôbec nie je možné zaistiť správne poradie citácií (podľa~\ref{item:3}) pre ktorúkoľvek prípustnú metódu citovania špecifikovanú v~norme ISO 690.
+
+\subsection{Kompilácia}
+
+Znovupoužiteľnosť bibliografických záznamov a škálovateľnosť zoznamu citácií nie je silnou stránkou tohoto riešenia. Výhodou je však rýchlosť a nízky počet prekladov dokumentu (postačí dvojnásobný preklad \TeX ovým kompilátorom).
+
+%%%%%%%%%%%%% BIBTEX %%%%%%%%%%%%%%%%%%%%%%%
+
+\section{B\textsc{ib}\TeX}  %% B\textsc{ib}\TeX\ needs to be used instead of \BibTeX due to the encoding in TOC
+
+Preferovaným spôsobom práce s~bibliografiou pri sadzbe rozsiahlejších typov dokumentov je vytvorenie externej databázy bibliografických záznamov a použitie externého programu na jej preklad~\cite{talbot2013}. Tento externý program zaistí správne zoradenie citácií (rieši problém~\ref{item:3}) a podľa použitého bibliografického štýlu\footnote{\label{footnote:ambiguous:style:names} často nazývaný aj citačný štýl, v~tomto kontexte by bolo možné hovoriť o~formátovacom štýle} (rieši problém~\ref{item:2}) vytvorí formátované \LaTeX ové prostredie \texttt{thebibliography} s~bibliografiou na vysadenie. Typickým zástupcom tohoto prístupu je \BibTeX, ktorého nespornou výhodou je práve spomínané oddelenie formy od obsahu.
+
+\subsection{Použitie}
+
+Príkaz \cmd{\bibliographystyle} slúži na definovanie formátovacieho štýlu, \cmd{\bibliography} určuje, ktoré bibliografické databázy sa majú použiť a takisto miesto vysadenia v~zdrojovom dokumente. Príkazom \cmd{\cite} sa vytvorí odkaz v~texte dokumentu na danú citáciu. Je možné použiť aj príkaz \cmd{\nocite}, ktorý nevytvorí odkaz v~texte samotného dokumentu, zaručí však výskyt citácie v~zozname bibliografických citácií (rieši problém~\ref{item:1}).
+
+\begin{minted}{latex}
+\documentclass{...}
+\bibliographystyle{<formátovací štýl>}
+\begin{document}
+\cite[<text>]{<zoznam identifikátorov>}
+...
+\bibliography{<databáza01>,<databáza02>,...}
+\end{document}
+\end{minted}
+
+\subsection{Nevýhody}
+
+Spomenuté výhody však vyvažuje, resp. prevyšuje, množstvo nevýhod spojených so skutočnosťou, že vývoj \BibTeX u~má relatívne stagnujúcu tendenciu~\cite{patashnik1994,patashnik2003}. Medzi hlavné nevýhody patrí:
+
+\begin{enumerate}
+\item problémy so vstupným kódovaním~\cite{ctan:bibtex} (hoci je dostupné alternatívne riešenie)\footnote{\url{https://www.ctan.org/pkg/bibtex8bit}}
+\item zložitosť tvorby vlastných formátovacích štýlov~\cite{patashnik1988:styles} (hoci je dostupné riešenie na automatizované generovanie štýlov)\footnote{\url{https://www.ctan.org/pkg/custom-bib}}
+\item výkonnostné problémy (pretečenie pamäti pri práci s~veľkými bibliografickými databázami)~\cite{biblatex:manual2016}
+\item slabá podpora tvorby odkazov v~texte dokumentu~\cite{bibtex:faq} (hoci sú dostupné flexibilnejšie možnosti)\footnote{\url{https://www.ctan.org/pkg/natbib}, \url{https://www.ctan.org/pkg/cite}}
+\item absencia dnes už štandardných polí, napr. poľa \texttt{url} (hoci sú dostupné alternatívne riešenia)\footnote{\url{https://www.ctan.org/pkg/natbib}, \url{https://www.ctan.org/pkg/babelbib}}
+\item chýbajúca podpora lokalizácie a viacjazyčnosti citácií~\cite{Harders2002} (hoci je riešenie dostupné)\footnote{\url{https://www.ctan.org/pkg/babelbib}}
+\end{enumerate}
+
+\subsection{Kompilácia}
+
+Na korektné vysádzanie zdrojového dokumentu sú potrebné minimálne tri preklady \TeX ovým kompilátorom a jeden programom \BibTeX. Globálne aplikovateľná schéma na sadzbu bibliografie pomocou \BibTeX u~je nasledovná~\cite{Markey2009}:
+
+\begin{center}
+\LaTeX\ (\BibTeX\ \LaTeX)$^+$ \LaTeX\
+\end{center}
+
+\noindent Oproti sadzbe bibliografie bez použitia externého programu je síce počet potrebných prekladov vyšší, na druhej strane však táto \uv{zložitosť} prináša riešenia na takmer všetky vyššie spomenuté problémy spojené s~použitím iba čistého \LaTeX u.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+
+% \subsubsection{Databáza bibliografických záznamov -- obsah}
+
+% \begin{minted}{latex}
+% @<typ záznamu>{identifikátor,
+%   <názov poľa> = {hodnota},
+%   ...
+%   <názov poľa> = {hodnota}
+% }
+% \end{minted}
+
+% \subsubsection{B\textsc{ib}\TeX formátovací štýl -- forma}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+
+
+%%%%%%%%%%%%% BIBLATEX %%%%%%%%%%%%%%%
+
+\section{BibLaTeX}
+
+Inou možnosťou externého programu na sadzbu bibliografie je modernejší a flexibilnejší \LaTeX ový balík BibLaTeX. Tento balíček je kompletnou reimplementáciou prostriedkov na prácu s~bibliografiou v~systéme \LaTeX, často označovaný aj ako nástupca \BibTeX u~\cite{ctan:bibtex}. Na formátovanie záznamov používa výhradne \LaTeX ové makrá a na spracovanie bibliografickej databázy a jednotlivých položiek nástroj Biber~\cite{biblatex:manual2016}.
+
+\subsection{Použitie}
+
+Použitie balíka BibLaTeX je mierne odlišné od tradičného \BibTeX u. Príkazy majú nielen odlišnú syntax, ale poskytujú aj rozsiahlejšie možnosti práce s~bibliografiou. Formátovací štýl (je možné špecifikovať bibliografický a citačný štýl zvlášť) sa definuje priamo ako voľba balíka pri jeho načítaní, t.\,j. ako voliteľný argument príkazu \cmd{\usepackage}. Na špecifikovanie bibliografickej databázy slúži príkaz \cmd{\addbibresource}, kde je potrebné uviesť celý názov súboru aj s~príponou \cmd{.bib}. Na vysádzanie samotnej bibliografie v~texte slúži príkaz \cmd{\printbibliography}, ktorý sa v~dokumente môže vyskytovať \emph{aj} viackrát. Samozrejme na tvorbu odkazu v~texte dokumentu slúži príkaz \cmd{\cite} a jeho varianty. Nasledujúca ukážka kódu pokrýva len základnú štruktúru dokumentu, použitie príkazov je omnoho komplexnejšie:
+
+\begin{minted}{latex}
+\documentclass{...}
+\usepackage[...]{biblatex}
+\addbibresource{<databáza01.bib>}
+\addbibresource{<databáza02.bib>}
+...
+\begin{document}
+\cite{...}
+...
+\printbibliography
+\end{document}
+\end{minted}
+
+\subsection{Výhody a nevýhody}
+
+Balík BibLaTeX rieši množstvo problémov uvedených v~prípade \BibTeX u. Medzi tie najvýznamnejšie patrí~\cite{ctan:biblatex}:
+
+\begin{enumerate}
+\item plná podpora kódovania Unicode
+\item pokročilé možnosti radenia (použité technológie \emph{Unicode Collation Algorithm} a \emph{Unicode Common Locale Data Repository} (\textsc{cldr}))
+\item viacjazyčnosť záznamov (balíky \texttt{babel} a \texttt{polyglossia})
+\item rozšírený formát bibliografických záznamov
+\item veľké množstvo dostupných štýlov
+\item flexibilné vytváranie nových štýlov
+\end{enumerate}
+
+\noindent Samozrejme, tento zoznam je len výňatok z~bohatej funkcionality, ktorú BibLaTeX ponúka~\cite{biblatex:manual2016}. Dôkazom toho je aj minimálny počet nevýhod tohoto balíka. Za všetky je možné spomenúť nekompatibilitu medziformátu sadzby bibliografie s~pôvodným \BibTeX ovým riešením~\cite{stack:ex:biblatex:drawback}, ktorý býva vyžadovaný pri predkladaní vydavateľovi.
+\subsection{Kompilácia}
+
+Preklad prebieha analogicky ako u~\BibTeX u. Najskôr sa prekladá \TeX ovým kompilátorom, následne sa použije spomínaný nástroj Biber nad vygenerovaným súborom \cmd{.bcf} a nakoniec je potrebný ešte jeden preklad kompilátorom \TeX u. Schéma sadzby dokumentu za použitia BibLaTeXu vyzerá nasledovne:
+
+\begin{minted}{bash}
+latex <example>.tex
+biber <example>.bcf
+latex <example>.tex
+\end{minted}
+
+\section{Zhrnutie}
+
+Na jednoduchú sadzbu bibliografie jednorázového dokumentu s~malým počtom citácií je najvýhodnejšie použiť vstavanú funkcionalitu \LaTeX u. Pri rozsiahlejších dokumentoch s~väčším počtom citácií je však už výhodné použiť služby externých programov na sadzbu bibliografie. Takýmto prístupom oddelenia formy od obsahu (bibliografická databáza sa nachádza v~samostatnom súbore, formátovacie štýly taktiež osobitne) je možné dosiahnuť vysokú škálovateľnosť, znovupoužiteľnosť bibliografických záznamov a flexibilnú a efektívnu manipuláciu s~bibliografickými citáciami.
+
+Spomedzi dostupných riešení~\cite{talbot2013,Mittelbach2004} vychádza ako najlepšia voľba balík BibLaTeX s~nástrojom Biber na preklad~\cite{biber:manual2016}.
+
+\chapter{Návrh a implementácia}
+
+Kapitola \ref{ch:facilities:iso690}\ poukazuje na existujúce riešenia rôznych programov, nástrojov či služieb, ktoré podporujú tvorbu bibliografických odkazov a citácií podľa normy ISO 690. Samostatná kapitola \ref{ch:latex:bibliography}\ je zameraná na sadzbu bibliografie v~systéme \LaTeX. Na základe týchto prehľadových zhrnutí je v~tejto kapitole zdôvodnený výber použitého riešenia, rovnako ako aj popis samotnej implementácie.
+
+\section{Existujúce štýly ISO 690}\label{sec:iso690}
+
+\subsection{czechiso}
+
+Pre české normy ČSN ISO 690:1996~\cite{csn:iso690:1996} a ČSN ISO 690-2:2000~\cite{csn:iso690:2:2000} existuje pre \BibTeX\ neoficiálny formátovací štýl \texttt{czechiso} z~roku 2006. Autorom je David Martinek a tento štýl je dostupný na adrese \url{http://www.fit.vutbr.cz/~martinek/latex/czechiso.html}. Táto implementácia nezodpovedá normám presne, niektoré vyžadované položky bibliografických záznamov absentujú, použité funkcie by bolo vhodné prepísať aby splňovali požiadavky normy.
+
+\subsection{biblatex-iso690}
+
+V~roku 2011 vznikla prvá referenčná implementácia bibliografického a citačného štýlu pre balík BibLaTeX podľa normy ISO 690. Tá však vychádzala z~predošlých verzií noriem~\cite{csn:iso690:1996,csn:iso690:2:2000} a prevažne sa pridržiavala českej interpretácie~\cite{Bratkova2008}. Autorom je Michal Hoftich a štýl bol sprístupnený ako neoficiálna verzia na adrese \url{https://github.com/michal-h21/biblatex-iso690}. Podobne ako v~predchádzajúcom prípade, ani táto implementácia nezodpovedá normám presne, na domovskej stránke projektu je zaznamenaných niekoľko nahlásených problémov ohľadom použitia tohoto štýlu.
+
+\section{Výber} %Návrh
+
+Na základe prieskumu možností sadzby bibliografie v~systéme \LaTeX\ (kapitola \ref{ch:latex:bibliography}), existujúcich implementácií štýlov \emph{splňujúcich} normu ISO 690 (sekcia \ref{sec:iso690}), požiadaviek na začlenenie podpory sadzby bibliografie podľa normy ISO 690 do balíka fithesis~\cite{novotny2015} a ďalších faktorov (o.\,i. kapitola \ref{ch:facilities:iso690}), bola zvolená možnosť pokračovania vo vývoji referenčnej implementácie \texttt{biblatex-iso690} pre balík BibLaTeX.
+
+\section{Implementácia}
+
+Implementácia štýlu \texttt{biblatex-iso690} sa pridržiava konvencií tvorby bibliografických a citačných štýlov uvedených v~referenčnej príručke balíka BibLaTeX~\cite{biblatex:manual2016}.
+
+\subsection{Základná štruktúra}
+
+Štruktúra pomenovania súborov vyčleňuje štyri základné typy. Bibliografické štýly sú definované v~súboroch s~koncovkou \texttt{.bbx}, citačné štýly v~súboroch s~koncovkou \texttt{.cbx}, súbory s~príponou \texttt{.dbx} slúžia na definovanie nových dátových modelov a lokalizačné súbory sú uložené v~súboroch s~koncovkou \texttt{.lbx}. Často používané makrá, definície, formáty a príkazy sú umiestnené v~jadre BibLaTeXu v~súbore \path{biblatex$_$.def}. Ich zdieľanie naprieč viacerými štýlmi je umožnené vďaka načítaniu tohoto súboru až následne po \texttt{.bbx} a \texttt{.cbx} súboroch.
+
+Balík BibLaTeX poskytuje vo svojom základe aj niekoľko bibliografických a citačných štýlov. Vďaka príkazom \cmd{\RequireBibliographyStyle} a \cmd{\RequireCitationStyle} je možné na ich základe vytvoriť vlastné.
+
+\subsection{.bbx súbory}
+
+Súbory s~koncovkou \texttt{.bbx} slúžia na definovanie bibliografických štýlov. Typická štruktúra súboru bibliografického štýlu sa skladá z~niekoľkých základných častí:
+
+\begin{enumerate}
+\item definícia dispozícií a celkového rozloženia citácií
+\item definícia poradia prvkov citácie pre jednotlivé typy bibliografických záznamov
+\item definícia prípadných ďalších volieb balíka
+\item definícia formátov jednotlivých polí bibliografických údajov
+\item rôzne formátovacie makrá
+\end{enumerate}
+
+
+
+\subsection{.cbx súbory}
+
+Súbory s~koncovkou \texttt{.cbx} slúžia na definovanie citačných štýlov. BibLaTeXom poskytovaná základná množina citačných štýlov je implementovaná na kvalitatívne vysokej úrovni, na základe čoho neboli potrebné výrazné zmeny v~implementácii.
+
+Bohužiaľ sa však nepodarilo implementovať metódu citovania formou priebežných poznámok. Tá totiž vyžaduje číslovanie každého odkazu v~texte dokumentu jedinečným číslom, aj v~prípade citovania toho istého diela. Prostriedky BibLaTeXu a Biberu však takúto funkcionalitu neposkytujú.
+
+\subsection{.dbx súbory}
+
+Súbory s~koncovkou \texttt{.dbx} slúžia na definovanie nových dátových modelov nad rámec poskytovanej množiny priamo BibLaTeXom. Ide prevažne o~nové typy alebo polia bibliografických záznamov.
+
+Na základe odporúčaní interpretácie normy~\cite{Bratkova2011} boli vytvorené nové polia pre údaje, ktoré balík BibLaTeX bežne neposkytuje. Takýmto spôsobom bolo možné docieliť korektné poradie jednotlivých prvkov v~citácii.
+
+\begin{table}[!htbp]
+\begin{tabularx}{\textwidth}{llX}
+  %\toprule
+  Názov poľa & Typ záznamu & Popis\\
+  \midrule
+  \texttt{supervisor}     & \texttt{thesis} & vedúci záverečnej kvalifikačnej práce\\
+  \texttt{classification} & \texttt{patent} & klasifikácia podľa patentového triedenia\\
+  \bottomrule
+\end{tabularx}
+\caption{Nové polia pre bibliografické údaje}
+\label{tab:newfields}
+\end{table}
+
+\subsection{.lbx súbory}
+
+Súbory s~koncovkou \texttt{.lbx} slúžia na definovanie lokalizačných reťazcov. Balík BibLaTeX poskytuje lokalizáciu v~26 jazykových mutáciách~\cite{biblatex:manual2016}, každý lokalizačný súbor obsahuje vyše 300 lokalizačných reťazcov~\cite{english:lbx}, aj napriek tomu bolo kvôli norme ISO 690 nutné zadefinovať ďalšie.
+
+\begin{table}[!htbp]
+\begin{tabularx}{\textwidth}{lXXX}
+  %\toprule
+  Reťazec & Anglicky & Česky & Slovensky\\
+  \midrule
+  \texttt{at}           & {at} & {v} & {v}\\
+  \texttt{bysupervisor} & {supervised by} & {vedouc\'{i} pr\'{a}ce} & {ved\'{u}ci pr\'{a}ce}\\
+  \texttt{urlalso}      & {available also from} & {dostupn\'{e} tak\'{e} z} & {dostupn\'{e} tie\v{z} z}\\
+  \bottomrule
+\end{tabularx}
+\caption{Nové lokalizačné reťazce}
+\label{tab:newfields}
+\end{table}
+
+Tieto lokalizačné reťazce môžu byť následne použité v~rôznych makrách pomocou rodiny príkazov \cmd{\bibstring} alebo \cmd{\mainstring}. Normou požadovaná viacjazyčnosť citácie musela byť riešená zavedením nových príkazov \cmd{\mainlstring} a \cmd{\mainsstring}, nakoľko ani samotný BibLaTeX takúto podporu neposkytuje. Komplexnú ukážku použitia lokalizačných reťazcov možno demonštrovať na príklade definovania formátu poľa \texttt{url}:
+
+\begin{minted}{latex}
+\DeclareFieldFormat*{url}{%
+  \iffieldundef{urlyear}
+  {\mainlstring{urlalso}\addcolon\space\url{#1}}
+  {\mainlstring{urlfrom}\addcolon\space\url{#1}}
+}
+\end{minted}
+
+\emph{Poznámka:} V~rámci tejto práce došlo k~finalizácii prekladu slovenskej lokalizácie Martina Vrábela pre balík BibLaTeX, ktorá dovtedy nebola v~balíku k~dispozícii.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Záver}
 
+TBA
+
 \printbibliography[heading=bibintoc]
+
+%\appendix %% Start the appendices.
+
+\renewcommand{\appendixtocname}{Zoznam príloh}
+\renewcommand{\appendixpagename}{Prílohy}
+
+\begin{appendices}
+
+\chapter{Zoznam elektronických príloh}
+
+TBA
+
+\chapter{Bibliografické typy záznamov}
+
+\begin{table}[!htbp]
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  Názov & Popis\\
+  \midrule
+  \texttt{article} & článok v~časopise\\
+  \texttt{book} & publikovaná knižná monografia\\
+  \texttt{booklet} & vytlačené, zviazané dielo bez vydavateľa\\
+  \texttt{conference} & článok v~zborníku konferencie\\
+  \texttt{inbook} & časť, kapitola, sekcia, etc. knihy\\
+  \texttt{incollection} & kapitola (časť) knihy s~vlastným autorom a názvom\\
+  \texttt{inproceedings} & článok v~zborníku konferencie (totožné s~typom \texttt{conference})\\
+  \texttt{manual} & technická dokumentácia\\
+  \texttt{mastersthesis} & diplomová práca\\
+  \texttt{misc} & ostatné diela\\
+  \texttt{phdthesis} & dizertačná práca\\
+  \texttt{proceedings} & zborník konferencie\\
+  \texttt{techreport} & správa vydaná inštitúciou\\
+  \texttt{unpublished} & nevydané dielo s~autorom a názvom\\
+  \bottomrule
+\end{tabularx}
+\caption{Štandardné typy záznamov \BibTeX u}
+\label{tab:bibtex:entry:types}
+\end{table}
+
+\end{appendices}
 
 \end{document}

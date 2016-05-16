@@ -1,5 +1,5 @@
 SOURCE=thesis
-TEX=pdflatex
+TEX=pdflatex -shell-escape
 
 .PHONY: all remove_old_pdf pdf clean
 
@@ -13,6 +13,7 @@ ${SOURCE}.pdf:
 	vlna ${SOURCE}.tex
 	$(TEX) ${SOURCE}.tex
 	biber ${SOURCE}.bcf
+	$(TEX) ${SOURCE}.tex
 	$(TEX) ${SOURCE}.tex
 clean:
 	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lof *.lot *.toc
