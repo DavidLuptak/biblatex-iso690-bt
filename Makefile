@@ -14,6 +14,9 @@ ${SOURCE}.pdf:
 	$(TEX) ${SOURCE}.tex
 	biber ${SOURCE}.bcf
 	$(TEX) ${SOURCE}.tex
+	makeglossaries $(SOURCE)
 	$(TEX) ${SOURCE}.tex
+	$(TEX) ${SOURCE}.tex
+
 clean:
-	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lof *.lot *.toc
+	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lof *.lot *.toc *.acn *.acr *.alg *.xdy
