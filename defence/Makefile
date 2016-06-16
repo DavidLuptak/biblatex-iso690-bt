@@ -17,4 +17,4 @@ ${SOURCE}.pdf:
 	$(TEX) ${SOURCE}.tex
 
 clean:
-	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lof *.lot *.toc *.nav *.snm *.vrb
+	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.toc *.nav *.snm *.vrb
