@@ -252,11 +252,13 @@ Prerekvizity -- pôvodný stav
 
 \begin{darkframes}
 \begin{frame}[plain]{%
+  \newcounter{qaFrameNumber}
+  \setcounter{qaFrameNumber}{\value{framenumber}}
   \author{}
   \title{Námety k~diskusii}
   \subtitle{}
   \titlepage
-  \setcounter{framenumber}{21}
+  \setcounter{framenumber}{\value{qaFrameNumber}}
 }
 \end{frame}
 \end{darkframes}
@@ -491,10 +493,12 @@ Určite áno a nielen v~Spravodaji\dots\\
 
 \begin{darkframes}
 \begin{frame}[plain]{%
+  \newcounter{thanksFrameNumber}
+  \setcounter{thanksFrameNumber}{\value{framenumber}}
   \title{Ďakujem za pozornosť!}
   \subtitle{}
   \titlepage
-  \setcounter{framenumber}{32}
+  \setcounter{framenumber}{\value{thanksFrameNumber}}
 }
 \end{frame}
 \end{darkframes}
