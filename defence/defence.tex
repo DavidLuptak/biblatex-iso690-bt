@@ -22,9 +22,11 @@
 \usepackage{amssymb}  %% Typesetting \checkmark
 \usepackage{pifont}  %% Typesetting \xmark
 \newcommand{\xmark}{\ding{55}}%
+\usepackage{picture}  %% Typesetting curly bracket over two lines in itemize
 \usepackage{minted}  %% Highlighted source code for LaTeX
 
 \newcommand{\cmd}[1]{\mintinline{latex}{#1}}
+
 
 \usepackage{csquotes}  %% Context sensitive quotation facilities
 \usepackage[style=iso-numeric,shortnumeration]{biblatex}
@@ -74,21 +76,22 @@
 
 \section{Norma ISO 690}
 
-\begin{frame}{Úplný názov normy}
+\begin{frame}{ČSN ISO 690:2011}
+\framesubtitle{Najnovšia verzia normy ISO 690}
 \fullcite{csn:iso690:2011}
 \end{frame}
 
-\begin{frame}{Terminológia\footnote[frame]{\fullcite{csn:iso690:2011}}}
-\begin{description}[citácia]
-\item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu na príslušnú bibliografickú citáciu
-\item<2>[citácia] dáta popisujúce informačný zdroj alebo jeho časť, dostatočne presne a podrobne na to, aby mohol byť tento zdroj identifikovaný a bolo možné ho vyhľadať
-\end{description}
-\end{frame}
+% \begin{frame}{Terminológia\footnote[frame]{\fullcite{csn:iso690:2011}}}
+% \begin{description}[citácia]
+% \item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu na príslušnú bibliografickú citáciu
+% \item[citácia] dáta popisujúce informačný zdroj alebo jeho časť, dostatočne presne a podrobne na to, aby mohol byť tento zdroj identifikovaný a bolo možné ho vyhľadať
+% \end{description}
+% \end{frame}
 
-\begin{refsection} % biblatex feature to separate bbiliographies
+\begin{refsection} % biblatex feature to separate bibliographies
 \begin{frame}{Ukážka}
 \uv{\emph{[\dots] aj netriviálne deduktívne hry môžu byť vyriešené softvérovým nástrojom~\cite{Klimos2015minimal}, čo vedie k~záveru [\dots]}}
-\\
+\rule{\textwidth}{0.2pt}
 \printbibliography
 \end{frame}
 \end{refsection}
@@ -108,10 +111,22 @@ Norma ISO 690
 \end{description}
 \end{frame}
 
+\begin{frame}{Nejasné miesta a nepresnosti}
+\framesubtitle{Viacjazyčnosť citácie}
+\uv{\emph{\dots údaj by mal byť uvedený v~podobe, v~akej sa objavuje v~preferovanom prameni informácií citovaného dokumentu\dots}}
+\newline
+\begin{itemize}
+\item číslovanie a stránkovanie
+\item názov a číslo edície
+\item etc.
+\end{itemize}
+\end{frame}
+
 \section{Teoretická časť práce}
 
 %\subsection{Existujúce riešenia}
 \begin{frame}{Existujúce riešenia}
+\framesubtitle{Generátory citácií, citačné manažéry, atď.}
 \begin{itemize}
 \item Citace.com
 \item Zotero
@@ -128,91 +143,29 @@ Tri základné prístupy:
 \item \cmd{thebibliography}
 \item \textsc{Bib}\TeX
 \item BibLaTeX
+      % thanks to the http://tex.stackexchange.com/a/12395
+      \hspace{45pt}\makebox(0,0){\put(0,2.2\normalbaselineskip){%
+        $\left.\rule{0pt}{1.1\normalbaselineskip}\right\}$ + \texttt{.bib} súbor}}
 \end{enumerate}
-\end{frame}
 
-\begin{frame}[fragile]{Prostredie \cmd{thebibliography}}
-\begin{minted}{latex}
-\documentclass{...}
-\begin{document}
-\cite{<identifikátor01>}
-...
-\begin{thebibliography}{<maximálna šírka identifikátora>}
-\bibitem{<identifikátor01>}
-  <Autor>. \emph{<Názov>: <podnázov>}. ...
-...
-\end{thebibliography}
-\end{document}
-\end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{\textsc{Bib}\TeX}
-\begin{minted}{latex}
-\documentclass{...}
-\bibliographystyle{<formátovací štýl>}
-\begin{document}
-\cite[<text>]{<zoznam identifikátorov>}
-...
-\bibliography{<databáza01>,<databáza02>,...}
-\end{document}
-\end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{BibLaTeX}
-\begin{minted}{latex}
-\documentclass{...}
-\usepackage[...]{biblatex}
-\addbibresource{<databáza01.bib>}
-\addbibresource{<databáza02.bib>}
-...
-\begin{document}
-\cite{...}
-...
-\printbibliography
-\end{document}
-\end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{\texttt{.bib} súbor}
-\begin{minted}{latex}
-@<typ záznamu>{identifikátor,
-  <názov poľa> = {hodnota},
-  ...
-  <názov poľa> = {hodnota}
-}
-\end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{Ukážka}
-\begin{minted}{latex}
-@inproceedings{Klimos2015,
-  author   = {Miroslav Klimoš and Antonín Kučera},
-  title    = {Cobra},
-  subtitle = {A~Tool for Solving General Deductive Games},
-  ...
-  pages    = {31--47},
-  isbn     = {978-3-662-48899-7},
-  doi      = {10.1007/978-3-662-48899-7_3},
-  urldate  = {2016-06-15}
-}
-\end{minted}
 \end{frame}
 
 \section{Implementácia}
 
-\begin{frame}{Základná štruktúra BibLaTeXu}
-\begin{description}[.bbx]
-\item[.bbx] súbory na definovanie bibliografických štýlov
-\item[.cbx] súbory na definovanie citačných štýlov
-\item[.dbx] súbory na definovanie nových dátových modelov
-\item[.lbx] súbory na definovanie lokalizačných reťazcov
-\end{description}
-\end{frame}
+% \begin{frame}{Základná štruktúra BibLaTeXu}
+% \begin{description}[.bbx]
+% \item<1->[.bbx] súbory na definovanie bibliografických štýlov
+% \item<2->[.cbx] súbory na definovanie citačných štýlov
+% \item<3->[.dbx] súbory na definovanie nových dátových modelov
+% \item<4->[.lbx] súbory na definovanie lokalizačných reťazcov
+% \end{description}
+% \end{frame}
 
-\begin{frame}{Referenčná implementácia\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690}}}
-Prerekvizity -- pôvodný stav
+\begin{frame}{Referenčná implementácia \textsf{biblatex-iso690}\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690}}}
+\framesubtitle{Autorom Michal Hoftich}
+Pôvodný stav
 \begin{itemize}
-\item pridržiavanie sa predošlých verzií noriem
+\item pridržiavanie sa predošlých verzií noriem % edícia (nepovinné), ' : ' (oddeľovač prvkov, nie interpunkčné znamienko), anon (nemá sa používať termín "Anonym"), miesto vydania + nakladateľ (nepovinné)
 \item chybné poradie prvkov citácie % štandardné identifikátory, číslovanie a stránkovanie
 \item (nadbytočná/chýbajúca) interpunkcia % redundantná v prípade chýbajúcich údajov
 \item chýbajúca podpora niektorých typov dokumentov % patent, thesis
@@ -223,26 +176,58 @@ Prerekvizity -- pôvodný stav
 \end{frame}
 
 \begin{frame}{Ukážka}
+\framesubtitle{Citácia vygenerovaná pôvodnou verziou}
 \begin{thebibliography}{9}
 \bibitem{t03} % Lecture Notes in Computer Science
   KLIMOŠ, Miroslav; KUČERA, Antonín. Cobra: A~Tool for Solving General Deductive Games. In \emph{Proceedings of 20th International Conference on Logic for Programming, Artificial Intelligence and Reasoning (LPAR 2015)} [online]. \textcolor<2>{Red}{Č. 9450}. Heidelberg: Springer, 2015 [cit. 2016-06-15], s. 31–47. \textcolor<2>{Red}{LNCS}. Url: <\url{http://dx.doi.org/10.1007/978-3-662-48899-7_3}>. ISBN 978-3-662-48899-7.
 \end{thebibliography}
 \end{frame}
 
+\begin{frame}{Aktuálny stav}
+\framesubtitle{Balík \textsf{biblatex-iso690} [verzia 0.3.1]}
+\begin{itemize}
+\item korektné spracovávanie, formátovanie a výpis údajov
+  \begin{itemize}
+  \item makrá
+  \item príkazy
+  \item definície
+  \end{itemize}
+\item na úrovni BibLaTeXu alebo \TeX u
+\item nové typy a polia záznamov
+\item nové lokalizačné reťazce
+\end{itemize}
+\ $\implies$ dodržiavanie aktuálnej verzie normy
+\end{frame}
+
+% \begin{refsection} % biblatex feature to separate bibliographies
+% \begin{frame}{Jazyk CSL vs. BibLaTeX}
+% % csl numeric-slovak
+% \begin{thebibliography}{1}
+% \bibitem{Priezvisko2016}
+% PRIEZVISKO \textit{Názov: podnázov}. . revidované vydanie. vyd. Miesto: Nakladateľstvo, 2016. .
+% \end{thebibliography}
+
+% \nocite{Priezvisko2016}
+% \printbibliography
+% \end{frame}
+% \end{refsection}
+
 \section{Záver}
 
 \begin{frame}{Výsledky}
 \begin{itemize}
-\item zrevidovanie referenčnej implementácie štýlu \textsf{biblatex-iso690}\\
-\item oficiálne začlenenie a vydanie štýlu\\
+\item kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
+\item dokumentácia v~českom i anglickom jazyku
+\item oficiálne začlenenie a vydanie štýlu
   \begin{itemize}
-  \item do šablóny na sadzbu záverečných kvalifikačných prác \textsf{fithesis3}\footnote[frame]{\url{https://www.ctan.org/pkg/fithesis}}\\
+  \item do šablóny na sadzbu záverečných kvalifikačných prác \textsf{fithesis3}\footnote[frame]{\url{https://www.ctan.org/pkg/fithesis}}
   \item na medzinárodný archív CTAN\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex-iso690}}
     \begin{itemize}
     \item súčasťou \TeX\ Live 2016
     \end{itemize}
   \end{itemize}
 \item rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
+\item globálny prínos
 \end{itemize}
 \end{frame}
 
@@ -311,29 +296,6 @@ Prerekvizity -- pôvodný stav
 %% A: Pozostatok nepresnosti v dokumentácii balíka biblatex.
 
 \begin{frame}[fragile]
-\emph{Proč byla do archivu v~IS MU vložena verze odlišná (jednostranný tisk) od výtisku
-pro oponenta (oboustranný tisk)? [\dots]}
-\medskip\par
-% just the misunderstanding of the documentation
-% https://github.com/Witiko/fithesis3/commit/caa751148f2785f909da4f75be50bd7b7cbb8882
-\begin{minted}[fontsize=\scriptsize]{diff}
-diff --git a/guide/mu/guide.dtx b/guide/mu/guide.dtx
-index be770b3..edf0fd5 100644
---- a/guide/mu/guide.dtx
-+++ b/guide/mu/guide.dtx
-@@ -410,6 +410,13 @@
-+
-+      \emph{You may feel compelled to use \thguide@itemfmt{twoside}
-+      for the printed version of the thesis and \thguide@itemfmt{%
-+      oneside} for the digital version to reduce the number of
-+      blank pages. This will, however, cause the page numbers to
-+      differ between the printed and the digital version, which
-+      will make it difficult to cite your work. Do not do it.}
-\end{minted}
-\url{https://github.com/Witiko/fithesis3/commit/caa751148f2785f909da4f75be50bd7b7cbb8882}
-\end{frame}
-
-\begin{frame}[fragile]
 \emph{Je v~rámci \textsf{biblatex-iso690} nějak řešeno verzování \uv{nekompatibilních} změn výstupního formátu stylu na uživatelské úrovni (volby \cmd{\usepackage} apod.) [\dots]?} %, aby se dalo zabránit změně vzhledu dokumentu při jeho přesazbě novější verzí balíku biblatex-iso690?}
 \medskip\par
 % Obohatenie dokumentácie o sekciu prispôsobovania štýlu, formátu a interpunkcie na TODO liste
@@ -358,16 +320,6 @@ Norma nepredpisuje konkrétny štýl, formát a interpunkciu, balík BibLaTeX po
 \end{frame}
 
 \begin{frame}
-\emph{Na stranách 9--10 v~kapitole 3.1.7 je v~práci popisován ISO 690 výstup nástroje Citace.com. Je uvedený výčet zjištěných odchylek od normy kompletní? [\dots]} %Jiné odchylky zjištěny nebyly, nebo jen nebyly uvedeny v~textu práce? Odchylky byly zjištěny vlastním zkoumáním, anebo jsou již někde dokumentovány?}
-\medskip\par
-\begin{itemize}
-\item zoznam nie je kompletný -- odchýlky sa prelínajú aj skrz ostatné popisované nástroje
-\item odchýlky nebolo možné zistiť všetky, nakoľko nie sú k~dispozícii zdrojové súbory
-\item vlastné skúmanie -- online generátor citácií
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \emph{Jaká byla kritéria pro výběr nástrojů revidovaných v~kapitole 3?}
 \medskip\par
 \begin{itemize}
@@ -378,11 +330,78 @@ Norma nepredpisuje konkrétny štýl, formát a interpunkciu, balík BibLaTeX po
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\emph{Na stranách 9--10 v~kapitole 3.1.7 je v~práci popisován ISO 690 výstup nástroje Citace.com. Je uvedený výčet zjištěných odchylek od normy kompletní? [\dots]} %Jiné odchylky zjištěny nebyly, nebo jen nebyly uvedeny v~textu práce? Odchylky byly zjištěny vlastním zkoumáním, anebo jsou již někde dokumentovány?}
+\medskip\par
+\begin{itemize}
+\item zoznam nie je kompletný -- odchýlky sa prelínajú aj skrz ostatné popisované nástroje
+\item odchýlky nebolo možné zistiť všetky, nakoľko nie sú k~dispozícii zdrojové súbory
+\item vlastné skúmanie -- online generátor citácií
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\emph{Proč byla do archivu v~IS MU vložena verze odlišná (jednostranný tisk) od výtisku
+pro oponenta (oboustranný tisk)? [\dots]}
+\medskip\par
+% just the misunderstanding of the documentation
+% https://github.com/Witiko/fithesis3/commit/caa751148f2785f909da4f75be50bd7b7cbb8882
+\begin{minted}[fontsize=\scriptsize]{diff}
+diff --git a/guide/mu/guide.dtx b/guide/mu/guide.dtx
+index be770b3..edf0fd5 100644
+--- a/guide/mu/guide.dtx
++++ b/guide/mu/guide.dtx
+@@ -410,6 +410,13 @@
++
++      \emph{You may feel compelled to use \thguide@itemfmt{twoside}
++      for the printed version of the thesis and \thguide@itemfmt{%
++      oneside} for the digital version to reduce the number of
++      blank pages. This will, however, cause the page numbers to
++      differ between the printed and the digital version, which
++      will make it difficult to cite your work. Do not do it.}
+\end{minted}
+\url{https://github.com/Witiko/fithesis3/commit/caa751148f2785f909da4f75be50bd7b7cbb8882}
+\end{frame}
+
 %% VEDÚCI %%
 %%%%%%%%%%%%
 
 %% Q: Některá slova šla dělit lépe (bibli-ografické str. 36, zau-žívané str. 37).
 %% A: Áno, do vzorov delenia ani úprav typografických rozšírení nebolo zasahované.
+
+\begin{frame}
+\emph{Jakou zpětnou vazbu od uživatelů jste získal?}
+\medskip\par
+% Spätná väzba bola doposiaľ prijatá len od pár známych, ktorí tento semester tiež robili bakalársku prácu.
+\begin{itemize}
+\item[\checkmark] inštalácia BibLaTeXu a balíka \textsf{biblatex-iso690}
+\item[\checkmark] preklad dokumentu (rozdiel medzi \textsf{biblatexom} a \textsf{biberom})
+\item[\checkmark] chýbajúca slovenská lokalizácia
+\item[\checkmark] formát dátumu ISO 8601 (tj. yyyy-mm-dd)
+\item[\checkmark] formát \emph{dostupné z~WWW: <link>}
+\item[\checkmark] požiadavka na začlenenie do \textsf{fithesis3}
+% \item prostredníctvom príspevku na diskusnom fóre nič
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\emph{Je styl použitelný i v~jiných jazykových prostředích a s~jakými omezeními?}
+\medskip\par
+\begin{itemize}
+\item balíky \textsf{babel}/\textsf{polyglossia} voliteľné (avšak doporučované) pre použitie s~\textsf{biblatexom}
+  \begin{itemize}
+  \item \checkmark{} \textsf{babel} a \xmark{} \textsf{biblatex}
+    \begin{itemize}
+    \item \textbf{urlalso}
+    \end{itemize}
+  \item \xmark{} \textsf{babel} a \xmark{} \textsf{biblatex}
+    \begin{itemize}
+    \item Available also from
+    \end{itemize}
+  \end{itemize}
+\item pull request nemeckej lokalizácie\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690/pull/48}}
+\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]
 \emph{V~práci zmiňujete nedostatky řešení ISO 690 citací v~ISu. Jaké to jsou a jak se dají napravit?}
@@ -437,40 +456,6 @@ Výstup:
 \end{frame}
 
 \begin{frame}
-\emph{Jakou zpětnou vazbu od uživatelů jste získal?}
-\medskip\par
-% Spätná väzba bola doposiaľ prijatá len od pár známych, ktorí tento semester tiež robili bakalársku prácu.
-\begin{itemize}
-\item[\checkmark] inštalácia BibLaTeXu a balíka \textsf{biblatex-iso690}
-\item[\checkmark] preklad dokumentu (rozdiel medzi \textsf{biblatexom} a \textsf{biberom})
-\item[\checkmark] chýbajúca slovenská lokalizácia
-\item[\checkmark] formát dátumu ISO 8601 (tj. yyyy-mm-dd)
-\item[\checkmark] formát \emph{dostupné z~WWW: <link>}
-\item[\checkmark] požiadavka na začlenenie do \textsf{fithesis3}
-% \item prostredníctvom príspevku na diskusnom fóre nič
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\emph{Je styl použitelný i v~jiných jazykových prostředích a s~jakými omezeními?}
-\medskip\par
-\begin{itemize}
-\item balíky \textsf{babel}/\textsf{polyglossia} voliteľné (avšak doporučované) pre použitie s~\textsf{biblatexom}
-  \begin{itemize}
-  \item \checkmark{} \textsf{babel} a \xmark{} \textsf{biblatex}
-    \begin{itemize}
-    \item \textbf{urlalso}
-    \end{itemize}
-  \item \xmark{} \textsf{babel} a \xmark{} \textsf{biblatex}
-    \begin{itemize}
-    \item Available also from
-    \end{itemize}
-  \end{itemize}
-\item pull request nemeckej lokalizácie\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690/pull/48}}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \emph{Nestojí za to výsledky publikovat například aspoň v~Zpravodaji CSTUGu?}
 \medskip\par
 Určite áno a nielen v~Spravodaji\dots\\
@@ -507,7 +492,7 @@ Určite áno a nielen v~Spravodaji\dots\\
 
 \end{document}
 
-
+% simple _template_ for q&a
 \begin{frame}{}
 \emph{}
 \medskip\par
