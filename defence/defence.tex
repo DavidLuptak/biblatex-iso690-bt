@@ -27,7 +27,6 @@
 
 \newcommand{\cmd}[1]{\mintinline{latex}{#1}}
 
-
 \usepackage{csquotes}  %% Context sensitive quotation facilities
 \usepackage[style=iso-numeric,shortnumeration]{biblatex}
 
@@ -76,10 +75,10 @@
 
 \section{Norma ISO 690}
 
-\begin{frame}{ČSN ISO 690:2011}
-\framesubtitle{Najnovšia verzia normy ISO 690}
-\fullcite{csn:iso690:2011}
-\end{frame}
+% \begin{frame}{ČSN ISO 690:2011}
+% \framesubtitle{Najnovšia verzia normy ISO 690}
+% \fullcite{csn:iso690:2011}
+% \end{frame}
 
 % \begin{frame}{Terminológia\footnote[frame]{\fullcite{csn:iso690:2011}}}
 % \begin{description}[citácia]
@@ -89,7 +88,8 @@
 % \end{frame}
 
 \begin{refsection} % biblatex feature to separate bibliographies
-\begin{frame}{Ukážka}
+\begin{frame}{Príklad na úvod}
+\framesubtitle{Podľa najnovšej verzie normy ČSN ISO 690:2011}
 \uv{\emph{[\dots] aj netriviálne deduktívne hry môžu byť vyriešené softvérovým nástrojom~\cite{Klimos2015minimal}, čo vedie k~záveru [\dots]}}
 \rule{\textwidth}{0.2pt}
 \printbibliography
@@ -103,11 +103,11 @@ Norma ISO 690
 \item[doporučuje] jednotný štýl, formát a interpunkciu
 \end{description}
 \begin{center}
-\visible<2>{$\implies$}
+$\implies$
 \end{center}
 \begin{description}[nešpecifikuje]
-\item<2>[uctieva] princíp oddelenia formy od obsahu
-\item<2>[nie je] citačný štýl 
+\item[uctieva] princíp oddelenia formy od obsahu
+\item[nie je] citačný štýl
 \end{description}
 \end{frame}
 
@@ -179,7 +179,7 @@ Pôvodný stav
 \framesubtitle{Citácia vygenerovaná pôvodnou verziou}
 \begin{thebibliography}{9}
 \bibitem{t03} % Lecture Notes in Computer Science
-  KLIMOŠ, Miroslav; KUČERA, Antonín. Cobra: A~Tool for Solving General Deductive Games. In \emph{Proceedings of 20th International Conference on Logic for Programming, Artificial Intelligence and Reasoning (LPAR 2015)} [online]. \textcolor<2>{Red}{Č. 9450}. Heidelberg: Springer, 2015 [cit. 2016-06-15], s. 31–47. \textcolor<2>{Red}{LNCS}. Url: <\url{http://dx.doi.org/10.1007/978-3-662-48899-7_3}>. ISBN 978-3-662-48899-7.
+  KLIMOŠ, Miroslav; KUČERA, Antonín. Cobra: A~Tool for Solving General Deductive Games. In \emph{Proceedings of 20th International Conference on Logic for Programming, Artificial Intelligence and Reasoning (LPAR 2015)} [online]. \textcolor<2>{Red}{Č. 9450}. Heidelberg: Springer, 2015 [cit. 2016-06-15], s. 31–47. \textcolor<2>{Red}{LNCS}. \textcolor<2>{Dandelion}{Url: <\url{http://dx.doi.org/10.1007/978-3-662-48899-7_3}>}. \textcolor<2>{Dandelion}{ISBN 978-3-662-48899-7}.
 \end{thebibliography}
 \end{frame}
 
@@ -197,6 +197,25 @@ Pôvodný stav
 \item nové lokalizačné reťazce
 \end{itemize}
 \ $\implies$ dodržiavanie aktuálnej verzie normy
+\end{frame}
+
+\begin{frame}{Rôzne metódy citovania}
+\framesubtitle{\dots a predsa vychádzajú z~toho istého kódu}
+\textbf{autor-dátum: autor aj editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Kováč}, 2016) [\dots]}}\\
+KOVÁČ, Peter, \textcolor{Green}{2016}. \emph{Veľdielo}. \textcolor{Red}{Ed. NOVÁK, Ján}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{autor-dátum: iba editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Novák}, 2016) [\dots]}}\\
+\textcolor{Red}{NOVÁK, Ján (ed.)}, \textcolor{Green}{2016}. \emph{Veľdielo}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{číslované odkazy}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~[1] [\dots]}}\\
+KOVÁČ, Peter. \emph{Veľdielo}. Ed. NOVÁK, Ján. Miesto: Nakladateľstvo, \textcolor{Green}{2016}
 \end{frame}
 
 % \begin{refsection} % biblatex feature to separate bibliographies
@@ -227,7 +246,6 @@ Pôvodný stav
     \end{itemize}
   \end{itemize}
 \item rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
-\item globálny prínos
 \end{itemize}
 \end{frame}
 
