@@ -1,0 +1,1 @@
+This bachelor's thesis aims to create a bibliography and citation style for the BibLaTeX package, complying with the ISO 690 international standard. The theoretical part of the thesis introduces the possibilities for typesetting the bibliography in the \LaTeX\ document preparation system and describes selected citation tools conforming to the respective standard.
