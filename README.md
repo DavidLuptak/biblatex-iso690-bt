@@ -5,5 +5,7 @@ This bachelor's thesis aims to create a bibliography and citation style for the 
 
 > Cieľom tejto bakalárskej práce je pripraviť bibliografický a citačný štýl pre balík BibLaTeX, ktorý bude dodržiavať pravidlá normy ISO 690. V teoretickej časti práce sú predstavené možnosti sadzby bibliografie v systéme LaTeX a popísané vybrané citačné produkty s podporou danej normy.
 
-## Related project
-[biblatex-iso690](https://github.com/michal-h21/biblatex-iso690)
+## Related projects
+
+* the package `biblatex-iso690` available at <https://github.com/michal-h21/biblatex-iso690>
+* the testsuite `biblatex-iso690-testsuite` available at <https://github.com/DavidLuptak/biblatex-iso690-testsuite>
