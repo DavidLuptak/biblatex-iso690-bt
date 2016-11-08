@@ -1,0 +1,163 @@
+\PassOptionsToPackage{dvipsnames}{xcolor} % have more already defined colors
+\documentclass{beamer}
+\usetheme[
+  university=mu,
+  faculty=fi,
+  logoLocale=czech,
+]{fibeamer}
+
+%\usecolortheme{crane}
+\setbeamercovered{transparent} %% Watermarked items..
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+%\frametitle{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[slovak]{babel}
+\usepackage{minted}  %% Highlighted source code for LaTeX
+
+\newcommand{\cmd}[1]{\mintinline{latex}{#1}}
+
+\usepackage{csquotes}  %% Context sensitive quotation facilities
+\usepackage[style=iso-numeric,shortnumeration]{biblatex}
+
+\addbibresource{../resource.bib}
+
+\author{Dávid Lupták}
+\title{ČSN ISO 690:2011 styl pro BibLaTeX}
+\subtitle{Obhajoba projektu}
+% \date{2016-11-10}
+% \institute[FI MU]{Fakulta informatiky\\Masarykova Univerzita, Brno}
+
+% reset counter for every section
+\makeatletter
+\@addtoreset{footnote}{section}
+\makeatother
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Anotácia projektu}
+Cílem projektu je připravit bibliografický styl pro balík BibLaTeX, který bude odpovídat nové citační normě ČSN ISO 690:2011. Bibliografický styl bude začleněn do balíku fithesis3 pro sazbu závěrečných prací na Masarykově univerzitě, který se tak stane snáze použitelným na fakultách a ústavech, které dodržování normy při přípravě závěrečných prací vyžadují.
+\end{frame}
+
+\frame{\tableofcontents}
+
+\section{Norma ISO 690}
+
+\begin{frame}{Čo sa zmenilo v~norme ISO 690}
+\framesubtitle{Oproti predchádzajúcim verziám}
+\[
+\underbrace{\phantom{\text{-2}}\strut\text{\Large{ISO 690:1987 + ISO 690-2:1997}}}_\text{}
+\]
+\begin{center}
+\LARGE{ISO 690:2010}
+\end{center}
+\begin{center}
+\textcolor{Gray}{ČSN ISO 690:2011, STN ISO 690:2012, DIN ISO 690:2013, etc.}
+\end{center}
+\end{frame}
+
+\begin{frame}{Čo sa zmenilo v~norme ISO 690~\cite{Bratkova2010}}
+\framesubtitle{Oproti predchádzajúcim verziám}
+\begin{itemize}
+  \item Nové druhy informačných zdrojov
+    \begin{itemize}
+    \item kartografické materiály
+    \item audiovizuálne diela
+    \item etc.
+    \end{itemize}
+  \item Explicitné zdelenie, že norma nepredpisuje konkrétny štýl odkazu alebo citácie
+  \item Chýbajúce termíny, napr. \emph{kapitola}
+  \item Podrobnejší výklad pravidiel tvorby jednotlivých bibl. údajov
+    \begin{itemize}
+      \item zmenené alebo doplnené
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Balík biblatex-iso690}
+
+\begin{frame}{Referenčná implementácia \textsf{biblatex-iso690}\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690}}}
+\framesubtitle{Autorom Michal Hoftich}
+Pôvodný stav
+\begin{itemize}
+\item pridržiavanie sa predošlých verzií noriem % edícia (nepovinné), ' : ' (oddeľovač prvkov, nie interpunkčné znamienko), anon (nemá sa používať termín "Anonym"), miesto vydania + nakladateľ (nepovinné)
+\item chybné poradie prvkov citácie % štandardné identifikátory, číslovanie a stránkovanie
+\item (nadbytočná/chýbajúca) interpunkcia % redundantná v prípade chýbajúcich údajov
+\item chýbajúca podpora niektorých typov dokumentov % patent, thesis
+\item chýbajúca podpora niektorých vyžadovaných prvkov citácie % edícia + číslo edície
+\item chýbajúca sekundárna zodpovednosť % editori, prekladatelia
+\item zastaraný kód % nedodržiavanie aktuálnych konvencií biblatexu
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Kompletná reimplementácia}
+\framesubtitle{Balíka \textsf{biblatex-iso690}}
+Makrá, príkazy a definície:
+\begin{itemize}
+\item výpis jednotlivých elementov v~správnom poradí
+\item spracovávanie a formátovanie bibliografických údajov
+\item viacjazyčnosť citácie
+\item ďalej prispôsobiteľné
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Začlenenie do balíka fithesis3}
+\end{frame}
+
+\section{Príklady}
+
+\begin{frame}{Príklady pred a po.}
+\end{frame}
+
+\begin{frame}{Príklady netradičných dokumentov (bib záznam)}
+\end{frame}
+
+
+\section{Záver}
+
+\begin{frame}{Výsledky}
+\begin{itemize}
+\item kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
+\item dokumentácia v~českom i anglickom jazyku
+\item oficiálne začlenenie a vydanie štýlu
+  \begin{itemize}
+  \item do šablóny na sadzbu záverečných kvalifikačných prác \textsf{fithesis3}\footnote[frame]{\url{https://www.ctan.org/pkg/fithesis}}
+  \item na medzinárodný archív CTAN\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex-iso690}}
+    \begin{itemize}
+    \item súčasťou \TeX\ Live 2016
+    \end{itemize}
+  \end{itemize}
+\item rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
+\end{itemize}
+\end{frame}
+
+
+\begin{darkframes}
+\begin{frame}[plain]{%
+  \mbox{}
+  \newcounter{thanksFrameNumber}
+  \setcounter{thanksFrameNumber}{\value{framenumber}}
+  \title{Ďakujem za pozornosť!}
+  \subtitle{}
+  \titlepage
+  \setcounter{framenumber}{\value{thanksFrameNumber}}
+}
+\end{frame}
+\end{darkframes}
+
+\end{document}
+
+% simple _template_ for q&a
+\begin{frame}{}
+\emph{}
+\medskip\par
+
+\end{frame}
