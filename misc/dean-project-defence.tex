@@ -27,6 +27,7 @@
 \usepackage[style=iso-numeric,shortnumeration]{biblatex}
 
 \addbibresource{../resource.bib}
+\addbibresource{reference_resource.bib}
 
 \author{Dávid Lupták}
 \title{ČSN ISO 690:2011 styl pro BibLaTeX}
@@ -100,26 +101,141 @@ Pôvodný stav
 
 \begin{frame}{Kompletná reimplementácia}
 \framesubtitle{Balíka \textsf{biblatex-iso690}}
-Makrá, príkazy a definície:
+Makrá, príkazy a definície
 \begin{itemize}
 \item výpis jednotlivých elementov v~správnom poradí
 \item spracovávanie a formátovanie bibliografických údajov
 \item viacjazyčnosť citácie
 \item ďalej prispôsobiteľné
 \end{itemize}
+
+Z~užívateľského pohľadu
+\begin{itemize}
+\item nové typy a polia záznamov
+\item nové lokalizačné reťazce
+\item nové voľby balíka na zmenu výstupného formátu
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Začlenenie do balíka fithesis3}
+\begin{frame}{Integrácia do balíka fithesis3}
+\framesubtitle{V~spolupráci s~hlavným vývojárom tohoto balíka -- Vítom Novotným}
+Zahrnutie do šablóny fithesis3 spočíva v~nasledovných krokoch
+\begin{itemize}
+\item nový kľúč `bib` vo voľbách balíka fithesis3, do ktorého sa špecifikujú bibliografické databázy (.bib súbory)
+\item následné automatické zavedenie metódy citovania podľa zvolenej fakulty
+\item automatická sadzba zoznamu bibliografických citácií na konci dokumentu
+\end{itemize}
+
+Pozn.: samozrejme je možná ručná špecifikácia vyššie uvedeného
+\end{frame}
+
+\begin{frame}[fragile]{MWE pre biblatex-iso690 obecne}
+\begin{minted}{latex}
+\documentclass{...}
+\usepackage[style=iso-authoryear]{biblatex}
+\addbibresource{<bibliografická-databáza.bib>}
+...
+\begin{document}
+\parencite{...}
+\parencite*{...}
+...
+\printbibliography
+\end{document}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{MWE pre fithesis3}
+\begin{minted}{latex}
+\documentclass{fithesis3}
+\thesissetup{
+  ...
+  bib = {<bibliografická-databáza.bib>}
+  ...
+}
+...
+\begin{document}
+\cite{...}
+...
+\end{document}
+\end{minted}
 \end{frame}
 
 \section{Príklady}
 
-\begin{frame}{Príklady pred a po.}
+\begin{frame}{Ukážka}
+\framesubtitle{Citácia vygenerovaná pôvodnou a aktuálnou verziou}
+\dots Názov~[online]. \textcolor{Red}{Č. edície.} Miesto: Nakladateľstvo, 2016 [cit. 2016-11-08], s. 31--47. \textcolor{Red}{Edícia.} Url: <cesta>. ISBN
+\[
+\Downarrow
+\]
+\dots Názov~[online]. Miesto: Nakladateľstvo, 2016, s. 31--47 [cit. 2016-11-08]. \textcolor{Green}{Edícia, č. edície.} ISBN. Dostupné z~<url>
 \end{frame}
 
-\begin{frame}{Príklady netradičných dokumentov (bib záznam)}
+\begin{frame}[fragile]{Ukážky vybraných typov záznamov}
+\fullcite{Ryan1998}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@misc{Ryan1998,
+  title = {Saving Private Ryan},
+  howpublished = {DVD},
+  editora = {Steven Spielberg},
+  editoratype = {Réžia},
+  publisher = {Paramount},
+  date = {1998}
+}
+\end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+\fullcite{LibreOfficeLatest}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@misc{LibreOfficeLatest,
+  author = {Ruediger Timm and others},
+  title = {Libre Office},
+  howpublished = {softvér},
+  publisher = {The Document Foundation},
+  date = {2000/2016},
+  version = {5.2.3},
+  url = {https://www.libreoffice.org/download/libreoffice-fresh},
+  note = {Požiadavky na systém: Linux kernel verzie 2.6.18 alebo vyššej...}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\fullcite{Groll2008}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@patent{Groll2008,
+  author = {Clad Metals LLC Canonsburg, PA 15317 (US)},
+  title = {Method of making a copper core five-ply composite and...},
+  editora = {Groll, W.A.},
+  editoratype = {Vynálezca:},
+  publisher = {Google Patents},
+  classification = {EP 1 094 937 B1},
+  type = {patenteu},
+  url = {https://encrypted.google.com/patents/EP1094937B1}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\fullcite{Luptak2016}
+\newline
+\begin{minted}[fontsize=\scriptsize]{tex}
+@thesis{Luptak2016,
+AUTHOR = "Lupták, Dávid",
+TITLE = "Sazba bibliografie dle normy ISO 690",
+HOWPUBLISHED = "online",
+URLDATE = "2016-06-14",
+TYPE = "Bakalářská práce",
+SCHOOL = "Masarykova univerzita, Fakulta informatiky, Brno",
+SUPERVISOR = "Petr Sojka",
+URL = "http://is.muni.cz/th/422640/fi_b/",
+}
+\end{minted}
+\end{frame}
 
 \section{Záver}
 
@@ -136,6 +252,7 @@ Makrá, príkazy a definície:
     \end{itemize}
   \end{itemize}
 \item rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
+\item \textcolor{Gray}{od komunity pribúdajú nové jazykové lokalizácie}
 \end{itemize}
 \end{frame}
 
