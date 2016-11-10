@@ -19,6 +19,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[slovak]{babel}
+\usepackage{amssymb}  %% Typesetting \checkmark
 \usepackage{minted}  %% Highlighted source code for LaTeX
 
 \newcommand{\cmd}[1]{\mintinline{latex}{#1}}
@@ -26,8 +27,10 @@
 \usepackage{csquotes}  %% Context sensitive quotation facilities
 \usepackage[style=iso-numeric,shortnumeration]{biblatex}
 
-\addbibresource{../resource.bib}
 \addbibresource{reference_resource.bib}
+
+% Demo showing how the iso style could be easily switched
+% \url{https://www.overleaf.com/6955878njcdygbdnggw}
 
 \author{Dávid Lupták}
 \title{ČSN ISO 690:2011 styl pro BibLaTeX}
@@ -65,7 +68,7 @@ Cílem projektu je připravit bibliografický styl pro balík BibLaTeX, který b
 \end{center}
 \end{frame}
 
-\begin{frame}{Čo sa zmenilo v~norme ISO 690~\cite{Bratkova2010}}
+\begin{frame}{Čo sa zmenilo v~norme ISO 690}
 \framesubtitle{Oproti predchádzajúcim verziám}
 \begin{itemize}
   \item Nové druhy informačných zdrojov
@@ -129,21 +132,6 @@ Zahrnutie do šablóny fithesis3 spočíva v~nasledovných krokoch
 Pozn.: samozrejme je možná ručná špecifikácia vyššie uvedeného
 \end{frame}
 
-\begin{frame}[fragile]{MWE pre biblatex-iso690 obecne}
-\begin{minted}{latex}
-\documentclass{...}
-\usepackage[style=iso-authoryear]{biblatex}
-\addbibresource{<bibliografická-databáza.bib>}
-...
-\begin{document}
-\parencite{...}
-\parencite*{...}
-...
-\printbibliography
-\end{document}
-\end{minted}
-\end{frame}
-
 \begin{frame}[fragile]{MWE pre fithesis3}
 \begin{minted}{latex}
 \documentclass{fithesis3}
@@ -160,6 +148,21 @@ Pozn.: samozrejme je možná ručná špecifikácia vyššie uvedeného
 \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]{MWE pre biblatex-iso690 obecne}
+\begin{minted}{latex}
+\documentclass{...}
+\usepackage[style=iso-authoryear]{biblatex}
+\addbibresource{<bibliografická-databáza.bib>}
+...
+\begin{document}
+\parencite{...}
+\parencite*{...}
+...
+\printbibliography
+\end{document}
+\end{minted}
+\end{frame}
+
 \section{Príklady}
 
 \begin{frame}{Ukážka}
@@ -169,6 +172,25 @@ Pozn.: samozrejme je možná ručná špecifikácia vyššie uvedeného
 \Downarrow
 \]
 \dots Názov~[online]. Miesto: Nakladateľstvo, 2016, s. 31--47 [cit. 2016-11-08]. \textcolor{Green}{Edícia, č. edície.} ISBN. Dostupné z~<url>
+\end{frame}
+
+\begin{frame}{Ukážka}
+\framesubtitle{Rôzne metódy citovania a absencia údajov}
+\textbf{autor-dátum: autor aj editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Kováč}, 2016) [\dots]}}\\
+KOVÁČ, Peter, \textcolor{Green}{2016}. \emph{Veľdielo}. \textcolor{Red}{Ed. NOVÁK, Ján}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{autor-dátum: iba editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Novák}, 2016) [\dots]}}\\
+\textcolor{Red}{NOVÁK, Ján (ed.)}, \textcolor{Green}{2016}. \emph{Veľdielo}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{číslované odkazy}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~[1] [\dots]}}\\
+KOVÁČ, Peter. \emph{Veľdielo}. Ed. NOVÁK, Ján. Miesto: Nakladateľstvo, \textcolor{Green}{2016}
 \end{frame}
 
 \begin{frame}[fragile]{Ukážky vybraných typov záznamov}
@@ -241,9 +263,14 @@ URL = "http://is.muni.cz/th/422640/fi_b/",
 
 \begin{frame}{Výsledky}
 \begin{itemize}
-\item kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
-\item dokumentácia v~českom i anglickom jazyku
-\item oficiálne začlenenie a vydanie štýlu
+\item[\checkmark] kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
+\item[\checkmark] spĺňanie pravidiel normy ISO 690
+\item[\checkmark] dokumentácia v~českom i anglickom jazyku
+  \begin{itemize}
+    \item ukážky použitia
+    \item rady a varovania
+  \end{itemize}
+\item[\checkmark] oficiálne začlenenie a vydanie štýlu
   \begin{itemize}
   \item do šablóny na sadzbu záverečných kvalifikačných prác \textsf{fithesis3}\footnote[frame]{\url{https://www.ctan.org/pkg/fithesis}}
   \item na medzinárodný archív CTAN\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex-iso690}}
@@ -251,8 +278,15 @@ URL = "http://is.muni.cz/th/422640/fi_b/",
     \item súčasťou \TeX\ Live 2016
     \end{itemize}
   \end{itemize}
-\item rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
-\item \textcolor{Gray}{od komunity pribúdajú nové jazykové lokalizácie}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Výsledky}
+\begin{itemize}
+  \item[\checkmark] rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
+  \item[\checkmark] pribúdajúce pull requesty od komunity (napr. jazykové lokalizácie)
+  \item[\checkmark] 47 označení \uv{obľúbené} projektu na GitHub repozitári
+  \item[\checkmark] 17 forkov projektu na GitHub repozitári
 \end{itemize}
 \end{frame}
 
