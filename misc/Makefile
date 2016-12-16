@@ -1,4 +1,4 @@
-SOURCE=dean-project-defence
+SOURCE=cstug-conference
 TEX=pdflatex -shell-escape
 
 .PHONY: all implode pdf clean

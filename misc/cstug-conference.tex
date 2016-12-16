@@ -1,0 +1,503 @@
+\PassOptionsToPackage{dvipsnames}{xcolor} % have more already defined colors
+\documentclass{beamer}
+\usetheme[
+  university=mu,
+  faculty=fi,
+  logoLocale=czech,
+]{fibeamer}
+
+%\usecolortheme{crane}
+\setbeamercovered{transparent} %% Watermarked items..
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+%\frametitle{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[slovak]{babel}
+\usepackage{amssymb}  %% Typesetting \checkmark
+\usepackage{minted}  %% Highlighted source code for LaTeX
+\usepackage{tabularx}  %% Tabulars with adjustable-width columns
+\usepackage{booktabs}  %% Publication quality tables in LaTeX -- \toprule, etc.
+
+\newcommand{\cmd}[1]{\mintinline{latex}{#1}}
+
+\usepackage{csquotes}  %% Context sensitive quotation facilities
+\usepackage[style=iso-numeric,shortnumeration,pagetotal,thesisinfoinnotes=false]{biblatex}
+
+\addbibresource{reference_resource.bib}
+
+% Demo showing how the iso style could be easily switched
+% \url{https://www.overleaf.com/6955878njcdygbdnggw}
+
+\author{Dávid Lupták}
+\title{Sadzba bibliografie podľa normy ISO 690 v~systéme LaTeX}
+\subtitle{Valná hromada CSTUG 2016}
+% \date{2016-12-17}
+% \institute[FI MU]{Fakulta informatiky\\Masarykova Univerzita, Brno}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% biblatex environment adjustment
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+
+\renewcommand\MethodFormat{%
+  \printtext[labelnumberwidth]{%
+    \printfield{labelprefix}%
+    \printfield{labelnumber}}}%
+
+\defbibenvironment{bibliography}
+  {\list%
+     {\MethodFormat}%
+     {\setlength{\leftmargin}{7.5mm}%
+      \setlength{\itemindent}{0mm}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}
+      %\raggedright}
+      }%
+  {\endlist}%
+  {\item}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% reset counter for every section
+\makeatletter
+\@addtoreset{footnote}{section}
+\makeatother
+
+\begin{document}
+
+\frame{\titlepage}
+\frame{\tableofcontents}
+
+\section{Norma ISO 690}
+
+\begin{frame}{Norma ISO 690}
+Informace a dokumentace -- Pravidla pro bibliografické odkazy a citace informačních zdrojů
+\\
+\\
+Vydaná Medzinárodnou organizáciou pre normalizáciu (ISO)
+\\
+\\
+Jedna z~najčastejších pravidiel/metodických pokynov pre citovanie.
+\end{frame}
+
+\begin{frame}{Norma ISO 690}
+\framesubtitle{Terminológia}
+\begin{description}[citácia]
+\item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu na príslušnú bibliografickú citáciu
+\item[citácia] dáta popisujúce informačný zdroj alebo jeho časť, dostatočne presne a podrobne na to, aby mohol byť tento zdroj identifikovaný a bolo možné ho vyhľadať
+\end{description}
+\end{frame}
+
+\begin{refsection} % biblatex feature to separate bibliographies
+\begin{frame}{Terminológia na príklade}
+\framesubtitle{Podľa najnovšej verzie normy ČSN ISO 690:2011}
+\uv{\emph{[\dots] aj netriviálne deduktívne hry môžu byť vyriešené softvérovým nástrojom~\cite{Klimos2015minimal}, čo vedie k~záveru [\dots]}}
+\rule{\textwidth}{0.2pt}
+\printbibliography
+\end{frame}
+\end{refsection}
+
+\begin{frame}{Čo sa zmenilo v~norme ISO 690}
+\framesubtitle{Oproti predchádzajúcim verziám}
+\[
+\underbrace{\phantom{\text{-2}}\strut\text{\Large{ISO 690:1987 + ISO 690-2:1997}}}_\text{}
+\]
+\begin{center}
+\LARGE{ISO 690:2010}
+\end{center}
+\begin{center}
+\textcolor{Gray}{ČSN ISO 690:2011, STN ISO 690:2012, DIN ISO 690:2013, etc.}
+\end{center}
+\end{frame}
+
+\begin{frame}{Čo sa zmenilo v~norme ISO 690}
+\framesubtitle{Oproti predchádzajúcim verziám}
+\begin{itemize}
+  \item Nové druhy informačných zdrojov
+    \begin{itemize}
+    \item kartografické materiály
+    \item audiovizuálne diela
+    \item etc.
+    \end{itemize}
+  \item Explicitné zdelenie, že norma nepredpisuje konkrétny štýl odkazu alebo citácie
+  \item Chýbajúce termíny, napr. \emph{kapitola}
+  \item Podrobnejší výklad pravidiel tvorby jednotlivých bibl. údajov
+    \begin{itemize}
+      \item zmenené alebo doplnené
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Poradie prvkov citácie}
+\framesubtitle{Doporučené všeobecné poradie prvkov citácií}
+\begin{description}[miesto vydania]
+\item[mená tvorcov] ak sú k~dispozícii
+\item[rok] v~prípade citovania metódou \emph{autor-dátum}
+\item[názov] citovanej jednotky
+\item[typ nosiča] v~prípade potreby
+\item[vydanie] okrem prvého
+\item[miesto vydania] v~prípade viacerých rovnako významných miest sa z~nich uvádza len prvé
+\item[vydavateľ] v~prípade viacerých rovnako významných vydavateľov sa z~nich uvádza len prvý
+\end{description}
+\end{frame}
+
+\begin{frame}{Poradie prvkov citácie}
+\framesubtitle{Doporučené všeobecné poradie prvkov citácií}
+\begin{description}[štandardné identifikátory]
+\item[rok] v~prípade citovania metódou \emph{autor-dátum} sa už na tomto mieste neopakuje, s~výnimkou uvedenia presnejšieho dátumu
+\item[edícia] názov a číslo
+\item[číslovanie] v~rámci popisovanej jednotky
+\item[štandardné identifikátory] ISBN, ISSN, DOI,\dots
+\item[dostupnosť] prístup alebo umiestnenie
+\item[dodatočné informácie] relevantné pre účely špecifickej citácie
+\end{description}
+\end{frame}
+
+% \begin{frame}{Nejasné miesta a nepresnosti}
+
+% \end{frame}
+
+% \begin{frame}{Problémy}
+
+% \end{frame}
+
+\section{Balík biblatex-iso690}
+
+\begin{frame}{Existujúce riešenia}
+\framesubtitle{Alebo čo chýbalo\dots}
+
+\texttt{czechiso.bst}\\
+\texttt{*.csl}-based\\
+\texttt{OPmac-bib} plainTeX\\
+\\
+\texttt{biblatex-iso690}
+
+\end{frame}
+
+\begin{frame}{Referenčná implementácia \textsf{biblatex-iso690}}
+\framesubtitle{Autorom Michal Hoftich}
+\begin{itemize}
+\item vznik v~roku 2011
+\item autorom Michal Hoftich
+\item využitie balíka BibLaTeX
+\item pridržiavanie sa českých národných interpretácií
+\item \url{https://github.com/michal-h21/biblatex-iso690}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Referenčná implementácia \textsf{biblatex-iso690}\footnote[frame]{\url{https://github.com/michal-h21/biblatex-iso690}}}
+\framesubtitle{Autorom Michal Hoftich}
+Pôvodný stav
+\begin{itemize}
+\item pridržiavanie sa predošlých verzií noriem % edícia (nepovinné), ' : ' (oddeľovač prvkov, nie interpunkčné znamienko), anon (nemá sa používať termín "Anonym"), miesto vydania + nakladateľ (nepovinné)
+\item chybné poradie prvkov citácie % štandardné identifikátory, číslovanie a stránkovanie
+\item (nadbytočná/chýbajúca) interpunkcia % redundantná v prípade chýbajúcich údajov
+\item chýbajúca podpora niektorých typov dokumentov % patent, thesis
+\item chýbajúca podpora niektorých vyžadovaných prvkov citácie % edícia + číslo edície
+\item chýbajúca sekundárna zodpovednosť % editori, prekladatelia
+\item zastaraný kód % nedodržiavanie aktuálnych konvencií biblatexu
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Kompletná reimplementácia}
+\framesubtitle{Balíka \textsf{biblatex-iso690}}
+Makrá, príkazy a definície
+\begin{itemize}
+\item výpis jednotlivých elementov v~správnom poradí
+\item spracovávanie a formátovanie bibliografických údajov
+\item viacjazyčnosť citácie
+\item ďalej prispôsobiteľné
+\end{itemize}
+
+Z~užívateľského pohľadu
+\begin{itemize}
+\item nové typy a polia záznamov
+\item nové lokalizačné reťazce
+\item nové voľby balíka na zmenu výstupného formátu
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Výpis jednotlivých elementov v~správnom poradí}
+\framesubtitle{Citácia vygenerovaná pôvodnou a aktuálnou verziou}
+\dots Názov~[online]. \textcolor{Red}{Č. edície.} Miesto: Nakladateľstvo, 2016 [cit. 2016-11-08], s. 31--47. \textcolor{Red}{Edícia.} Url: <cesta>. ISBN
+\[
+\Downarrow
+\]
+\dots Názov~[online]. Miesto: Nakladateľstvo, 2016, s. 31--47 [cit. 2016-11-08]. \textcolor{Green}{Edícia, č. edície.} ISBN. Dostupné z~<url>
+\end{frame}
+
+\begin{frame}[fragile]{Spracovávanie a formátovanie bibliografických údajov}
+\begin{minted}{latex}
+\DeclareFieldFormat{howpublished}{\mkbibbrackets{#1}}
+\DeclareFieldFormat[online]{howpublished}{%
+  \iffieldundef{howpublished}
+    {\mkbibbrackets{online}}
+    {\mkbibbrackets{#1}}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}{Viacjazyčnosť citácie}
+Hlavný jazyk dokumentu
+\begin{itemize}
+\item jazyk, v~ktorom je dokument písaný
+\item balík \texttt{babel} %% \cite babel documentation
+  \begin{itemize}
+  \item \cmd{\usepackage[dutch,english]{babel}}
+  \item \cmd{\usepackage[main=english,dutch]{babel}}
+  \end{itemize}
+\item balík \texttt{polyglossia}
+  \begin{itemize}
+  \item \cmd{\usepackage{polyglossia}}\\\cmd{\setmainlanguage{english}}
+  \end{itemize}
+\end{itemize}
+
+Jazyk bibliografického záznamu
+\begin{itemize}
+\item jazyk prameňa informácií citovaného dokumentu
+\item \texttt{.bib} súbor: \cmd{langid = {english}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Viacjazyčnosť citácie}
+Hlavný jazyk dokumentu
+\begin{itemize}
+\item informácie o~dostupnosti %% \hfill dostupné z/available from
+\item dátum citovania %% \hfill cit./visited on
+\item role tvorcov %% \hfill ilustroval/ilustrated by
+\item spojky %% \hfill a/and
+\end{itemize}
+
+Jazyk bibliografického záznamu
+\begin{itemize}
+\item ročník %% \hfill ročník/volume
+\item vydanie %% \hfill vyd./ed.
+\item číslovanie %% \hfill č./no.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Nové typy a polia záznamov}
+\begin{table}[!htbp]
+\begin{tabularx}{\textwidth}{llX}
+  %\toprule
+  \textbf{Názov poľa} & \textbf{Typ záznamu} & \textbf{Popis}\\
+  \midrule
+  \texttt{supervisor}     & \texttt{thesis} & vedúci záverečnej kvalifikačnej práce\\
+  \texttt{classification} & \texttt{patent} & klasifikácia podľa patentového triedenia\\
+  \bottomrule
+\end{tabularx}
+\caption{Nové polia pre bibliografické údaje}
+\label{tab:newfields}
+\end{table}
+\end{frame}
+
+\begin{frame}{Nové lokalizačné reťazce}
+\begin{table}[!htbp]
+\begin{tabularx}{\textwidth}{lXXX}
+  %\toprule
+  \textbf{Reťazec} & \textbf{Anglicky} & \textbf{Česky} & \textbf{Slovensky}\\
+  \midrule
+  \texttt{at}           & {at} & {v} & {v}\\
+  \texttt{bysupervisor} & {supervised by} & {vedouc\'{i} pr\'{a}ce} & {ved\'{u}ci pr\'{a}ce}\\
+  \texttt{urlalso}      & {available also from} & {dostupn\'{e} tak\'{e} z} & {dostupn\'{e} tie\v{z} z}\\
+  \bottomrule
+\end{tabularx}
+\caption{Nové lokalizačné reťazce}
+\label{tab:newl10n}
+\end{table}
+\end{frame}
+
+\begin{frame}{Nové voľby balíka na zmenu výstupného formátu}
+\begin{itemize}
+  \item \cmd{spacecolon=[true|false]}
+    \begin{itemize}
+    \item Miesto : Nakladateľstvo
+    \item Miesto: Nakladateľstvo
+    \end{itemize}
+  \item \cmd{pagetotal=[true|false]}
+    \begin{itemize}
+    \item Miesto: Nakladateľstvo, 2008 [60 s.]
+    \item Miesto: Nakladateľstvo, 2008
+    \end{itemize}
+  \item \cmd{shortnumeration=[true|false]}
+    \begin{itemize}
+    \item \dots\ 2011, \textbf{32}(3), 289--301 [cit. 2016-05-14] \dots
+    \item \dots\ 2011, roč. 32, č.3, s. 289--301 [cit. 2016-05-14] \dots
+    \end{itemize}
+  \item \cmd{thesisinfoinnotes=[true|false]}
+  \begin{itemize}
+    \item \dots\ Dostupné z: <\dots>. BP. MU, FI, Brno. Vedúci práce Petr SOJKA
+    \item \dots\ BP. MU, FI, Brno. Vedúci práce Petr SOJKA. Dostupné z: <\dots>
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Príklady}
+
+\begin{frame}[fragile]{MWE pre biblatex-iso690 obecne}
+\begin{minted}{latex}
+\documentclass{...}
+\usepackage[style=iso-authoryear]{biblatex}
+\addbibresource{<bibliografická-databáza.bib>}
+...
+\begin{document}
+\parencite{...}
+\parencite*{...}
+...
+\printbibliography
+\end{document}
+\end{minted}
+\end{frame}
+
+\begin{frame}{Ukážka}
+\framesubtitle{Rôzne metódy citovania a absencia údajov}
+\textbf{autor-dátum: autor aj editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Kováč}, 2016) [\dots]}}\\
+KOVÁČ, Peter, \textcolor{Green}{2016}. \emph{Veľdielo}. \textcolor{Red}{Ed. NOVÁK, Ján}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{autor-dátum: iba editor}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~(\textcolor{Dandelion}{Novák}, 2016) [\dots]}}\\
+\textcolor{Red}{NOVÁK, Ján (ed.)}, \textcolor{Green}{2016}. \emph{Veľdielo}. Miesto: Nakladateľstvo
+
+\rule{\textwidth}{0.2pt}
+
+\textbf{číslované odkazy}\\
+\uv{\emph{[\dots] príslušný odkaz v~texte na toto dielo~[1] [\dots]}}\\
+KOVÁČ, Peter. \emph{Veľdielo}. Ed. NOVÁK, Ján. Miesto: Nakladateľstvo, \textcolor{Green}{2016}
+\end{frame}
+
+\begin{frame}[fragile]{Ukážky vybraných typov záznamov}
+\fullcite{Ryan1998}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@misc{Ryan1998,
+  title = {Saving Private Ryan},
+  howpublished = {DVD},
+  editora = {Steven Spielberg},
+  editoratype = {Réžia},
+  publisher = {Paramount},
+  date = {1998}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\fullcite{LibreOfficeLatest}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@misc{LibreOfficeLatest,
+  author = {Ruediger Timm and others},
+  title = {Libre Office},
+  howpublished = {softvér},
+  publisher = {The Document Foundation},
+  date = {2000/2016},
+  version = {5.2.3},
+  url = {https://www.libreoffice.org/download/libreoffice-fresh},
+  note = {Požiadavky na systém: Linux kernel verzie 2.6.18 alebo vyššej...}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\fullcite{Groll2008}
+\newline
+\begin{minted}[fontsize=\scriptsize]{latex}
+@patent{Groll2008,
+  author = {Clad Metals LLC Canonsburg, PA 15317 (US)},
+  title = {Method of making a copper core five-ply composite and...},
+  editora = {Groll, W.A.},
+  editoratype = {Vynálezca:},
+  publisher = {Google Patents},
+  classification = {EP 1 094 937 B1},
+  type = {patenteu},
+  url = {https://encrypted.google.com/patents/EP1094937B1}
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\fullcite{Luptak2016}
+\newline
+\begin{minted}[fontsize=\scriptsize]{tex}
+@thesis{Luptak2016,
+AUTHOR = "Lupták, Dávid",
+TITLE = "Sazba bibliografie dle normy ISO 690",
+HOWPUBLISHED = "online",
+URLDATE = "2016-06-14",
+TYPE = "Bakalářská práce",
+SCHOOL = "Masarykova univerzita, Fakulta informatiky, Brno",
+SUPERVISOR = "Petr Sojka",
+URL = "http://is.muni.cz/th/422640/fi_b/",
+}
+\end{minted}
+\end{frame}
+
+\section{Zhrnutie}
+
+\begin{frame}{Zhrnutie}
+\begin{itemize}
+\item[\checkmark] kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
+\item[\checkmark] spĺňanie pravidiel normy ISO 690
+\item[\checkmark] dokumentácia v~českom i anglickom jazyku
+  \begin{itemize}
+    \item ukážky použitia
+    \item rady a varovania
+  \end{itemize}
+\item[\checkmark] oficiálne začlenenie a vydanie štýlu
+  \begin{itemize}
+  \item do šablóny na sadzbu záverečných kvalifikačných prác \textsf{fithesis3}\footnote[frame]{\url{https://www.ctan.org/pkg/fithesis}}
+  \item na medzinárodný archív CTAN\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex-iso690}}
+    \begin{itemize}
+    \item súčasťou \TeX\ Live 2016
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Zhrnutie}
+\begin{itemize}
+  \item[\checkmark] rozšírenie balíka \textsf{biblatex}\footnote[frame]{\url{https://www.ctan.org/pkg/biblatex}} o~slovenskú lokalizáciu
+  \item[\checkmark] pribúdajúce pull requesty od komunity (napr. jazykové lokalizácie)
+  \item[\checkmark] 47 označení \uv{obľúbené} projektu na GitHub repozitári
+  \item[\checkmark] 17 forkov projektu na GitHub repozitári
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A čo ďalej}
+\begin{itemize}
+  \item diskusia o~rozšírení balíka o~metódy mimo ISO 690
+  \item reakcia na dynamicky sa vyvýjajúci balík BibLaTeX
+  \item rozšírenie dokumentácie (príp. wiki) o~\textit{style guide}
+  \item \dots
+\end{itemize}
+\end{frame}
+
+
+\begin{darkframes}
+\begin{frame}[plain]{%
+  \mbox{}
+  \newcounter{thanksFrameNumber}
+  \setcounter{thanksFrameNumber}{\value{framenumber}}
+  \title{Ďakujem za pozornosť!}
+  \subtitle{Q\&A}
+  \titlepage
+  \setcounter{framenumber}{\value{thanksFrameNumber}}
+}
+\end{frame}
+\end{darkframes}
+
+\end{document}
+
+% simple _template_ for q&a
+\begin{frame}{}
+\emph{}
+\medskip\par
+
+\end{frame}
