@@ -76,17 +76,28 @@
 \section{Norma ISO 690}
 
 \begin{frame}{Norma ISO 690}
-Informace a dokumentace -- Pravidla pro bibliografické odkazy a citace informačních zdrojů
-\\
-\\
-Vydaná Medzinárodnou organizáciou pre normalizáciu (ISO)
-\\
-\\
-Jedna z~najčastejších pravidiel/metodických pokynov pre citovanie.
+\begin{itemize}
+\item Informace a dokumentace -- Pravidla pro bibliografické odkazy a citace informačních zdrojů
+\item Vydaná Medzinárodnou organizáciou pre normalizáciu (ISO)
+\item Jedno z~najčastejších pravidiel/metodických pokynov pre citovanie
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Norma ISO 690}
-\framesubtitle{Terminológia}
+\begin{frame}{Verzie normy ISO 690}
+\framesubtitle{Historický vývoj}
+\[
+\underbrace{\phantom{\text{-2}}\strut\text{\Large{ISO 690:1987 + ISO 690-2:1997}}}_\text{}
+\]
+\begin{center}
+\LARGE{ISO 690:2010}
+\end{center}
+\begin{center}
+\textcolor{Gray}{ČSN ISO 690:2011, STN ISO 690:2012, DIN ISO 690:2013, etc.}
+\end{center}
+\end{frame}
+
+\begin{frame}{Terminológia}
+\framesubtitle{Podľa najnovšej verzie normy ČSN ISO 690:2011}
 \begin{description}[citácia]
 \item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu na príslušnú bibliografickú citáciu
 \item[citácia] dáta popisujúce informačný zdroj alebo jeho časť, dostatočne presne a podrobne na to, aby mohol byť tento zdroj identifikovaný a bolo možné ho vyhľadať
@@ -104,19 +115,6 @@ Jedna z~najčastejších pravidiel/metodických pokynov pre citovanie.
 
 \begin{frame}{Čo sa zmenilo v~norme ISO 690}
 \framesubtitle{Oproti predchádzajúcim verziám}
-\[
-\underbrace{\phantom{\text{-2}}\strut\text{\Large{ISO 690:1987 + ISO 690-2:1997}}}_\text{}
-\]
-\begin{center}
-\LARGE{ISO 690:2010}
-\end{center}
-\begin{center}
-\textcolor{Gray}{ČSN ISO 690:2011, STN ISO 690:2012, DIN ISO 690:2013, etc.}
-\end{center}
-\end{frame}
-
-\begin{frame}{Čo sa zmenilo v~norme ISO 690}
-\framesubtitle{Oproti predchádzajúcim verziám}
 \begin{itemize}
   \item Nové druhy informačných zdrojov
     \begin{itemize}
@@ -124,7 +122,7 @@ Jedna z~najčastejších pravidiel/metodických pokynov pre citovanie.
     \item audiovizuálne diela
     \item etc.
     \end{itemize}
-  \item Explicitné zdelenie, že norma nepredpisuje konkrétny štýl odkazu alebo citácie
+  \item Explicitné zdelenie, že norma nepredpisuje konkrétny štýl odkazu alebo citácie + zásada konzistencie etc.
   \item Chýbajúce termíny, napr. \emph{kapitola}
   \item Podrobnejší výklad pravidiel tvorby jednotlivých bibl. údajov
     \begin{itemize}
@@ -175,7 +173,7 @@ Jedna z~najčastejších pravidiel/metodických pokynov pre citovanie.
 \texttt{*.csl}-based\\
 \texttt{OPmac-bib} plainTeX\\
 \\
-\texttt{biblatex-iso690}
+\texttt{BibLaTeX}
 
 \end{frame}
 
@@ -265,6 +263,11 @@ Jazyk bibliografického záznamu
 \end{frame}
 
 \begin{frame}{Viacjazyčnosť citácie}
+\uv{\emph{\dots údaj by mal byť uvedený v~podobe, v~akej sa objavuje v~preferovanom prameni informácií citovaného dokumentu\dots}}
+\newline
+\end{frame}
+
+\begin{frame}{Viacjazyčnosť citácie}
 Hlavný jazyk dokumentu
 \begin{itemize}
 \item informácie o~dostupnosti %% \hfill dostupné z/available from
@@ -337,9 +340,21 @@ Jazyk bibliografického záznamu
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Predefinovanie v~preambule dokumentu}
+\begin{itemize}
+\item \cmd{\renewcommand\multinamedelim{\addcomma\space}}
+  \begin{itemize}
+  \item PRIEZVISKO, Meno\underline{, }PRIEZVISKO, Meno
+  \end{itemize}
+\item \cmd{\let\lastnameformat=\textsc}
+\item etc.
+\end{itemize}
+
+\end{frame}
+
 \section{Príklady}
 
-\begin{frame}[fragile]{MWE pre biblatex-iso690 obecne}
+\begin{frame}[fragile]{MWE pre biblatex-iso690}
 \begin{minted}{latex}
 \documentclass{...}
 \usepackage[style=iso-authoryear]{biblatex}
@@ -444,7 +459,7 @@ URL = "http://is.muni.cz/th/422640/fi_b/",
 \begin{frame}{Zhrnutie}
 \begin{itemize}
 \item[\checkmark] kompletná reimplementácia referenčnej implementácie balíka \textsf{biblatex-iso690}
-\item[\checkmark] spĺňanie pravidiel normy ISO 690
+\item[\checkmark] spĺňanie pravidiel poslednej verzie normy ISO 690
 \item[\checkmark] dokumentácia v~českom i anglickom jazyku
   \begin{itemize}
     \item ukážky použitia
@@ -470,9 +485,9 @@ URL = "http://is.muni.cz/th/422640/fi_b/",
 \end{itemize}
 \end{frame}
 
-\begin{frame}{A čo ďalej}
+\begin{frame}{Čo ďalej}
 \begin{itemize}
-  \item diskusia o~rozšírení balíka o~metódy mimo ISO 690
+  \item diskusia o~rozšírení balíka o~metódy citovania mimo ISO 690
   \item reakcia na dynamicky sa vyvýjajúci balík BibLaTeX
   \item rozšírenie dokumentácie (príp. wiki) o~\textit{style guide}
   \item \dots
