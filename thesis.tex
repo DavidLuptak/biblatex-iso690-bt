@@ -480,7 +480,7 @@ Implementácia programu JabRef v~jazyku Java sa z~pohľadu funkcionality v~mnoho
 \begin{description}
 \item[CurrentDate] dáva na výstup aktuálny čas, bez zadania argumentu vo formáte \textsc{yyyy.mm.dd hh:mm:ss z}, uvedením argumentu sa tento formát môže prispôsobiť podľa zadaného textového reťazca
 \item[JournalAbbreviator] skracuje vstupný text podľa dostupného zoznamu skratiek časopisov
-\item[Ordinal] nahradzuje základnú číslovku rádovou číslovkou
+\item[Ordinal] nahradzuje základnú číslovku radovou číslovkou
 \item[ToUpperCase] zmení všetky znaky daného reťazca na verzálky
 \end{description}
 
@@ -617,7 +617,7 @@ Pole \texttt{option} dokáže spracovať nasledovné voľby:
   \item[edprint:\{<value>\}] text na výstup namiesto zoznamu editorov (môže byť použité makro \verb|\ED| na výpis zoznamu editorov)
   \item[titlepost:\{<value>\}] text na výstup za názvom
   \item[yearprint:\{<value>\}] text na výstup namiesto numerickej hodnoty roku (môže byť použité makro \verb|\YEAR| na výpis roku)
-  \item[ednprint:\{<value>\}] text na výstup namiesto numerickej hodnoty vydania (môže byť použité makro \verb|\ED| na výpis vydania)
+  \item[ednprint:\{<value>\}] text na výstup namiesto numerickej hodnoty vydania (môže byť použité makro \verb|\EDN| na výpis vydania)
   \item[urlalso] použitie frázy \textit{dostupné tiež z} namiesto \textit{dostupné z}, resp. iného jazykového ekvivalentu
   \item[unpublished] označenie nakladateľských údajov ako nepovinných
   \item[nowarn] označenie všetkých údajov ako nepovinných
@@ -634,7 +634,7 @@ option = "titlepost:{Dodatočný názov}",
 
 \begin{enumerate}
 \item uvedením dodatočného názvu do poľa \texttt{title} nie je možné dosiahnuť požadované, nakoľko tento dodatočný názov musí byť vypísaný iným rezom písma
-\item takýto výpis sa približuje odporúčaniu výkladu normy, avšak tá naviac odporúča dodatočné, doplňujúce a iné informácie uvádzať v~hranatých zátvorkách -- To bez ďalšieho zásahu do použitých makier nie je možné, konkrétne z~dôvodu nadbytočného vypisovania interpunkcie hneď za názvom a podnázvom
+\item takýto výpis sa približuje odporúčaniu výkladu normy, avšak tá naviac odporúča dodatočné, doplňujúce a iné informácie uvádzať v~hranatých zátvorkách -- to bez ďalšieho zásahu do použitých makier nie je možné, konkrétne z~dôvodu nadbytočného vypisovania interpunkcie hneď za názvom a podnázvom
 \end{enumerate}
 
 Pole \texttt{ednote} slúži na uvedenie vedľajších tvorcov alebo na rôzne doplňujúce informácie. Bežne sa tu môžu vyskytnúť údaje, ktoré nemožno jednoducho algoritmizovať, preto je potrebné do tohoto poľa zadať údaje v~takej podobe, v~akej sa majú objaviť na výstupe. Typickým príkladom môžu byť informácie o~prekladateľovi alebo pôvodcoch ďalších vydaní.
@@ -843,7 +843,7 @@ latex <dokument>[.tex]
 
 \section{Databáza bibliografických záznamov (\texttt{.bib} súbor)}\label{bib:file}
 
-Pre kompletnosť tejto kapitoly je žiadúce uviesť aj samotný formát bibliografickej databázy. Tá obsahuje jednotlivé bibliografické záznamy, každý takýto záznam má svoj typ, jedinečný identifikátor a (typicky) niekoľko dvojíc \emph{pole--hodnota} definijúce práve samotné bibliografické údaje. Všeobecný vzor takéhoto záznamu vyzerá nasledovne:
+Pre kompletnosť tejto kapitoly je žiadúce uviesť aj samotný formát bibliografickej databázy. Tá obsahuje jednotlivé bibliografické záznamy, každý takýto záznam má svoj typ, jedinečný identifikátor a (typicky) niekoľko dvojíc \emph{pole--hodnota} definujúce práve samotné bibliografické údaje. Všeobecný vzor takéhoto záznamu vyzerá nasledovne:
 
 \begin{minted}{latex}
 @<typ záznamu>{identifikátor,
@@ -889,7 +889,7 @@ V~roku 2011 vznikla prvá referenčná implementácia bibliografického a citač
 
 \section{Voľba vhodného nástroja} %Návrh
 
-Na základe prieskumu možností sadzby bibliografie v~systéme \LaTeX\ (kapitola \ref{ch:latex:bibliography}), existujúcich implementácií štýlov \emph{splňujúcich} normu \gls{iso} 690 (sekcia \ref{sec:iso690}), požiadaviek na začlenenie podpory sadzby bibliografie podľa normy \gls{iso} 690 do balíka \textsf{fithesis3}~\cite{novotny2015} a ďalších faktorov (o.\,i. kapitola \ref{ch:facilities:iso690}), sa pokračovalo vo vývoji referenčnej implementácie \textsf{biblatex-iso690} pre balík BibLaTeX.
+Na základe prieskumu možností sadzby bibliografie v~systéme \LaTeX\ (kapitola \ref{ch:latex:bibliography}), existujúcich implementácií štýlov \emph{splňujúcich} normu \gls{iso} 690 (sekcia \ref{sec:iso690}), požiadaviek na začlenenie podpory sadzby bibliografie podľa normy \gls{iso} 690 do balíka \textsf{fithesis3}~\cite{novotny2015} a ďalších faktorov (o.\,iného kapitola \ref{ch:facilities:iso690}), sa pokračovalo vo vývoji referenčnej implementácie \textsf{biblatex-iso690} pre balík BibLaTeX.
 
 \section{Implementácia}
 
@@ -897,7 +897,7 @@ Implementácia štýlu \textsf{biblatex-iso690} sa pridržiava konvencií tvorby
 
 \subsection{Základná štruktúra}
 
-Štruktúra pomenovania súborov vyčleňuje štyri základné typy. Bibliografické štýly sú definované v~súboroch s~koncovkou \texttt{.bbx}, citačné štýly v~súboroch s~koncovkou \texttt{.cbx}, súbory s~príponou \texttt{.dbx} slúžia na definovanie nových dátových modelov a lokalizačné súbory sú uložené v~súboroch s~koncovkou \texttt{.lbx}. Často používané makrá, definície, formáty a príkazy sú umiestnené v~jadre BibLaTeXu v~súbore \path{biblatex$_$.def}. Ich zdieľanie naprieč viacerými štýlmi je umožnené vďaka načítaniu tohoto súboru až následne po \texttt{.bbx} a \texttt{.cbx} súboroch.
+Štruktúra pomenovania súborov vyčleňuje štyri základné typy. Bibliografické štýly sú definované v~súboroch s~koncovkou \texttt{.bbx}, citačné štýly v~súboroch s~koncovkou \texttt{.cbx}, súbory s~príponou \texttt{.dbx} slúžia na definovanie nových dátových modelov a lokalizačné súbory sú uložené v~súboroch s~koncovkou \texttt{.lbx}. Často používané makrá, definície, formáty a príkazy sú umiestnené v~jadre BibLaTeXu v~súbore \path{biblatex_.def}. Ich zdieľanie naprieč viacerými štýlmi je umožnené vďaka načítaniu tohoto súboru až následne po \texttt{.bbx} a \texttt{.cbx} súboroch.
 
 Balík BibLaTeX poskytuje vo svojom základe aj niekoľko bibliografických a citačných štýlov. Vďaka príkazom \cmd{\RequireCitationStyle} a \cmd{\RequireBibliographyStyle} je možné na ich základe vytvoriť vlastné.
 
@@ -923,7 +923,7 @@ Konkrétnym príkladom môže byť zmena interpunkcie medzi hlavným názvom a p
 
 \noindent Takýto prístup prináša veľkú flexibilitu prispôsobovania interpunkcie priamo podľa požiadaviek tvorcu citácie, nakoľko samotná norma sa od toho taktiež dištancuje (viď~\ref{norm:consistency}).
 
-V~českom prostredí sa ako oddeľovač názvu a podnázvu zvykne používať dvojbodka. Pritom z~historických dôvodov bolo mylne zaužívané písať okolo tejto dvojbodky medzery z~oboch strán~\cite{Bratkova2010}. Takáto požiadavka však už nie je v~rámci balíka BibLaTeX jednoduché zaručiť, nakoľko má výborne implementovanú funkcionalitu prevencie bielych miest~\cite{biblatex:manual2016}. Riešením je pozmeniť \emph{jadro} BibLaTeXu, konkrétne makrá zabezpečujúce výpis interpunkcie. Nakoľko je písanie medzery pred dvojbodkou historickým prežitkom, táto možnosť je dostupná len pri voľbe balíka \texttt{spacecolon}. Prednastavene je táto voľba vypnutá.
+V~českom prostredí sa ako oddeľovač názvu a podnázvu zvykne používať dvojbodka. Pritom z~historických dôvodov bolo mylne zaužívané písať okolo tejto dvojbodky medzery z~oboch strán~\cite{Bratkova2010}. Takúto požiadavku však už nie je v~rámci balíka BibLaTeX jednoduché zaručiť, nakoľko balík má výborne implementovanú funkcionalitu prevencie bielych miest~\cite{biblatex:manual2016}. Riešením je pozmeniť \emph{jadro} BibLaTeXu, konkrétne makrá zabezpečujúce výpis interpunkcie. Nakoľko je písanie medzery pred dvojbodkou historickým prežitkom, táto možnosť je dostupná len pri voľbe balíka \texttt{spacecolon}. Prednastavene je táto voľba vypnutá.
 
 Nasleduje komplexná ukážka predefinovania oddeľovača názvu a podnázvu spolu s~rozlišovaním voľby \texttt{spacecolon}:
 
