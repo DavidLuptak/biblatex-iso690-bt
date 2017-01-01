@@ -1,14 +1,19 @@
 SOURCE=thesis
 TEX=pdflatex -shell-escape
 
-.PHONY: all remove_old_pdf pdf clean
+.PHONY: all implode pdf clean
 
-all: remove_old_pdf pdf clean
+# Use explicit order of the targets
+# to keep the directory clean.
+all:
+	$(MAKE) implode
+	$(MAKE) pdf
+	$(MAKE) clean
+
+# Use this pseudo-target for typesetting an output pdf file.
 pdf: ${SOURCE}.pdf
 
-remove_old_pdf:
-	-rm ${SOURCE}.pdf
-
+# Typeset an output pdf file.
 ${SOURCE}.pdf:
 	vlna ${SOURCE}.tex
 	$(TEX) ${SOURCE}.tex
@@ -18,5 +23,10 @@ ${SOURCE}.pdf:
 	$(TEX) ${SOURCE}.tex
 	$(TEX) ${SOURCE}.tex
 
+# Remove any auxiliary files.
 clean:
-	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lof *.lot *.toc *.acn *.acr *.alg *.xdy
+	-rm *.aux *.log *.bbl *.blg *.bcf *.run.xml *.out *.lot *.toc *.acn *.acr *.alg *.xdy
+
+# Remove any auxiliary files and the makeable pdf file.
+implode: clean
+	-rm ${SOURCE}.pdf
