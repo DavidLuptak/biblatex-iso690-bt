@@ -9,7 +9,7 @@
 
 % Hack for hyperref -- from csbulletin template
 % \mubytein 0
-\usepackage{hyperref}
+\usepackage[draft]{hyperref}
 \hypersetup{
     pdftitle = {Sadzba bibliografie podľa normy ISO 690 v~systéme
       \LaTeX{}},
@@ -17,17 +17,30 @@
     pdfkeywords = {ISO 690, bibliografia, citácie, biblatex}
 }
 
+\defbibenvironment{bibliography}
+  {\list%
+    {\MethodFormat}%
+      {\setlength{\leftmargin}{\bibhang}%
+       % \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemindent}{0cm}%
+       \setlength{\itemsep}{\bibitemsep}%
+       \setlength{\parsep}{\bibparsep}}%
+       \renewcommand*{\makelabel}[1]{\hss##1}
+       %\raggedright}
+      }%
+  {\endlist}%
+  {\item}%
+
 \setcounter{secnumdepth}{2}
 
 \begin{document}
 \selectlanguage{slovak}
 
 \title{Sadzba bibliografie podľa normy ISO 690 v~systéme \LaTeX}
-\EnglishTitle{Typesetting of bibliography in \LaTeX{} complying
-  with the international standard ISO 690}
+\EnglishTitle{Typesetting Bibliographies Compliant with
+  the International Standard ISO 690 in \LaTeX{}}
 \author{Dávid Lupták}
-\podpis{Dávid Lupták\\
-  \href{mailto:422640@mail.muni.cz}{422640@mail.muni.cz}\\
+\podpis{Dávid Lupták, \texttt{422640@mail.muni.cz}\\
   Fakulta informatiky, Masarykova univerzita, Brno}
 \maketitle
 
@@ -41,7 +54,7 @@ vznikol balíček, ktorý splňuje požiadavky normy v~plnom rozsahu
 a výrazne tak zjednodušuje citovanie informačných zdrojov.
 \end{abstract}
 
-\medskip\par\textbf{Kľúčové slová}\smallskip\par
+\medskip\par\textbf{Kľúčové slová:}
 ISO 690, bibliografia, citácie, biblatex
 
 \begin{refsection}
@@ -81,15 +94,15 @@ na iné články Zpravodaja~\cite{Hala2013}.
 
 K~úspešnému porozumeniu nasledovného textu je potrebné uviesť dva
 základné termíny, ktoré častokrát bývajú medzi sebou
-zamieňané\footnote{potvrdzuje to aj článok o~predstavení originálu
+zamieňané\footnote{Potvrdzuje to aj článok o~predstavení originálu
 normy, ktorý bol napísaný ešte pred vznikom českej verzie
 normy~\cite{Bratkova2010}; takisto interpretácia normy od tej istej
-autorky~\cite{Bratkova2011}}~\cite{csn:iso690:2011}:
+autorky~\cite{Bratkova2011}.}~\cite{csn:iso690:2011}:
 
 \begin{description}
-\item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu na
-  príslušnú bibliografickú citáciu
-\item[citácia] dáta popisujúce informačný zdroj alebo jeho časť,
+\item[odkaz] údaj v~texte alebo iný druh obsahu dokumentu odkazujúci
+  na príslušnú bibliografickú citáciu
+\item[citácia] dáta popisujúce informačný zdroj alebo jeho časť
   dostatočne presne a podrobne na to, aby mohol byť tento zdroj
   identifikovaný a bolo možné ho vyhľadať
 \end{description}
@@ -152,7 +165,7 @@ fakt, že takýto prístup nie je vhodný na sadzbu bibliografie
 rozsiahlejších diel~\cite{talbot2012}. Prináša tieto hlavné nevýhody:
 
 \begin{enumerate}
-\item vysádzané sú všetky citácie uvedené v~zozname prostredia
+\item vysádzané sú všetky citácie uvedené vnútri prostredia
   \texttt{thebibliography} (bez ohľadu na to, či boli vôbec
   citované)\label{item:1}
 \item každý záznam je nutné naformátovať jednotlivo (v~závislosti
@@ -183,16 +196,16 @@ preklad \TeX ovým kompilátorom).
 
 Preferovaným spôsobom práce s~bibliografiou pri sadzbe rozsiahlejších
 typov dokumentov je vytvorenie externej databázy bibliografických
-záznamov (\ref{bib:file}) a použitie externého programu na jej
-preklad~\cite{talbot2013}. Tento externý program zaistí správne
-zoradenie citácií (rieši problém~\ref{item:3}) a podľa použitého
-bibliografického štýlu\footnote{\label{footnote:ambiguous:style:names}
-často nazývaný aj citačný štýl, v~tomto kontexte by bolo možné
-hovoriť všeobecne o~formátovacom štýle} (rieši problém~\ref{item:2})
-vytvorí formátované \LaTeX{}ové prostredie \texttt{thebibliography}
-s~bibliografiou na vysadenie. Typickým zástupcom tohoto prístupu je
-\BibTeX{}, ktorého nespornou výhodou je práve spomínané oddelenie
-formy od obsahu.
+záznamov (pozri podsekciu \ref{bib:file}) a použitie externého
+programu na jej preklad~\cite{talbot2013}. Tento externý program
+zaistí správne zoradenie citácií (rieši problém~\ref{item:3}) a podľa
+použitého bibliografického
+štýlu\footnote{\label{footnote:ambiguous:style:names} často nazývaný
+aj citačný štýl, v~tomto kontexte by bolo možné hovoriť všeobecne
+o~formátovacom štýle} (rieši problém~\ref{item:2}) vygeneruje
+\LaTeX{}ové prostredie \texttt{thebibliography} s~bibliografiou na
+vysadenie. Typickým zástupcom tohoto prístupu je \BibTeX{}, ktorého
+nespornou výhodou je práve spomínané oddelenie formy od obsahu.
 
 % \subsubsection{Použitie}
 
@@ -272,7 +285,7 @@ je kompletnou reimplementáciou prostriedkov na prácu s~bibliografiou
 v~systéme \LaTeX{}, často označovaný aj ako nástupca
 \BibTeX{}u~\cite{ctan:bibtex,hufflen2011}. Na formátovanie záznamov
 používa výhradne \LaTeX ové makrá a na spracovanie bibliografickej
-databázy (\ref{bib:file}) a jednotlivých položiek nástroj
+databázy (pozri podsekciu \ref{bib:file}) a jednotlivých položiek nástroj
 Biber~\cite{biblatex:manual2016}.
 
 % \subsubsection{Použitie}
@@ -321,7 +334,7 @@ Balík BibLaTeX rieši množstvo problémov uvedených v~prípade
 \item flexibilné vytváranie nových štýlov
 \end{enumerate}
 
-\noindent Samozrejme, tento zoznam je len výňatok z~bohatej
+\noindent Samozrejme, toto je len výňatok z~bohatej
 funkcionality BibLaTeXu~\cite{biblatex:manual2016}. Dôkazom toho je
 aj minimálny počet nevýhod tohoto balíka. Za všetky je možné spomenúť
 nekompatibilitu medziformátu sadzby bibliografie s~pôvodným
@@ -348,7 +361,7 @@ latex <dokument>[.tex]
 
 \subsection{Databáza bibliografických záznamov (\texttt{.bib} súbor)}\label{bib:file}
 
-Pre kompletnosť tejto kapitoly je žiadúce uviesť aj samotný formát
+Pre kompletnosť tejto sekcie je žiadúce uviesť aj samotný formát
 bibliografickej databázy. Tá obsahuje jednotlivé bibliografické
 záznamy, každý takýto záznam má svoj typ, jedinečný identifikátor a
 (typicky) niekoľko dvojíc \emph{pole--hodnota} definujúce práve
@@ -397,8 +410,8 @@ XML)~\cite{hufflen2011,hufflen2008}.
 
 Spomedzi dostupných možností sadzby bibliografie v~systéme
 \LaTeX{}~\cite{talbot2013,Mittelbach2004} vychádza ako najlepšia
-voľba balík BibLaTeX s~nástrojom Biber na
-preklad~\cite{hufflen2011,biber:manual2016}.
+voľba balík BibLaTeX s~nástrojom
+Biber~\cite{hufflen2011,biber:manual2016}.
 
 
 \section{Existujúce riešenia pre ISO 690}
@@ -457,7 +470,7 @@ ISO 690. Vo všeobecnosti existuje pre jazyk CSL tento rad
 nevýhod~\cite{csl:styles}:
 
 \begin{itemize}
-\item nie je možné nastaviť formát hodnoty identifikátora
+\item nie je možné nastaviť formát bibliografických odkazov
 \item obmedzená podpora pre legislatívne štýly (Multilingual Zotero
   môže byť riešením)
 \item obmedzená podpora pre viacjazyčnosť citácií (Multilingual
@@ -478,7 +491,7 @@ je nadstavbou týchto makier, zaoberajúci sa práve sadzbou
 bibliografie. Oproti ostatným nástrojom však nepoužíva žiaden externý
 program, ale celú funkcionalitu rieši na úrovni \TeX{}ových makier.
 Autorom balíka je Petr Olšák a k~dispozícii je od roku 2015 v~rámci
-balíka \textit{csplain}.
+balíka \textsf{csplain}.
 
 % \subsubsection{Nové polia v~\texttt{.bib} súboroch}
 
@@ -486,17 +499,12 @@ OPmac-bib pracuje priamo s~\texttt{.bib} súbormi a je akousi
 nadstavbou a rozšírením nad starodávnym \BibTeX om. Využíva teda
 všetky typy a polia, ktoré sú dostupné v~\BibTeX{}u~a naviac prináša
 nové polia, ktoré sú v~dnešnej dobe nutnosťou (vo všeobecnosti ako
-aj pre štýl ISO 690). Ide napríklad o~polia
-
-\begin{center}
-\texttt{url},\enspace \texttt{doi}\enspace alebo\enspace \texttt{lang},
-\end{center}
-
-\noindent vďaka ktorým už nemusí autor \texttt{.bib} súboru vkladať
-tieto informácie do poľa \texttt{note}, ale do príslušných, na tento
-účel vytvorených, polí. Tým sa zvyšuje flexibilita a v~konečnom
-dôsledku aj možnosť korektného výpisu poradia údajov podľa aktuálnej
-verzie normy.
+aj pre štýl ISO 690). Ide napríklad o~polia \texttt{url},
+\texttt{doi} alebo \texttt{lang}, vďaka ktorým už nemusí autor
+\texttt{.bib} súboru vkladať tieto informácie do poľa \texttt{note},
+ale do príslušných, na tento účel vytvorených, polí. Tým sa zvyšuje
+flexibilita a v~konečnom dôsledku aj možnosť korektného výpisu
+poradia údajov podľa aktuálnej verzie normy.
 
 Tým, že balíček OPmac-bib úplne obchádza použitie externého programu
 a číta \texttt{.bib} databázu priamo pomocou makier \TeX{}u, zvyšuje
@@ -509,11 +517,7 @@ z~tohoto hľadiska rieši vskutku elegantne, obdobne ako balík
 BibLaTeX. Poskytuje univerzálne polia, do ktorých možno uvádzať
 nielen bibliografické údaje, ale zároveň aj makrá používané na výpis
 prvkov a tým docieliť požadovanú podobu výstupu. Ide napríklad
-o~polia
-
-\begin{center}
-\texttt{option}\enspace a\enspace \texttt{ednote}.
-\end{center}
+o~polia \texttt{option} a \texttt{ednote}.
 
 Pole \texttt{option} je možné použiť napríklad v~prípade potreby
 uvedenia dodatočného názvu diela, jeho prekladu apod. Vďaka takýmto
@@ -608,9 +612,10 @@ numerická metóda (forma číselného odkazu). V~balíku
 \textsf{biblatex-iso690} sú tieto metódy dostupné ako samostatné
 štýly pod názvom \texttt{iso-authoryear}, resp. \texttt{iso-numeric}.
 Tieto štýly sa špecifikujú už v~preambule dokumentu pri zavádzaní
-balíka BibLaTeX, napr.:
-
-\cmdmint{\usepackage[style=iso-numeric]{biblatex}}
+balíka BibLaTeX, napr.
+\begin{minted}{latex}
+\usepackage[style=iso-numeric]{biblatex}.
+\end{minted}
 
 \subsection{Voľby balíka -- prispôsobiteľnosť}
 
@@ -668,7 +673,7 @@ v~nasledovných krokoch:
 \item automatická sadzba zoznamu bibliografických citácií na konci
   dokumentu
 \item samozrejme je možná ručná špecifikácia vyššie uvedeného
-  (viď.~\ref{biblatex:typesetting})
+  (pozri podsekciu~\ref{biblatex:typesetting})
 \end{itemize}
 
 \begin{minted}[frame=lines]{latex}
@@ -690,8 +695,7 @@ Ako už bolo spomenuté, pre systém \LaTeX{} doposiaľ neexistovala
 žiadna oficiálna podpora tvorby bibliografických odkazov a citácií
 podľa normy ISO 690. Až revíziou balíka \textsf{biblatex-iso690}
 vznikla jeho oficiálna podoba, ktorá je teraz dostupná na
-medzinárodnom archíve CTAN ako balík
-\href{http://ctan.org/pkg/biblatex-iso690}{\textsf{biblatex-iso690}}.
+medzinárodnom archíve CTAN ako balík \textsf{biblatex-iso690}.
 Zároveň je pod rovnakým menom dostupný aj v~\TeX{}ovej distribúcii
 \TeX{} Live 2016.
 
@@ -707,9 +711,9 @@ iniciálnej implementácii v~roku 2011 dočkal kompletnej
 reimplementácie dodržujúc pravidlá poslednej revízie normy ISO 690.
 Bibliografické citácie uvedené v~tomto článku sú vysádzané za
 použitia implementovaného balíka \textsf{biblatex-iso690}, môžu teda
-slúžiť ako referenčný \nameref{biblist}.
+slúžiť ako referenčný zoznam bibliografických citácií.
 
-\printbibliography[title={Zoznam bibliografických citácií\label{biblist}}]
+\printbibliography[title={Zoznam bibliografických citácií}]
 
 \end{refsection}
 
@@ -736,7 +740,7 @@ standard and thus greatly simplifies the way of typesetting the
 bibliography of all kinds of information resources.
 \end{summary}
 
-\keywords:
+\medskip\par\noindent\textbf{Keywords:}
 ISO 690, bibliography, reference, citation, biblatex
 
 \end{document}
