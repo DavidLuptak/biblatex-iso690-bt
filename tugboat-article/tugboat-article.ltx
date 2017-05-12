@@ -1,0 +1,677 @@
+% This template is public domain.
+\documentclass{ltugboat}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[breaklinks,hidelinks]{hyperref}
+\else
+\usepackage{url}
+\fi
+
+% non-ASCII characters needed
+\usepackage[utf8]{inputenc}
+
+% Bibliography contains Slovak language
+\usepackage[slovak]{babel}
+
+% Bibliography setup.
+\usepackage[style=iso-numeric]{biblatex}
+\addbibresource{../resource.bib}
+
+% Define command for BibLaTeX
+\newcommand\BibLaTeX{\textsc{Bib}\LaTeX}
+
+%%% Start of metadata %%%
+
+\title{Typesetting Bibliographies Compliant with the International
+	Standard ISO~690 in \LaTeX{}}
+
+% repeat info for each author.
+\author{Dávid Lupták}
+\address{Faculty of Informatics \\ Masaryk University \\ Brno, Czech Republic}
+\netaddress{422640@mail.muni.cz}
+% \personalURL{http://example.org/~user/}
+
+%%% End of metadata %%%
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+The preparation of bibliographic references and citations compliant
+with the international standard ISO~690 is required by many institutes
+not limited to the Czech and Slovak academia. However, the typesetting
+of bibliographies conforming to the respective standard is not yet
+supported in the \LaTeX{} document preparation system. The
+\verb|biblatex-iso690| package has been revised and improved to fully
+meet the requirements of the international standard and thus greatly
+simplifies the typesetting of bibliographies for all kinds of
+information resources.
+
+\end{abstract}
+
+\section{Introduction}
+
+Writing an article or paper or any other kind of work requires high
+maturity to work with other resources which should be also referenced
+and cited properly. The preparation of bibliographic references and
+citations is mainly required to comply with the international standard
+ISO~690 in Czech academia~\cite{Kratochvil2011}. At the beginning
+of this article the standard ISO~690 is introduced briefly, followed
+by various existing software implementions incorporating the standard.
+Typesetting of bibliographies in \LaTeX{} preparation system is next
+covered in more detail and the package \textsf{biblatex-iso690},
+the first complete implementation in \LaTeX{} which is compliant with
+the latest version of the standard ISO~690, is featured.
+
+
+\section{International standard ISO~690}
+
+The preparation of bibliographic references and citations
+was done in accord with the international standard
+ISO~690:1987~\cite{iso690:1987} for printed resources and
+ISO~690-2:1997~\cite{iso690:2:1997} for electronic information
+resources in the past. These two versions of the standard were
+unified and replaced by new version ISO~690:2010~\cite{iso690:2010}
+in 2010. On the national level, translations of such standards are
+provided by offices for standards
+(ISO members)~\cite{isoMembershipManual} with the equal status to
+the original standard. Examples of such translations are
+Czech ČSN ISO~690:2011~\cite{csn:iso690:2011},
+Slovak STN ISO~690:2012~\cite{stn:iso690:2012} or
+German DIN ISO~690:2013~\cite{din:iso690:2013}.
+
+
+\subsection{Terminology}
+
+Let's briefly introduce two fundamental terms and definitions of the
+standard~\cite{iso690:2010} which are essential for understanding
+following text properly:
+
+\begin{description}
+\item[citation] indication within the text or other form of content
+      of a relevant reference
+\item[reference] data describing a resource or part thereof,
+      sufficiently precise and detailed to identify it and to enable
+      it to be located
+\end{description}
+
+
+
+\subsection{Consistency principle}
+
+The international standard ISO~690 does not prescribe a particular
+style of reference or citation. The examples used in the standard
+are not prescriptive as to style and punctuation. These facts outline
+two findings:
+
+\begin{enumerate}
+\item separation of semantic and presentation is respected % preserved
+\item the standard cannot be considered as a citation style~\cite{Hala2013}
+\end{enumerate}
+
+\noindent At the same time, a uniform style, format and punctuation
+scheme shall be used for all references in a document, regardless of
+the particular style guide being used. Fulfillment of this requirement
+is left to creator of references, with examples illustrated in the
+standard itself, various national interpretations ar just typical
+usages of typesetting a bibliography.
+
+
+\section{Typesetting of bibliographies in \LaTeX{}}
+
+\LaTeX{} document preparation system provides three possibilities of
+typesetting bibliographies~\cite{talbot2013}. The first approach is to
+use just the plain \LaTeX{} to generate the bibliographies, two others
+stick to the separation of semantic and presentation principle and
+take benefit of creating an external database of bibliographic data
+and using an application to generate the output.
+
+
+\subsection{Plain \LaTeX{}}
+
+The \verb|thebibliography| environment for references and the
+\verb|\cite| command family for citations are available in \LaTeX{}.
+Each single reference is then mentioned as \verb|\bibitem| with its
+unique identifier in the \verb|thebibliography| environment.
+
+\begin{verbatim}[\small]
+\documentclass{...}
+\begin{document}
+\cite{<label01>}
+...
+\begin{thebibliography}{<widest label>}
+\bibitem{<label01>}
+  <Author>. \emph{<Title>: <subtitle>}. ...
+...
+\end{thebibliography}
+\end{document}
+\end{verbatim}
+
+The aforementioned code snippet shows the basic syntax of this
+approach and also unveil the fact that it is not practical with a
+large number of citations~\cite{talbot2012}. The main drawbacks are:
+
+\begin{enumerate}
+\item all bibliography entries listed in \verb|thebibliography|
+  environment are typeset (regardless of whether they are cited
+  or not)\label{item:1}
+\item every bibliography entry has to be entered and formatted
+  manually for every desired bibliography style\label{item:2}
+\item bibliography references are not sorted at all (they are printed
+  out in the order as they are listed in \verb|thebibliography|
+  environment)\label{item:3}
+\end{enumerate}
+
+\noindent Standard ISO~690 does not prescribe any guidelines to deal
+with the disadvantage number~\ref{item:1}, however such results do not
+follow general recommendations for creating
+bibliographies~\cite{talbot2013}. Regarding the
+limitation~\ref{item:2} it is really tough task to ensure the
+consistency of references and regarding the drawback~\ref{item:3} it
+is not possible at all to output references in the correct order for
+any method of citation introduced in the standard.
+
+Reusability of bibliographic entries and scalability of the list
+of references lack in this approach. On the other hand, one of the
+main strenghts is relatively fast document compilation (it is enough
+to compile it twice by \TeX{} engine).
+
+
+\subsection{B\textsc{ib}\TeX{}}
+
+The preferred method of generating a bibliography is to create an
+external bibiliography database (see section~\ref{bib:file}) and use
+an application to generate the output~\cite{talbot2013}. Such
+applications can deal with typesetting references in the correct
+order (solves the issue~\ref{item:3}) and based on the selected
+bibliography style (solves the issue~\ref{item:2}) they generate
+\verb|thebibliography| environment which then can be input into the
+document. One typical representative of this method is \BibTeX{},
+which adhere to the principle of separation of semantic and
+presentation.
+
+The \verb|\bibliographystyle| command is used to define the desired
+bibliography formatting style, the \verb|\bibliography| command
+specifies external bibliography database to use and also the location
+where the list of references is to be printed. The \verb|\cite|
+family commands are used to create a citation within a text of a
+document pointing to the reference in question. It is also possible
+to use \verb|\nocite| command, which adds the bibliography entry to
+the list of references without printing a citation within a text
+(addressing problem~\ref{item:1}).
+
+\begin{verbatim}[\small]
+\documentclass{...}
+\bibliographystyle{<formatting style>}
+\begin{document}
+\cite[<additional info>]{<list of labels>}
+...
+\bibliography{<list of database files>}
+\end{document}
+\end{verbatim}
+
+This brief introduction to \BibTeX{} seems to be promising, however
+there is also a lot of troubles out there underlined by the fact,
+that development of the \BibTeX{} package is
+stagnant~\cite{patashnik1994,patashnik2003}. Let's list the main
+disadvantages and limitations:
+
+\begin{enumerate}
+\item input encoding problems~\cite{ctan:bibtex} (even though an
+  alternative solution is
+  available)\footnote{\url{https://www.ctan.org/pkg/bibtex8bit}}
+\item designing your own \BibTeX{} styles is rather
+  difficult~\cite{patashnik1988:styles} (even though an alternative
+  solution for generating \BibTeX{} styles is
+  available)\footnote{\url{https://www.ctan.org/pkg/custom-bib}}
+\item capacity issues (working with large bibliography database files,
+  BibTeX is very likely to run out of memory)~\cite{biblatex:manual2016}
+\item lacking of citation customizations~\cite{bibtex:faq} (even
+  though more flexible solutions are
+  available)\footnote{\url{https://www.ctan.org/pkg/natbib},
+  \url{https://www.ctan.org/pkg/cite}}
+\item missing of contemporary fields widely used nowadays, e.g.
+  the \verb|url| field (even though an alternative solution is
+  available)\footnote{\url{https://www.ctan.org/pkg/natbib},
+  \url{https://www.ctan.org/pkg/babelbib}}
+\item lacking of translations and multilingual
+  bibliographies~\cite{Harders2002} (even though an alternative
+  solution is
+  available)\footnote{\url{https://www.ctan.org/pkg/babelbib}}
+\end{enumerate}
+
+To typeset your document properly, it is needed to compile your
+document at least three times by \TeX{} engine and at least once
+by \BibTeX{} program. Here is the global pattern to be
+applied~\cite{Markey2009}:
+
+\begin{center}
+\LaTeX\ (\BibTeX\ \LaTeX)$^+$ \LaTeX\
+\end{center}
+
+\noindent Generating a bibliography using \BibTeX{} in comparison
+with the plain \LaTeX{} introduces more complexity, however, on the
+other hand, it also deals with almost all of the aforementioned
+limitations succesfully.
+
+
+\subsection{\BibLaTeX}\label{biblatex:typesetting}
+
+Another option for generating a bibliography using external
+bibliography database and application for compiling it reveals in
+the \BibLaTeX{} package of \LaTeX{}. This package is a complete
+reimplementation of the bibliographic facilities provided by \LaTeX{},
+usually referred to as a successor of an ancient \BibTeX{}
+package~\cite{ctan:bibtex,hufflen2011}. Formatting of the
+bibliography is entirely controlled by \TeX{} macros and
+processing a bibliography database file (see also~\ref{bib:file})
+the \verb|biber| backend program is used~\cite{biblatex:manual2016}.
+
+The usage of \BibLaTeX{} package slightly differs from traditional
+\BibTeX{} since it provides also more advanced bibliographic
+facilities for use with \LaTeX{}. From the user perspective,
+different syntax is noticable. Formatting styles are specified as
+a load-time package option in the optional argument to
+\verb|\usepackage|. Bibiliography database files are specified in
+the document preamble with \verb|\addbibresource| command using the
+full name of the file (including \verb|.bib| extension). The list
+of references is printed using the \verb|\printbibliography| command
+at the position where this command is placed in a document.
+For creating citations within a text of a document, \verb|\cite|
+command and its variants are used. Basic structure is as follows:
+
+\begin{verbatim}[\small]
+\documentclass{...}
+\usepackage[...]{biblatex}
+\addbibresource{<database01.bib>}
+\addbibresource{<database02.bib>}
+\begin{document}
+\cite{...}
+...
+\printbibliography
+\end{document}
+\end{verbatim}
+
+\BibLaTeX{} successfully deals with a lot of limitations introduced
+by \BibTeX{}, to mention a few of them~\cite{ctan:biblatex}:
+
+\begin{enumerate}
+\item full Uni­code sup­port
+\item highly cus­tomis­able sort­ing and bibliography labels
+\item \verb|polyglossia| and \verb|babel| supp­port for au­to­matic
+  lan­guage switch­ing for bib­li­o­graphic en­tries and ci­ta­tions
+\item more entry types and fields
+\item a lot of bibliography and citation styles already available
+\item easy to de­sign new bib­li­og­ra­phy and ci­ta­tion styles
+\end{enumerate}
+
+The list could continue to be extended to the rich functionality
+provided by the \BibLaTeX{} package~\cite{biblatex:manual2016}. On
+the other hand, there are almost none drawbacks of using the package.
+To mention just one for all \dash incompatibility of \BibLaTeX{}
+auxiliary files when submitting to a
+journal~\cite{stack:ex:biblatex:drawback}.
+
+Document compiling is analogous to \BibTeX{} approach. At first,
+document is compiled by \TeX{} engine followed by running \verb|biber|
+on a generated auxiliary \verb|.bcf| file and then compile by \TeX{}
+engine once again. The \BibLaTeX{} schema for compiling a document
+is as follows (note that file extensions are optional):
+
+\begin{verbatim}[\small]
+latex <document>[.tex]
+biber <document>[.bcf]
+latex <document>[.tex]
+\end{verbatim}
+
+
+\subsection{Bibliography database (\texttt{.bib} file)}\label{bib:file}
+
+For the sake of completness of this section it is desireable to
+introduce also the bibliography database \verb|.bib| file. This file
+contains bibliography entries, each entry is of specific type (the
+word after @), has unique label and a number of tags (key-value
+pairs) defining resource data. General schema of an entry looks
+like the following~\cite{bib:format}:
+
+\begin{verbatim}[\small]
+@<entry type>{<label>,
+  <field> = {<value>},
+  ...
+  <field> = {<value>}
+}
+\end{verbatim}
+
+\noindent 
+
+All of the entry types supported by \BibTeX{} can be used directly
+or via alias also with \BibLaTeX{} package. On top of traditional
+types, \BibLaTeX{} package introduces other ones with the possibility
+to define completely new ones.
+
+The same situation applies also for entry fields. \BibLaTeX{} package
+provides backward compatibility with all of the \BibTeX{} fields and
+on top of them it adds some more. In addition to regular fields there
+are available so-called special fields which can contain additional
+settings related to an entry, e.g. to specify the language on per
+entry basis for mulitilingual bibliographies.
+
+
+\subsection{Summary}
+
+Basic functionality of \LaTeX{} for generating a bibliography can be
+appropriately used for small number of citations in a document.
+However, in case of a large number of citations, it is best to use
+an external bibliographic application. This approach stick to a
+principle of separation semantic and presentation, which results in
+high scalability and reusability of bibliography entries and
+makes the working with references more flexible and efficient.
+
+Besides \BibTeX{} \dash traditional representative of this method
+\dash many other applications based on it exist out there. However,
+all of them are limited to the fact that they are based on \BibTeX{}.
+Mainly it is a case of used formatting styles, even though some of the
+applications try to replace the language BST (\BibTeX{} STyle) and use
+more modern languages \dash mostly
+\XML{}~\cite{hufflen2011,hufflen2008}.
+
+As it turned out from the big variety of options for typesetting
+a bibliography in \LaTeX{}~\cite{talbot2013,Mittelbach2004}, best
+choice nowadays is to use \BibLaTeX{} package with its backend
+application \verb|biber|~\cite{hufflen2011,biber:manual2016}.
+
+
+\section{ISO~690 implementations}
+
+This section introduces an existing software products, tools or
+services which incorporate the standard ISO~690. First two
+mentioned here are designed to use with \LaTeX{} document preparation
+system, language CSL is covered thanks to its gaining usage
+popularity and \verb|OPmac-bib| package because it is a rare example
+among all available packages which deliver the full support for this
+particular standard. More comprehensive overview of the available
+solutions can be found in the bachelor thesis of the author of this
+article in Slovak~\cite{Luptak2016}.
+
+
+\subsection{czechiso}
+
+For the Czech versions of the standard \dash
+ČSN ISO 690:1996~\cite{csn:iso690:1996} and
+ČSN ISO~690-2:2000~\cite{csn:iso690:2:2000} \dash is  available an
+unofficial formatting style \verb|czechiso| created by David Martinek
+in 2006. The style can be found
+at \url{http://www.fit.vutbr.cz/~martinek/latex/czechiso.html}. This
+implementation does not meet the requirements of the standard
+precisely, it is lacking some required fields for bibliographic
+entries and many functions responsible for printing out a reference
+correctly are in need of rewriting to fully conform to the standard.
+
+
+\subsection{biblatex-iso690}
+
+First version of the bibliography and citation style for \BibLaTeX{}
+conforming to the standard ISO~690 is dated back to 2011. This
+implementation was based on the previous versions of the
+standards~\cite{csn:iso690:1996,csn:iso690:2:2000} and on the Czech
+interpretation~\cite{Bratkova2008}. The package was created by Michal
+Hoftich and it is available
+at \url{https://github.com/michal-h21/biblatex-iso690}. Similarly to
+the previous aforementioned package, even this solution did not
+adhere to the standards precisely. Many issues related to the
+functionality of the package as well as the usage of this style were
+reported on the homepage of the project. Thanks to reviewing the
+style completely in 2016, the package fully meet the requirements
+of the standard at the current stage (see also
+subsection~\ref{biblatex-iso690}).
+
+
+\subsection{Language CSL}
+
+The Citation Style Language (CSL) is an open \XML{} based language for
+working with bibliographies. It became popular with the release of
+Zotero reference manager in 2006~\cite{Fenner2010}.
+
+The main advantage of this language is the syntax of \XML{}, jointly
+with the popularity, open source initiative and versatility of
+CSL~\cite{Ansorge2013}. Another undisputed benefit is its widespread
+character, which is indicated by extensive list of products which use
+CSL styles on the official webpage of the CSL
+project~\cite{csl:home}. One of the most famous are Zotero, Papers
+and Mendeley.
+
+In the CSL style repository can be found over 8000 styles, among
+which is available also 15 styles for the standard ISO~690. These
+styles differs in localisation or method of citation, hence so huge
+number of styles just for one standard. In all of them appear minor
+errors or inaccuracies in accord with the standard ISO~690. In
+general, CSL has a number of limitations~\cite{csl:styles}:
+
+\begin{itemize}
+\item limited support for customizing the label format
+\item limited support for legal styles (Multilingual Zotero
+  as an alternative)
+\item limited support for citing items in multiple languages within
+  a single document (Multilingual Zotero as an alternative)
+\item limited support for entering date range into the date field
+  (entry is not generated)
+\end{itemize}
+
+In conclusion, it should be added that \BibLaTeX{} package covers
+all of these limitations in its basic
+functionality~\cite{biblatex:manual2016}.
+
+
+\subsection{OPmac-bib}
+
+OPmac are additional macros on top of plain \TeX{} taking advantage
+of basic \LaTeX{} functionality. The additional package OPmac-bib is
+built as a part of it, available for bibliography facilities. No
+external program for generating a bibliography is needed, all is
+handled by \TeX{} macros and the \verb|librarian.tex| package by
+Paul Isambert. The OPmac package is created by Petr Olšák and it
+ships with \verb|csplain| package since 2015. More details about
+OPmac package are left to another article of \TUB{}~\cite{olsak2016}.
+
+OPmac-bib can process all of the traditional types and fields of
+\BibTeX{} and above and beyond it introduces new fields, which are
+a must when working with bibliographies nowadays. These fields are
+e.g. \verb|url|, \verb|doi| or \verb|lang|, which bypass the need
+of using \verb|note| field for providing such data in this field.
+Hence it is possible to print out this data in the correct order in
+accord with the standard.
+
+While \BibTeX{} was lacking a lot of required types and fields,
+OPmac-bib is making much better. But still the standard is so complex
+that even OPmac-bib does not cover all of the pitfalls the standard
+introduces regarding the fields. However, OPmac-bib can deal with
+this really smartly. The package provides a few versatile fields
+which can be used for entering bibliographic data jointly with the
+formatting macros to customize the field. Hence one can achieve
+desired output. E.g. \verb|option| and \verb|ednote| are examples of
+such fields.
+
+The field \verb|option| can be used for entering other titles,
+translation of title etc. Thanks to this field the correct output
+conforming to the latest version of the standard can be achieved.
+
+The field \verb|ednote| can be used for entering secondary authors
+or other additional information. Note that formatting of this field
+is not further processed, so the entered value is printed out as is.
+Hence one has to be careful to conform to the standard when entering
+the data. Typical examples of entered data are translators or
+originators of multiple editions.
+
+Thanks to the availability of these non-standard fields and full
+customization is the OPmac-bib package an obvious and preferred
+choice to work with plain \TeX{}.
+
+
+\section{Package biblatex-iso690}\label{biblatex-iso690}
+
+Among all implementations incorporating the standard ISO~690
+mentioned in the previous section, only one is relevant to work on
+for typesetting a bibliography in \LaTeX{} \dash the
+\verb|biblatex-iso690| package. Original implemetation deviated from
+the standard, but since its review, \verb|biblatex-iso690| package
+is fully compliant with the latest version of the international
+standard ISO~690.
+
+Original state of the \verb|biblatex-iso690| package contained the
+following defects and drawbacks:
+
+\begin{itemize}
+\item adhered to out-of-date editions of the standard
+\item incorrect order of elements
+\item (redundant/missing) punctuation
+\item missing some types of resources
+\item missing some required elements
+\item missing creator secondary responsibility
+\item obsolete and deprecated code
+\end{itemize}
+
+Initial analysis of the original state of the \verb|biblatex-iso690|
+package resulted in its complete reimplementation. Correction of
+printing bibliography elements in the correct order in a
+reference was not the only change. Almost all macros, commands and
+definitions for parsing fields from the \verb|.bib| database file
+needed to be refactored. A lot of requirements of the standard could
+be achieved simply by the author interface of the \BibLaTeX{}
+package. For some requirements was needed to refine a few low-level
+macros of the package. And some were left just to an author of a
+bibliography database, because they cannot be solved algorithmically.
+Known limitations are:
+
+\begin{itemize}
+\item missing support for running notes citation method
+\item URL addresses wrapping
+\item algorithmic solution for (not) printing out a first edition of
+  a resource
+\item algorithmic solution for (not) printing out only first
+  publisher
+\item algorithmic solution for (not) printing out only first
+  places
+\item term \textit{Anon} for anonymous works
+\item localisation string \textit{nodate} for no date
+\end{itemize}
+
+
+\subsection{Methods of citation}
+
+The standard ISO~690 prescribes three citation methods of information
+resources. Besides aforementioned running notes method it is also
+so-called Harvard system (known also as author-date) and numeric
+system. In the \verb|biblatex-iso690| package they are available as
+\verb|iso-authoryear| and \verb|iso-numeric|. Note that formatting
+style is specified as a package option of \BibLaTeX{} package, e.g.\\
+\verb|\usepackage[style=iso-numeric]{biblatex}|.
+
+
+\subsection{Package options \dash customization}
+
+The standard ISO~690 does not prescribe any particular style, format
+and punctuation scheme for references to be used. Frequently demanded
+changes are available as \verb|biblatex-iso690| package options,
+which are:
+
+\begin{itemize}
+  \item \verb$spacecolon=[true|false]$ to change printing of colon in
+    subtitles and publication information
+    \begin{itemize}
+    \item Place : Publisher
+    \item Place: Publisher
+    \end{itemize}
+  \item \verb$pagetotal=[true|false]$ to print out a total number of
+    pages of a resource as an optional information
+    \begin{itemize}
+    \item Place : Publisher, 2008 [60 p.]
+    \item Place : Publisher, 2008
+    \end{itemize}
+  \item \verb$shortnumeration=[true|false]$ to distinguish numeration
+    and pagination typographically
+    \begin{itemize}
+    \item \dots\ 2011, \textbf{32}(3), 289\dash301 [visited on
+    	2016-05-14] \dots
+    \item \dots\ 2011, vol. 32, no. 3, pp. 289\dash301 [visited on
+    	2016-05-14] \dots
+    \end{itemize}
+  \item \verb$thesisinfoinnotes=[true|false]$ to specify position of
+    thesis information
+    \begin{itemize}
+    \item \dots\ Available from: \meta{url}. BT. MU, FI, Brno.
+    	Supervisor Petr SOJKA
+    \item \dots\ BT. MU, FI, Brno. Supervisor Petr SOJKA. Available
+    	from: \meta{url}
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Integration into fithesis3 class}
+
+\verb|Fithesis3| is an official doc­u­ment class for the type­set­ting
+of the­ses at the Masaryk Univer­sity (Brno, Czech Repub­lic) in
+\LaTeX{}~\cite{novotny2015}. The class has been de­signed for easy
+ex­ten­si­bil­ity by style and lo­cale files of other aca­demic
+in­sti­tu­tions. It was also natural request to integrate the
+\verb|biblatex-iso690| package into \verb|fithesis3| template. This
+integration has been done by cooperation with the maintainer of the
+\verb|fithesis3| package \dash Vít Novotný \dash and consists of the
+following steps:
+
+\begin{itemize}
+\item the \verb|bib| key added to the package metadata section, which
+  can be used to specify a list of \verb|.bib| database files
+\item citation method is loaded automatically based on the selected
+  faculty
+\item list of references is printed automatically at the end of a
+  document
+\item all bibliography management can be also set up manually (see
+  section~\ref{biblatex:typesetting})
+\end{itemize}
+
+\begin{verbatim}[\small]
+\documentclass{fithesis3}
+\thesissetup{
+  ...
+  bib = {<bibliography-database.bib>}
+  ...
+}
+\begin{document}
+\cite{...}
+...
+\end{document}
+\end{verbatim}
+
+\subsection{Availability}
+
+As already mentioned, there was no official support for the standard
+ISO~690 in \LaTeX{} so far. However,
+\verb|biblatex-iso690| package has acquired an official status after
+the revision and now is available from \CTAN{} as the package
+\verb|biblatex-iso690|. Under the same name it is available also in
+\TeX{} Live distribution since \TeX{} Live 2016.
+
+\section{Summary}
+
+The article describes typesetting a bibliography in \LaTeX{}
+compliant with the international standard ISO~690. The standard is
+introduced at the beginning followed by three possibilities of
+typesetting a bibliography in \LaTeX{} being considered. Number of
+implementations incorporating the standard ISO~690 exist but the
+\verb|biblatex-iso690| package takes the most interest, because
+since its initial implementation in 2011, the package was revised
+in 2016 to fully meet the requirements of the most recent version of
+the standard. References in this article are generated using the
+reimplemented package \verb|biblatex-iso690| so they can serve for
+the purpose of demonstration.
+
+
+\printbibliography
+
+\makesignature
+\end{document}
